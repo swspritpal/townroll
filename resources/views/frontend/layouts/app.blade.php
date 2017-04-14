@@ -75,6 +75,7 @@
             {!! Html::script(asset('js/jq-ajax-progress.min.js')) !!}
 
             {!! Html::script(asset('js/jquery.validate.min.js')) !!}
+            {!! Html::script(asset('js/geo/geo-min.js')) !!}
             {!! Html::script(asset('js/signup_form.js')) !!}
         @yield('after-scripts')
 

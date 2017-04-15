@@ -9,20 +9,6 @@ jQuery(document).ready(function($) {
         });
     }
 
-    if (navigator.geolocation)
-    {
-        navigator.geolocation.getCurrentPosition(setNewValueToLocationCookie);
-    }else{
-        alert("Geolocation is not supported by this browser. Please update with new one.");
-    }
-
-    function setNewValueToLocationCookie(position)
-    {
-      setCookie("latitude",position.coords.latitude);
-      setCookie("longitude",position.coords.longitude);
-    }
-
-
     function setCookie(key, value) {
         var expires = new Date();
         expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
@@ -30,13 +16,54 @@ jQuery(document).ready(function($) {
         document.cookie = key + '=' + value ;
     }
 
-    function getCookie(key) {
+    /*function getCookie(key) {
         var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
         return keyValue ? keyValue[2] : null;
+    }*/
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
     }
 
-    function positionError(error) {
-        if(error.PERMISSION_DENIED){
+    function delete_cookie( name ) {
+      document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    function success_callback(p)
+    {
+        setCookie("latitude",p.coords.latitude);
+        setCookie("longitude",p.coords.longitude);
+        
+        // if cookie set the call to ajax
+            $('#locateMe').modal('show');
+            $('.new-places-output').html('');
+            
+
+            $.ajax({
+                url: APP_URL + '/near-by-places',
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                beforeSend: function() {
+                    $('.new-places-output').html('<img class="center-block loader-image" src="'+APP_URL+'/img/loader.gif" alt="Loading..." />');
+                },
+                success: function(data)
+                {
+                    if(data.status == 200){
+                        $('.new-places-output').append(data.html_result);
+                    }
+                },
+                complete: function(){
+                    $('.new-places-output').find('.loader-image').remove();
+                },
+            });
+    }
+
+    
+    function error_callback(p)
+    {
+        if(p.PERMISSION_DENIED){
             $('#locateMe').modal('hide');
             swal({
               title: "Error",
@@ -51,43 +78,41 @@ jQuery(document).ready(function($) {
             },
             function(isConfirm){
               if (isConfirm) {
-                swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                swal("Info", "You need to set location value allow.", "success");
               } else {
                 //swal("Cancelled", "Your imaginary file is safe :)", "error");
               }
             });
-
-            return false;
-        }
+        }else{
+            swal({
+              title: "Error",
+              text: p.message,
+              type: "error",
+              showCancelButton: true,
+              confirmButtonText: "Ok",
+              closeOnConfirm: true,
+            });
+        }        
     }
 
 
     $(document).on('click','.locate-me-popup',function(){
+        delete_cookie("latitude");
+        delete_cookie("longitude");
 
-        // re-inilize the location params
-        navigator.geolocation.getCurrentPosition(setNewValueToLocationCookie,positionError);
-
-        $('.new-places-output').html('');
-
-        
-
-        $.ajax({
-            url: APP_URL + '/near-by-places',
-            type: 'get',
-            dataType: 'json',
-            beforeSend: function() {
-                $('.new-places-output').html('<img class="center-block loader-image" src="'+APP_URL+'/img/loader.gif" alt="Loading..." />');
-            },
-            success: function(data)
-            {
-                if(data.status == 200){
-                    $('.new-places-output').append(data.html_result);
-                }
-            },
-            complete: function(){
-                $('.new-places-output').find('.loader-image').remove();
-            },
-        });
+        if(geo_position_js.init()){
+            geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
+        }
+        else{
+            swal({
+              title: "Error",
+              text: 'Geolocation is not supported by this browser. Please update with new one.',
+              type: "error",
+              showCancelButton: true,
+              confirmButtonText: "Ok",
+              closeOnConfirm: true,
+            });
+        }        
     });
 
     $(document).on('click','.join-new-place',function(e){
@@ -100,6 +125,7 @@ jQuery(document).ready(function($) {
             type: 'post',
             data:form.serialize(),
             dataType: 'json',
+            cache: false,
             beforeSend: function() {
 
             },
@@ -157,8 +183,75 @@ jQuery(document).ready(function($) {
         });
     });
 
-    
+
+
 });
+
+/*
+function prompt(window, pref, message, callback) {
+    let branch = Components.classes["@mozilla.org/preferences-service;1"]
+                           .getService(Components.interfaces.nsIPrefBranch);
+
+    if (branch.getPrefType(pref) === branch.PREF_STRING) {
+        switch (branch.getCharPref(pref)) {
+        case "always":
+            return callback(true);
+        case "never":
+            return callback(false);
+        }
+    }
+
+    let done = false;
+
+    function remember(value, result) {
+        return function() {
+            done = true;
+            branch.setCharPref(pref, value);
+            callback(result);
+        }
+    }
+
+    let self = window.PopupNotifications.show(
+        window.gBrowser.selectedBrowser,
+        "geolocation",
+        message,
+        "geo-notification-icon",
+        {
+            label: "Share Location",
+            accessKey: "S",
+            callback: function(notification) {
+                done = true;
+                callback(true);
+            }
+        }, [
+            {
+                label: "Always Share",
+                accessKey: "A",
+                callback: remember("always", true)
+            },
+            {
+                label: "Never Share",
+                accessKey: "N",
+                callback: remember("never", false)
+            }
+        ], {
+            eventCallback: function(event) {
+                if (event === "dismissed") {
+                    if (!done) callback(false);
+                    done = true;
+                    window.PopupNotifications.remove(self);
+                }
+            },
+            persistWhileVisible: true
+        });
+}
+
+prompt(window,
+       "extensions.foo-addon.allowGeolocation",
+       "Foo Add-on wants to know your location.",
+       function callback(allowed) { alert(allowed); });*/
+
+
 
 
 

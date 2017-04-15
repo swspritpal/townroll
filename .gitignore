@@ -1,5 +1,5 @@
 /node_modules
-/storage
+/storage/*
 /public/storage
 /public/index.php
 /public/hot

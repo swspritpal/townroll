@@ -1,1 +1,0 @@
-<h3 class="meta-item text-center">NO POSTS YET.</h3>

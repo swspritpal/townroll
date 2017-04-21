@@ -10,6 +10,7 @@ use App\Post;
 use App\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use GetStream\StreamLaravel\Enrich;
 
 /**
  * Class FrontendController.
@@ -30,6 +31,37 @@ class FrontendController extends Controller
         if(\Auth::guest()){
             return view('frontend.auth.login');
         }else{
+
+            //$feed = \FeedManager::getUserFeed(\Auth::id());
+            /* $activities= [
+                  0 => [
+                    "actor" => "user:1",
+                    "foreign_id" => "post:62",
+                    "id" => "e7ff7614-24f3-11e7-8080-800011544e71",
+                    "object" => "like:171",
+                    "origin" => null,
+                    "target" => null,
+                    "time" => "2017-04-19T11:32:44.602114",
+                    "to" => [],
+                    "verb" => "like"
+                  ]];*/
+            //$activities = $enricher->enrichActivities($activities);
+
+                  
+
+            /*$notification_feed = \FeedManager::getNotificationFeed(\Auth::id());
+            $enricher = new Enrich;
+            $notifications = $notification_feed->getActivities(0,25)['results'];
+            $notifications = $enricher->enrichActivities($notifications);  
+
+
+            $enricher = new Enrich;
+            $notifications = $enricher->enrichActivities($notifications['0']['activities']);
+
+            dd($notifications);*/
+
+
+
             $posts = Post::with(
                     [
                         'user',
@@ -59,7 +91,7 @@ class FrontendController extends Controller
                                 $category_query
                                     ->select(['category_id'])
                                     ->from(with(new \App\CategoryUser)->getTable())
-                                    ->where('user_id', '=', \Auth::user()->id);
+                                    ->where('user_id', '=', \Auth::id());
 
                                 if(!empty($sort_by)){
                                     $category_query->where('category_id', '=', $sort_by['cat']);
@@ -75,6 +107,7 @@ class FrontendController extends Controller
                 ->paginate(env('DEFAULT_HOME_PAGE_POST'));
 
             //dd($posts);
+
             return view('frontend.index',compact('posts','sort_by','request'));
         }
     }

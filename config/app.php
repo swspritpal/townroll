@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel 5 Bootstrap',
+    'name' => 'Townroll',
 
     /*
     |--------------------------------------------------------------------------
@@ -207,6 +207,8 @@ return [
         App\Providers\CacheServiceProvider::class,
         GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
         Approached\LaravelImageOptimizer\ServiceProvider::class,
+        GetStream\StreamLaravel\StreamLaravelServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*
@@ -269,6 +271,7 @@ return [
 
         'XblogConfig' => App\Facades\XblogConfig::class,
         'GoogleMaps' => GoogleMaps\Facade\GoogleMapsFacade::class,
+        'FeedManager'=> GetStream\StreamLaravel\Facades\FeedManager::class,
 
     ],
 

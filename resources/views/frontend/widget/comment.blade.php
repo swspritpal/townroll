@@ -18,7 +18,7 @@
     <div class="reaction clearfix post-counter-bar">
 
         <a  href="javascript:void(0);"  class="btn text-grey hoverRed paddingUnset " data-post-id="{{ $post->id }}">
-          <i class=" fa  {{ $post->liked() ? 'fa-heart' : 'fa-heart-o' }} post-like-click"></i>
+          <i class=" fa  {{ $post->is_liked ? 'fa-heart' : 'fa-heart-o' }} post-like-click"></i>
         </a>
         <a href="javascript:void(0);" data-post-id="{{ $post->id }}" class="btn text-grey hoverRed paddingUnset post-liked-users"> 
             <span class="post-like-counter">{{ !empty($post->like_count()) ? $post->like_count() : "0" }}</span> Likes

@@ -19,21 +19,36 @@ import VeeValidate from 'vee-validate';
 Vue.component('example', require('../components/frontend/Example.vue'));
 Vue.component('like', require('../components/frontend/like.vue'));
 
+Vue.component(
+    'passport-clients',
+    require('../components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('../components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('../components/passport/PersonalAccessTokens.vue')
+);
 
 
-/*const app = new Vue({
+
+const app = new Vue({
     el: '#app'
 });
 
-Vue.use(VeeValidate);*/
+Vue.use(VeeValidate);
 
-/*new Vue({
+new Vue({
     el: '#signup_form',
     data: {
         hello: 'Hello Vue.js!'
     }
 })
-*/
+
 
 window.toastr = require('toastr/build/toastr.min.js');
 window.innerHeight = 800;

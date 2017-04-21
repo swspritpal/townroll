@@ -23,9 +23,6 @@
         @else
             {{ Html::style(mix('css/frontend.css')) }}
         @endif
-
-            {!! Html::style('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css') !!}
-            {!! Html::style('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css') !!}
         
             {!! Html::style(asset('css/vendor/select2.min.css')) !!}
             {!! Html::style(asset('css/jcrop/jcrop.min.css')) !!}  
@@ -66,8 +63,8 @@
 
         <!-- Scripts -->
         @yield('before-scripts')
-            {!! Html::script(mix('js/frontend.js')) !!}
-
+             {!! Html::script(mix('js/frontend.js')) !!}
+            
 
             {!! Html::script(asset('js/jquery_002.js')) !!}
             {!! Html::script(asset('js/script.js')) !!}

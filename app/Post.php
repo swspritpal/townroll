@@ -116,21 +116,33 @@ class Post extends Model
         //return $this->belongsToMany(View::class, 'views', 'post_id', 'user_id')->withTimeStamps();
     }
 
+    /*public function like()
+    {
+        //testing
+        return $this->hasMany(\App\Like::class)->withTimeStamps();
+
+        //return $this->belongsToMany(User::class, 'views', 'post_id', 'user_id')->withTimeStamps();
+        //return $this->belongsToMany(\App\like::class, 'likes', 'post_id', 'user_id')->withTimeStamps();
+    }*/
+
     public function likes()
     {
-        return $this->belongsToMany(User::class, 'views', 'post_id', 'user_id')->withTimeStamps();
-        //return $this->belongsToMany(\App\like::class, 'likes', 'post_id', 'user_id')->withTimeStamps();
+        return $this->morphToMany(User::class, 'likes')->whereDeletedAt(null);
     }
 
+    
     /**
      * Determine whether a post has been marked as like by a user.
      *
      * @return boolean
      */
-    public function liked()
+    public function getIsLikedAttribute()
     {
+        //$like = $this->likes()->whereUserId(\Auth::id())->first();        
+        //return (!is_null($like)) ? true : false;
+
         return (bool) Like::where('user_id', \Auth::id())
-                            ->where('post_id', $this->id)
+                            ->where('likeable_id', $this->id)
                             ->first();
     }
 
@@ -141,7 +153,7 @@ class Post extends Model
      */
     public function like_count()
     {
-        return (int) Like::where('post_id', $this->id)
+        return (int) Like::where('likeable_id', $this->id)
                             ->count();
     }
     /**

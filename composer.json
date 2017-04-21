@@ -1,10 +1,10 @@
 {
     "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "description": "Social networking.",
     "keywords": [
         "framework",
-        "laravel",
-        "boilerplate"
+        "sharing center",
+        "social"
     ],
     "license": "MIT",
     "type": "project",
@@ -17,8 +17,10 @@
         "creativeorange/gravatar": "~1.0",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
         "erusev/parsedown": "^1.6",
+        "get-stream/stream-laravel": "~2.2.6",
         "hieu-le/active": "~3.0",
         "laravel/framework": "5.4.*",
+        "laravel/passport": "^2.0",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "5.4.*",

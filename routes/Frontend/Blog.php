@@ -13,14 +13,8 @@ Route::group(['middleware' => 'auth'], function () {
         
         Route::post('post/store', 'PostController@store')->name('store');
 
-        // Like
-        Route::post('like/{post}', 'PostController@likePost');
-        Route::post('unlike/{post}', 'PostController@unlikePost');
-
         // Viewed User list
         Route::get('post-viewed-users/{post_id}', 'PostController@viewedUsersList');
-        // Liked User list
-        Route::get('post-liked-users/{post_id}', 'PostController@likedUsersList');
 
     });
     // Category
@@ -35,6 +29,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/commentable/{commentable_id}/comments', ['uses' => 'CommentController@show', 'as' => 'comment.show']);
     Route::resource('comment', 'CommentController', ['only' => ['store', 'destroy', 'edit', 'update']]);
 
-    
+    // Like
+    Route::get('post/like/{id}', ['as' => 'post.like', 'uses' => 'LikeController@likePost']);
+    // Liked User list
+    Route::get('post-liked-users/{post_id}', 'LikeController@likedUsersList');  
 
 });

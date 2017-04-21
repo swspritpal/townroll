@@ -42,7 +42,7 @@
         <h5 class="modal-title"><i class="ion-compose myIcons" ></i> Create a post  |  <a href="javascript:void(0);" class="post-upload-image-link"><i class="ion-image myIcons"></i> Photo/Album</a></h5>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body popupHeightAdd">
         <span class="post-content-error error" style="display: none;"></span>
 
         {{ Form::file('post_image', ['class' => 'hidden post_image_file_input','accept'=>"image/*" ]) }}

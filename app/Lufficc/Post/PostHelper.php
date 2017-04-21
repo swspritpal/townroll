@@ -20,7 +20,7 @@ trait PostHelper
         $user = auth()->user();
         if($is_viewed_already == false){
             \Auth::user()->views()->attach($post->id);
-        }  
+        }
         
           /*  $unreadNotifications = $user->unreadNotifications;
             foreach ($unreadNotifications as $notifications) {

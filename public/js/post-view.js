@@ -18,8 +18,8 @@ jQuery(document).ready(function($) {
             $(current_element).removeClass('fa-heart').addClass('fa-heart-o');
 
             $.ajax({
-                url: APP_URL + '/unlike/'+postId,
-                type: 'post',
+                url: APP_URL + '/post/like/'+postId,
+                type: 'get',
                 dataType: 'json',
                 beforeSend: function() {
                 },
@@ -43,8 +43,8 @@ jQuery(document).ready(function($) {
             $(current_element).removeClass('fa-heart-o').addClass('fa-heart');
 
             $.ajax({
-                url: APP_URL + '/like/'+postId,
-                type: 'post',
+                url: APP_URL + '/post/like/'+postId,
+                type: 'get',
                 dataType: 'json',
                 beforeSend: function() {
                 },

@@ -21,8 +21,7 @@
         @langRTL
             {{ Html::style(getRtlCss(mix('css/frontend.css'))) }}
         @else
-            
-            {{ Html::style(asset('css/frontend.7ff6e4f3636e72d7b511.css')) }}
+            {{ Html::style(mix('css/frontend.css')) }}
         @endif
 
         @yield('after-styles')
@@ -46,8 +45,8 @@
         </div><!--#app-->
 
         <!-- Scripts -->
-        @yield('before-scripts')
-        {!! Html::script(asset('js/frontend.a681807aa6b858fa3d6c.js')) !!}
+        @yield('before-scripts')            
+            {!! Html::script(mix('js/frontend.js')) !!}
         @yield('after-scripts')
           {{ Html::style(asset('css/style.css')) }}
           {{ Html::style(asset('css/ionicons.css')) }} 

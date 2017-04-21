@@ -11,6 +11,7 @@ use App\Models\Access\User\Traits\UserSendPasswordReset;
 use App\Models\Access\User\Traits\Attribute\UserAttribute;
 use App\Models\Access\User\Traits\Relationship\UserRelationship;
 use App\Post;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * Class User.
@@ -23,7 +24,9 @@ class User extends Authenticatable
         SoftDeletes,
         UserAttribute,
         UserRelationship,
-        UserSendPasswordReset;
+        UserSendPasswordReset,
+        HasApiTokens;
+
 
     /**
      * The database table used by the model.
@@ -88,10 +91,16 @@ class User extends Authenticatable
     /**
      * The user that belong to the likes post.
      */
-    public function likes()
+    
+   /* public function likes()
     {
         //return $this->belongsToMany(Post::class, 'likes', 'post_id', 'user_id')->withTimeStamps();
         return $this->belongsToMany(\App\Like::class, 'likes', 'user_id', 'post_id')->withTimeStamps();
+    }*/
+
+    public function likedPosts()
+    {
+        return $this->morphedByMany('App\Post', 'likeable')->whereDeletedAt(null);
     }
 
     /**
@@ -99,7 +108,7 @@ class User extends Authenticatable
      */
     public function views()
     {
-        return $this->belongsToMany(Post::class, 'views', 'post_id', 'user_id')->withTimeStamps();
+        return $this->belongsToMany(Post::class, 'views', 'user_id', 'post_id')->withTimeStamps();
         //return $this->belongsToMany(\App\View::class, 'views', 'user_id', 'post_id')->withTimeStamps();
     }
 }

@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::group(array('middleware' => 'auth:api'), function() {
+    //Route::resource('restful-apis','APIController');    
+
+    Route::get('/user', function (Request $request) {
+	    return $request->user();
+	});
+	
+	Route::group(['namespace' => 'api'], function () {
+	    Route::get('/login', 'UserController@login');
+	});
 });
+
+

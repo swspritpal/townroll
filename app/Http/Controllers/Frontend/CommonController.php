@@ -107,17 +107,17 @@ class CommonController extends Controller
                 }                
 
                 $html_result .='<div class="row">
-                  <div class="col-md-2">
+                  <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
                       <div class="imgAbt">
-                          <img width="75" height="100" src="'.asset($image_base_path.$place_photo).'" />
+                          <img class="img-responsive" src="'.asset($image_base_path.$place_photo).'" />
                       </div>
                   </div>
-                  <div class="col-md-8">
-                        <h4>'.$place['name'].'</h4>'
+                  <div class="col-lg-8 col-md-6 col-sm-6 col-xs-6">
+                        <h4 class="margin-top-unset">'.$place['name'].'</h4>'
                             .(!empty(get_place_users_count($place['place_id'])) ? '<div>Joined User:'.get_place_users_count($place['place_id']).'</div>': '').                        
-                        '<p>'.$place['vicinity'].'</p>
+                        '<p class="make-line-height">'.$place['vicinity'].'</p>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <form class="add-new-place-form">
                         <input type="hidden" name="name" value="'.$place['name'].'" >
                         <input type="hidden" name="vicinity" value="'.$place['vicinity'].'" >

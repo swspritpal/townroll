@@ -87,32 +87,6 @@ class PostController extends Controller
         }
     }
 
-
-    /**
-     * Like a particular post
-     *
-     * @param  Post $post
-     * @return Response
-     */
-    public function likePost(Post $post)
-    {
-        \Auth::user()->likes()->attach($post->id);
-        return back();
-    }
-
-    /**
-     * unlike a particular post
-     *
-     * @param  Post $post
-     * @return Response
-     */
-    public function unlikePost(Post $post)
-    {
-        \Auth::user()->likes()->detach($post->id);
-        return back();
-    }
-
-
     /**
      * Show view post users
      *
@@ -139,38 +113,6 @@ class PostController extends Controller
         if(!empty($viewed_users)){
 
             $view = \View::make('frontend.includes.posts.viewed_list',compact('viewed_users'));
-            $html_result = $view->render();
-        }else{
-            $html_result = 'users not found ';
-        }
-
-        return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
-    }
-
-    /**
-     * Show liked post users list
-     *
-     * @param  Request $request
-     * @return Response
-     */
-    public function likedUsersList(Request $request,$post_id)
-    {
-
-        $html_result='';
-
-        $liked_users=Like::where('post_id', $post_id)
-                ->with('users')
-                ->limit(env('DEFAULT_HOME_PAGE_LIKED_USERS_LIMIT'))
-                ->orderBy('created_at','desc')
-                ->selectRaw('`likes`.*,(select count(*) from `users` inner join `likes` on `users`.`id` = `likes`.`user_id` where  `likes`.`post_id` = '.$post_id.' and `users`.`deleted_at` is null) as `users_count`')
-                ->get();
-                //->toSql();
-
-        //dd($liked_users);
-
-        if(!empty($liked_users)){
-
-            $view = \View::make('frontend.includes.posts.liked_list',compact('liked_users'));
             $html_result = $view->render();
         }else{
             $html_result = 'users not found ';

@@ -12,6 +12,7 @@ use App\Policies\PostPolicy;
 use App\Policies\UserPolicy;
 use App\Post;
 use App\User;
+use Laravel\Passport\Passport;
 
 /**
  * Class AuthServiceProvider.
@@ -42,6 +43,8 @@ class AuthServiceProvider extends ServiceProvider
         //Page::observe(PageObserver::class);
 
         $this->registerPolicies();
+        
+        Passport::routes();
 
         //
     }

@@ -116,3 +116,4 @@ Route::get('/nearbysearch', function () {
 
     dd(json_decode($response));
 });
+

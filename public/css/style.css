@@ -1956,13 +1956,30 @@ footer {
 
 .groupsWrapper { border-radius: 5px;  height: auto;  margin-bottom: 10px;}
 
-.chatGroups {margin:0 auto; padding: 3px 6px; width:12%; text-align: center; }
+.chatGroups {
+    height: 90px;
+    margin: 0 auto;
+    max-height: 194px;
+    padding: 6px 6px;
+    text-align: center;
+    width: 12%; 
+    display: inline-block;
+
+  }
+  .scrollerDiv {
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-bottom:5px;
+}
 
 .imgCircle {  padding:5px; width:100%; border-radius:50%; }
 
-.groupProfile {display: flex; width: 100%; }
+.groupProfile {height: 90px;
+    max-height: 90px;
+    max-width: 90px;
+    width: 100%; }
 
-.groupTitle {  color: #000000;  font-weight: 800;  line-height: 13px;  overflow: hidden;  width: 100%;}
+.groupTitle {  color: #000000;  font-weight: 600;  line-height: 13px;  overflow: hidden;  width: 100%; white-space: nowrap;}
 
 .viewAllGroups { float:right;  margin-top:-5px; }
 

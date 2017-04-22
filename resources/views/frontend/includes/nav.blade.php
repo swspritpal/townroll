@@ -26,7 +26,15 @@
               <li class="dropdown">
                 <a href="{{ route('frontend.index') }}"> <i class="fa fa-home fa-2x" aria-hidden="true"></i> </a>                
               </li>
+
+              <li class="dropdown notificationDropdown">
+                <a href="javascript:void(0);"> <i class="fa fa-globe fa-2x" aria-hidden="true"></i></i> </a> 
+
               
+              <div class="NotificationBox">
+                <p>This is testing text</p>
+                </div>   
+              </li>
             </ul>
 
             <div class="pull-right navLogout">

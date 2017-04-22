@@ -31,7 +31,6 @@ class FrontendController extends Controller
         if(\Auth::guest()){
             return view('frontend.auth.login');
         }else{
-
             //$feed = \FeedManager::getUserFeed(\Auth::id());
             /* $activities= [
                   0 => [
@@ -52,14 +51,23 @@ class FrontendController extends Controller
             /*$notification_feed = \FeedManager::getNotificationFeed(\Auth::id());
             $enricher = new Enrich;
             $notifications = $notification_feed->getActivities(0,25)['results'];
-            $notifications = $enricher->enrichActivities($notifications);  
-
 
             $enricher = new Enrich;
             $notifications = $enricher->enrichActivities($notifications['0']['activities']);
 
-            dd($notifications);*/
+            if(!empty($notifications)){
+                echo '<ul>';
+                foreach($notifications as $notification){
+                    if(is_array($notification) || $notification->enriched()){
+                        echo '<li>'.$notification['actor']->username.' '.$notification['verb'].'s your post'.'</li>';    
+                    }
+                }
+            }
+            dd('check');*/
 
+            $notification_feed = \FeedManager::getUserFeed(\Auth::id());
+            $notifications = $notification_feed->getActivities(0,25)['results'];
+            dd($notification_feed);
 
 
             $posts = Post::with(

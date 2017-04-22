@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use GetStream\StreamLaravel\Eloquent\ActivityTrait;
 
 use App\Models\Access\User\User;
 
@@ -13,7 +14,7 @@ use App\Models\Access\User\User;
  */
 class Comment extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,ActivityTrait;
 
     protected $fillable = ['content'];
     /**

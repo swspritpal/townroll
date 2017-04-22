@@ -42,12 +42,12 @@ const app = new Vue({
 
 Vue.use(VeeValidate);
 
-new Vue({
+/*new Vue({
     el: '#signup_form',
     data: {
         hello: 'Hello Vue.js!'
     }
-})
+})*/
 
 
 window.toastr = require('toastr/build/toastr.min.js');

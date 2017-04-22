@@ -30,17 +30,24 @@ class LikeController extends Controller
                 'likeable_id'   => $id,
                 'likeable_type' => $type,
             ]);
-            $user_notification=\FeedManager::getUserFeed(\Auth::user()->id);
 
-	        // Push notification for Stream about the like action
-	        $data = [
-	            "actor"=>"User:".\Auth::user()->id,
-	            "verb"=>"like",
-	            "object"=>"Post:".$id,
-	            "foreign_id"=>"Like:".$like_model->id,
-			  	'to' => ['notification:'.\Auth::user()->id]
-	        ];
-	        $user_notification->addActivity($data);
+            $postData=\App\Post::whereId($id)->first();
+            $notifyTo=$postData->user_id;
+
+            // when some other user likes post then notify to Auther 
+            if($notifyTo != \Auth::id()){
+                $user_notification=\FeedManager::getUserFeed(\Auth::user()->id);
+
+                // Push notification for Stream about the like action
+                $data = [
+                    "actor"=>"\App\Models\Access\User\User:".\Auth::user()->id,
+                    "verb"=>"like",
+                    "object"=>"\App\Post:".$id,
+                    "foreign_id"=>"\App\Like:".$like_model->id,
+                    'to' => ['notification:'.$notifyTo]
+                ];
+                $user_notification->addActivity($data);
+            }
         } else {
             if (is_null($existing_like->deleted_at)) {
                 $existing_like->delete();

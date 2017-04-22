@@ -21,7 +21,7 @@ Route::group(array('middleware' => 'auth:api'), function() {
 	    return $request->user();
 	});
 	
-	Route::group(['namespace' => 'api'], function () {
+	Route::group(['namespace' => 'Api'], function () {
 	    Route::get('/login', 'UserController@login');
 	});
 });

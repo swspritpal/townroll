@@ -104,10 +104,7 @@ class Post extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        $dt = new \DateTime($value);
-        $carbon = Carbon::instance($dt);
-        $carbon->setTimezone('Asia/Kolkata');
-        return $carbon->diffForHumans();
+        return show_time($value);
     }
 
     public function views()

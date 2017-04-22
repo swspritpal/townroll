@@ -98,6 +98,7 @@ if (! function_exists('getRtlCss')) {
 Use App\Models\Access\User\User;
 Use App\Models\Country\Country;
 Use App\Models\Country\City;
+use Carbon\Carbon;
 
 /**
  * App helpers
@@ -448,4 +449,24 @@ if (!function_exists('nearbysearch')) {
         return json_decode($response,true);        
     }
 }
+
+
+if (!function_exists('show_time')) {
+
+    function show_time($value=null,$timeZone=null)
+    {
+        /*if(!empty($value) && (strpos($value,'T')  !== false)){
+            $split_value=explode('T', $value);
+            $value=$split_value['0'].' '.$split_value['1'];
+        }*/
+
+        $dt = new \DateTime($value);
+        $carbon = Carbon::instance($dt);
+        $carbon->setTimezone('Asia/Kolkata');
+        return $carbon->diffForHumans();    
+    }
+}
+
+
+
 

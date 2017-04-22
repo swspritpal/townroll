@@ -33,6 +33,8 @@ class ComposerServiceProvider extends ServiceProvider
 
         View::composer(['frontend.includes.left'], 'App\Http\Composers\Frontend\CountComposer');
 
+        View::composer(['frontend.includes.nav'], 'App\Http\Composers\Frontend\HeaderComposer');
+
         /*
          * Backend
          */

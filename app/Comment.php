@@ -24,6 +24,14 @@ class Comment extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+    * Stream: Change activity verb to 'created':
+    */
+    public function activityVerb()
+    {
+        return 'comment';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

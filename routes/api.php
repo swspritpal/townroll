@@ -23,7 +23,12 @@ Route::group(array('middleware' => 'auth:api'), function() {
 	
 	Route::group(['namespace' => 'Api'], function () {
 	    Route::get('/login', 'UserController@login');
+
+	    Route::get('/check-here', function (Request $request) {
+		    return $request->user();
+		});
 	});
+
 });
 
 

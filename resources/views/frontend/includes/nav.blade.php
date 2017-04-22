@@ -1,3 +1,4 @@
+
 <header id="header">
       <nav class="navbar navbar-default navbar-fixed-top menu">
         <div class="container">
@@ -27,16 +28,21 @@
                 <a href="{{ route('frontend.index') }}"> <i class="fa fa-home fa-2x" aria-hidden="true"></i> </a>                
               </li>
 
-              <li class="dropdown notificationDropdown">
+              <li class="dropdown" id="notificationDropdown">
+
+
+
                 <a href="javascript:void(0);"> <i class="fa fa-globe fa-2x" aria-hidden="true"></i></i> </a> 
+                  @include('frontend.includes.notifications.count')
+              </li>
 
               
-              <div class="NotificationBox">
-                <p>This is testing text</p>
-                </div>   
-              </li>
-            </ul>
+              @include('frontend.includes.notifications.view')
 
+
+
+            </ul>
+            
             <div class="pull-right navLogout">
               {{ link_to_route('frontend.auth.logout', 'Logout',null,['class'=>'fa fa-sign-out fa-fw']) }}
             </div>

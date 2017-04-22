@@ -311,6 +311,7 @@ z-index: 9999;
   color: #fff;
   font-size: 12px;
   font-weight: 600;
+  padding:10px;
 }
 
 .menu ul.main-menu li.dropdown a:hover, .menu ul.main-menu li.dropdown a:active, .menu ul.main-menu li.dropdown a:focus{
@@ -2066,6 +2067,23 @@ footer {
 .signup-form .error {
     color: #ff0000;
 }
+.notificationDropdown {border:#ffcc00 solid thin;}
+
+.NotificationBox {
+  display: none; 
+  position: absolute;
+  width:500px; 
+  margin:0 auto; 
+  border:#ff0000 solid thin;
+ 
+  background-color: #fff;
+}
+
+.dropdown.notificationDropdown:hover  .NotificationBox {  
+  display: block; 
+
+  
+}
 
 
 /* cHECKBOXHI */
@@ -2240,12 +2258,78 @@ footer {
   margin-top:0px;
 }
 .make-line-height{
-  line-height:18px;
+  line-height:17px;
 }
+
+.post-upload-image-wrapper {
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.notificationsLayout {
+
+  position: absolute; 
+  width:40%; 
+  border:#ccc solid 1px;
+  background-color: #fff;
+  margin:50px 0 auto;
+  border: 1px solid rgba(100, 100, 100, 0.4);
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+
+}
+
+.notificationsLayout .Notifi-header h4 { padding:0 10px;}
+
+.notificationsLayout .Notifi-box {border-top:#eaeaea solid thin; border-bottom:#eaeaea solid thin; padding:5px 10px; }
+.notificationsLayout .Notifi-footer h4 { text-align: center }
+
+.likedIconNotifi {color:#5890FF;}
+
+.commentIconNotifi {color:#a2ce70}
+
+.userProfile{width:10%; float:left;} 
+.userProfile img{max-height: 50px;}
+.UserAction{width:75%;float:left;  padding:0 10px;}
+.NotificationImage {width:10%;float:left;}
+.NotificationImage img{max-height: 50px;}
+
+.unread{background-color: #E4E9F2}
+
+.node {
+  margin-left: 177px;
+  margin-top: -17px;
+  position: absolute;
+}
+
+.col-lg-12.col-md-12.col-sm-12.col-xs-12.Notifi-box:hover {
+  background-color: #f6f6f6;
+  cursor: pointer;
+}
+
+.UserAction .marginUnset > a {
+  font-weight: bold;
+}
+
+.UserAction p {
+ color:#000;
+}
+
+.NotifiWrapper {max-height: 500px; overflow-y: auto; overflow-x: hidden;}
+
+.NotificationCount {position: absolute;    right: 1px;    top: 1px; }
+
+.CountDigits {background-color: #fa3e3e;    border-radius: 2px;    color: #ffffff;    padding: 1px 3px;}
 
 /******Grid view ends *******/
 
 @media only screen and (max-width : 1024px) {
+
+  .notificationsLayout {
+
+  width:70%;  
+
+}
 
 .timeline-cover .timeline-nav-bar .profile-info img.profile-photo {
                 border: 3px solid #ffffff;
@@ -2349,6 +2433,8 @@ footer {
 
   .navLogout {margin-right:20px;}
 
+
+
  
 
 }
@@ -2416,6 +2502,19 @@ img.profile-photo-md {
   margin-left: 20px;
 
 }
+
+.post-upload-image-preview.jcrop-init-target {
+  margin: 0 auto;
+  max-height: 125px;
+  text-align: center;
+}
+
+.notificationsLayout {
+
+  width:90%;  
+
+}
+
 
 }
 /*==================================================

@@ -1,5 +1,11 @@
 jQuery(document).ready(function($) {
 
+    $("#notificationDropdown").click(function(){
+        $("#Notifi").toggle();
+      
+
+    });
+
     if(('.convert_space_into_underscore').length){
 
         $(".convert_space_into_underscore").keyup(function () {

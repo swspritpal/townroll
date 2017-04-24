@@ -1,6 +1,13 @@
 @extends('frontend.layouts.app')
 
+@section('title') {{ app_name() }}
+@endsection
 
+@section('meta_keywords')Townroll, Social Networking Groups, Townroll.com
+@endsection
+
+@section('meta_description')join nearby social networking groups at Townroll, join Townroll.com
+@endsection
 
 @section('content')
     <div class="col-md-6 borderRight postContent postContentHome " id="app">
@@ -22,5 +29,4 @@
         </div>
         
     </div>
-  	
-@endsection
+ @endsection 	

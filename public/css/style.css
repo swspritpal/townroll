@@ -1956,13 +1956,30 @@ footer {
 
 .groupsWrapper { border-radius: 5px;  height: auto;  margin-bottom: 10px;}
 
-.chatGroups {margin:0 auto; padding: 3px 6px; width:12%; text-align: center; }
+.chatGroups {
+    height: 90px;
+    margin: 0 auto;
+    max-height: 194px;
+    padding: 6px 6px;
+    text-align: center;
+    width: 12%; 
+    display: inline-block;
+
+  }
+  .scrollerDiv {
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-bottom:5px;
+}
 
 .imgCircle {  padding:5px; width:100%; border-radius:50%; }
 
-.groupProfile {display: flex; width: 100%; }
+.groupProfile {height: 90px;
+    max-height: 90px;
+    max-width: 90px;
+    width: 100%; }
 
-.groupTitle {  color: #000000;  font-weight: 800;  line-height: 13px;  overflow: hidden;  width: 100%;}
+.groupTitle {  color: #000000;  font-weight: 600;  line-height: 13px;  overflow: hidden;  width: 100%; white-space: nowrap;}
 
 .viewAllGroups { float:right;  margin-top:-5px; }
 
@@ -2307,6 +2324,53 @@ footer {
   cursor: pointer;
 }
 
+}
+
+.post-upload-image-wrapper {
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.notificationsLayout {
+
+  position: absolute; 
+  width:40%; 
+  border:#ccc solid 1px;
+  background-color: #fff;
+  margin:50px 0 auto;
+  border: 1px solid rgba(100, 100, 100, 0.4);
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+
+}
+
+.notificationsLayout .Notifi-header h4 { padding:0 10px;}
+
+.notificationsLayout .Notifi-box {border-top:#eaeaea solid thin; border-bottom:#eaeaea solid thin; padding:5px 10px; }
+.notificationsLayout .Notifi-footer h4 { text-align: center }
+
+.likedIconNotifi {color:#5890FF;}
+
+.commentIconNotifi {color:#a2ce70}
+
+.userProfile{width:10%; float:left;} 
+.userProfile img{max-height: 50px;}
+.UserAction{width:75%;float:left;  padding:0 10px;}
+.NotificationImage {width:10%;float:left;}
+.NotificationImage img{max-height: 50px;}
+
+.unread{background-color: #E4E9F2}
+
+.node {
+  margin-left: 177px;
+  margin-top: -17px;
+  position: absolute;
+}
+
+.col-lg-12.col-md-12.col-sm-12.col-xs-12.Notifi-box:hover {
+  background-color: #f6f6f6;
+  cursor: pointer;
+}
 .UserAction .marginUnset > a {
   font-weight: bold;
 }

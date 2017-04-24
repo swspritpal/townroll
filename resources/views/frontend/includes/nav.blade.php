@@ -35,12 +35,7 @@
                 <a href="javascript:void(0);"> <i class="fa fa-globe fa-2x" aria-hidden="true"></i></i> </a> 
                   @include('frontend.includes.notifications.count')
               </li>
-
-              
               @include('frontend.includes.notifications.view')
-
-
-
             </ul>
             
             <div class="pull-right navLogout">

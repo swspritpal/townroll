@@ -20,6 +20,4 @@
       <h4>See all </h4>
     </div>
   @endunless
-
-
 </div>

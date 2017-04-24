@@ -48,12 +48,12 @@ class FrontendController extends Controller
 
                   
 
-            $notification_feed = \FeedManager::getNotificationFeed(\Auth::id());
+           /* $notification_feed = \FeedManager::getNotificationFeed(\Auth::id());
             $enricher = new Enrich;
             $notifications = $notification_feed->getActivities(0,25)['results'];
 
             if(!empty($notifications)){
-                /*$enricher = new Enrich;
+                $enricher = new Enrich;
                 $notifications = $enricher->enrichActivities($notifications['0']['activities']);
 
                 if(!empty($notifications)){
@@ -63,10 +63,10 @@ class FrontendController extends Controller
                             echo '<li>'.$notification['actor']->username.' '.$notification['verb'].'s your post'.'</li>';    
                         }
                     }
-                }*/
+                }
                 dd($notifications);
             }
-
+*/
            
 
             /*$notification_feed = \FeedManager::getUserFeed(\Auth::id());

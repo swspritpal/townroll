@@ -1957,13 +1957,14 @@ footer {
 .groupsWrapper { border-radius: 5px;  height: auto;  margin-bottom: 10px;}
 
 .chatGroups {
-    height: 90px;
+  /*  height: 90px;*/
     margin: 0 auto;
     max-height: 194px;
     padding: 6px 6px;
     text-align: center;
-    width: 12%; 
+    width: 100%; 
     display: inline-block;
+    
 
   }
   .scrollerDiv {
@@ -2385,6 +2386,8 @@ footer {
 
 .CountDigits {background-color: #fa3e3e;    border-radius: 2px;    color: #ffffff;    padding: 1px 3px;}
 
+.groupTitleMain {  white-space: nowrap;  width: 98px;  text-overflow: ellipsis;  overflow: hidden; }
+
 /******Grid view ends *******/
 
 @media only screen and (max-width : 1024px) {
@@ -2547,7 +2550,7 @@ footer {
 
       .post-content {border:0;  width:100%; border-radius: 0;}
 
-      .chatGroups { width: 25%; }
+      .chatGroups { width: 100%; }
 
       .container-fluid {  margin-left: auto;  margin-right: auto;  padding-left: 0px;  padding-right: 0px;}
 
@@ -2607,6 +2610,9 @@ img.profile-photo-md {
       img.profile-photo-md {  border-radius: 50%;  height: 35px;  margin-left: 20px;  width: 35px;}
 
       ul.nav-news-feed {  padding-right: 10px;}
+
+      .groupTitleMain {  width: 55px; }
+      .groupProfile {  height: 50px;  max-height: 90px;  max-width: 50px;  width: 100%;}
 
 }
 

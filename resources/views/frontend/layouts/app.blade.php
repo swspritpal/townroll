@@ -30,9 +30,10 @@
             {!! Html::style(asset('css/vendor/select2.min.css')) !!}
             {!! Html::style(asset('css/jcrop/jcrop.min.css')) !!}  
         @yield('after-styles')
-
+         {{ Html::style(asset('css/slick.css')) }}
          {{ Html::style(asset('css/style.css')) }}
          {{ Html::style(asset('css/ionicons.css')) }}
+
 
         <!-- Scripts -->
         <script>
@@ -81,7 +82,7 @@
 
         @include('includes.partials.ga')
 
-        
+        {!! Html::script(asset('js/slick.min.js')) !!}
         {!! Html::script(asset('js/custom.js')) !!}
  
     </body>

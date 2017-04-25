@@ -1081,6 +1081,9 @@ ul.online-users li span.online-dot{
   padding: 10px 20px;
  /* margin-bottom: 20px;*/
   border-bottom: 1px solid #f1f2f2;
+
+  max-height: 550px;
+  overflow-y: auto;
 }
 
 .create-post .form-group{
@@ -2387,6 +2390,8 @@ footer {
 .CountDigits {background-color: #fa3e3e;    border-radius: 2px;    color: #ffffff;    padding: 1px 3px;}
 
 .groupTitleMain {  white-space: nowrap;  width: 98px;  text-overflow: ellipsis;  overflow: hidden; }
+
+.commentLimit {overflow-wrap: break-word; }
 
 /******Grid view ends *******/
 

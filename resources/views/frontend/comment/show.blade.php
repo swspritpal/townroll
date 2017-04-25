@@ -9,13 +9,15 @@
             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 comment-info">
 
               <a href="#" class="profile-link">{{ $comment->user->username }} </a>
-                <!-- By default 1 comment showing, thats why using ZERO index -->   
-                  @if(strlen($comment->content) > env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH'))                 
-                    {{ str_limit($comment->content,env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH',150)) }}
-                    <a href="javascript:void(0);"  data-toggle="modal" data-target="#viewSingleComment"  >Read more </a>';
-                  @else
-                    {{ $comment->content }}
-                  @endif
+                  <div class="commentLimit">
+                    @if(strlen($comment->content) > env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH'))                 
+                      {{ str_limit($comment->content,env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH',150)) }}
+                      <a href="javascript:void(0);"  data-toggle="modal" data-target="#viewSingleComment"  >Read more </a>';
+                    @else
+                      {{ $comment->content }}
+                    @endif
+                  </div>  
+
 
                <div class="comment-operation">
                   @if(access()->user()->id == $post_user_id)

@@ -223,7 +223,7 @@ if (!function_exists('getMentionedUsers')) {
             }
             $usernames[] = $v;
         }
-        $users = User:: whereIn('name', array_unique($usernames))->get();
+        $users = User:: whereIn('username', array_unique($usernames))->get();
         return $users;
     }
 }
@@ -464,6 +464,22 @@ if (!function_exists('show_time')) {
         $carbon = Carbon::instance($dt);
         $carbon->setTimezone('Asia/Kolkata');
         return $carbon->diffForHumans();    
+    }
+}
+
+/**
+ * Return comment content
+ * @params Model with full namespace \App\Comment:$id
+ * @return string 
+ */
+
+if (!function_exists('show_comment_content_in_notification')) {
+
+    function show_comment_content_in_notification($model=null)
+    {
+        list($model,$id)=explode(':', $model);
+        $comment=app($model)->select('html_content')->whereId($id)->firstOrFail();
+        return trim($comment->html_content);
     }
 }
 

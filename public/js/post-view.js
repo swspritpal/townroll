@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
         var postId=$(this).parent('a').attr('data-post-id');
         var current_element=$(this);
 
-        var counterElement=$('.post-like-counter');
+        var counterElement=$(current_element).parents('.post-counter-bar').find('.post-like-counter');
         var counterElementVal=$(counterElement).html();
 
         if($(this).hasClass('fa-heart'))

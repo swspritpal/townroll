@@ -5,6 +5,7 @@ namespace App\Notifications\Frontend\Comment;
 use App\Comment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\Notifications\Frontend\StreamChannel;
 
 class MentionedInComment extends BaseNotification
 {
@@ -29,7 +30,7 @@ class MentionedInComment extends BaseNotification
         if ($this->enableMail()) {
             return ['database', 'mail'];
         }
-        return ['database'];
+        return [StreamChannel::class];
     }
 
     /**
@@ -40,7 +41,7 @@ class MentionedInComment extends BaseNotification
      */
     public function toMail($notifiable)
     {
-        $data = $this->comment->getCommentableData();
+        /*$data = $this->comment->getCommentableData();
         return (new MailMessage)
             ->success()
             ->greeting($notifiable->name)
@@ -48,7 +49,7 @@ class MentionedInComment extends BaseNotification
             ->subject('You have new comment')
             ->line($this->comment->username . ' in ' . $data['type'] . ':' . $data['title'] . ' describe:')
             ->line($this->raw_content)
-            ->action('view ', $data['url']);
+            ->action('view ', $data['url']);*/
     }
 
     /**
@@ -60,5 +61,37 @@ class MentionedInComment extends BaseNotification
     public function toArray($notifiable)
     {
         return $this->comment->toArray();
+    }
+
+     /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toStreamActivity($notifiable)
+    {
+        $data = $this->comment;
+
+        // Comment posting Notification to notify mention users
+        $notifyTo=$notifiable->id;
+
+        // when some other user comment on post then notify to Auther 
+        if($notifyTo != \Auth::id()){
+            $user_notification=\FeedManager::getUserFeed(\Auth::id());
+
+            // Push notification for Stream about the comment action
+            $data = [
+                "actor"=>"\App\Models\Access\User\User:".\Auth::user()->id,
+                "verb"=>"mention_in_comment",
+                "object"=>$data->commentable_type.":".$data->commentable_id,
+                "foreign_id"=>"\App\Comment:".$data->id,
+                "is_read" => false,
+                "is_seen" => false,
+                'to' => ['notification:'.$notifyTo],
+            ];
+
+            return $user_notification->addActivity($data);
+        }
     }
 }

@@ -10,5 +10,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('states/{country_sortname}', 'CommonController@getStates')->name('getstates');
     Route::get('cities/{state_id}', 'CommonController@getCities')->name('getcities');
     Route::post('unique-username', 'CommonController@unique_username')->name('unique_username');
+
+    Route::get('mark-notification-read', 'CommonController@markNotificationRead')->name('unique_username');
     
 });

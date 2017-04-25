@@ -115,3 +115,8 @@
 .slick-arrow.slick-hidden {
     display: none;
 }
+
+/* custom class */
+.slick-initialized {
+    visibility: visible !important;
+}

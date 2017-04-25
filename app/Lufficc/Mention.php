@@ -2,7 +2,7 @@
 namespace Lufficc;
 
 use App\Comment;
-use App\Notifications\MentionedInComment;
+use App\Notifications\Frontend\Comment\MentionedInComment;
 
 class Mention
 {
@@ -13,8 +13,8 @@ class Mention
     {
         $this->content_parsed = $this->content_original;
         foreach (getMentionedUsers($this->content_original) as $user) {
-            $search = '@' . $user->name;
-            $place = '[' . $search . '](' . route('user.show', $user->name) . ')';
+            $search = '@' . $user->username;
+            $place = '[' . $search . '](' . route('frontend.auth.user.profile', $user->username) . ')';
             $this->content_parsed = str_replace($search, $place, $this->content_parsed);
         }
     }
@@ -29,9 +29,9 @@ class Mention
     public function mentionUsers(Comment $comment, $users, $raw_content)
     {
         foreach ($users as $user) {
-            if (!isAdmin($users)) {
+            //if (!isAdmin($users)) {
                 $user->notify(new MentionedInComment($comment, $raw_content));
-            }
+            //}
         }
     }
 }

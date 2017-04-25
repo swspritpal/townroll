@@ -44,7 +44,9 @@ class LikeController extends Controller
                     "verb"=>"like",
                     "object"=>"\App\Post:".$id,
                     "foreign_id"=>"\App\Like:".$like_model->id,
-                    'to' => ['notification:'.$notifyTo]
+                    "is_read" => false,
+                    "is_seen" => false,
+                    'to' => ['notification:'.$notifyTo],
                 ];
                 $user_notification->addActivity($data);
             }

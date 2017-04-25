@@ -139,4 +139,23 @@ class CommonController extends Controller
         return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
     }
 
+
+    /**
+     * @return \Illuminate\Response\Json
+     */
+    public function markNotificationRead()
+    {   
+        $notification_feed = \FeedManager::getNotificationFeed(\Auth::id());
+        $options = array('mark_seen' => true);
+        $results = $notification_feed->getActivities(0,100,$options);
+
+        if(!empty($results)){
+            return response()
+            ->json('true');
+        }else{
+            return response()
+            ->json('some error while marking as seen.');
+        }
+    }
+
 }

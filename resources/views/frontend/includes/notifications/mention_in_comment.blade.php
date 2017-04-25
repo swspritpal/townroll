@@ -2,9 +2,8 @@
     <div class="userProfile ">
       <img class="img-responsive" src="{{ $activity['actor']->picture }}"/>
     </div>
-
     <div class="UserAction">
-      <p class="marginUnset"><a href="javascript:void(0)">{{ $activity['actor']->username }} </a> comments on your post {!! str_limit(show_comment_content_in_notification($activity['foreign_id']),100) !!} </p>
+      <p class="marginUnset"><a href="javascript:void(0)">{{ $activity['actor']->username }} </a> you are mention in comment {!! str_limit(show_comment_content_in_notification($activity['foreign_id']),100) !!} </p>
       <p class="marginUnset"><i class="fa fa-comment commentIconNotifi" aria-hidden="true"></i></i> {{ show_time($activity['time']) }}  </p>
     </div>
 

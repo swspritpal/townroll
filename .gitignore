@@ -3,6 +3,7 @@
 /public/img/goole_places_image/*
 /public/img/post_images/*
 /public/hot
+/public/mix-manifest.json
 /storage/*.key
 /vendor
 .idea

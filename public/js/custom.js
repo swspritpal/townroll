@@ -231,7 +231,12 @@ jQuery(document).ready(function($) {
 
 
 
+
+
+
 });
+
+
 
 /*
 function prompt(window, pref, message, callback) {
@@ -296,7 +301,6 @@ prompt(window,
        "extensions.foo-addon.allowGeolocation",
        "Foo Add-on wants to know your location.",
        function callback(allowed) { alert(allowed); });*/
-
 
 
 

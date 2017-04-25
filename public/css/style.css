@@ -2393,9 +2393,34 @@ footer {
 
 .commentLimit {overflow-wrap: break-word; }
 
+.commentScroller {  max-height: 335px;  min-height: 335px;  overflow-y: auto;  overflow-x: hidden;}
+
+.CountDigits:empty {display: none;}
+
+.ViewFullPostIMAGE {height: 520px; display: table-cell; vertical-align: middle; text-align: center; margin:0 auto; width:615px;}
+
+p:empty{display:none;}
+
+.ViewFullPostIMAGE img{display: table-cell; text-align:center;}
+
+.modal-dialogFullPost {width:70%;}
+
+.ViewFullPostLeft{background:#000;}
+
+.ViewFullPostRight{height:520px;}
+
+.ViewFullPostClose {border:#ff0000 solid thin; padding:60px; margin-top:50px;}
+
 /******Grid view ends *******/
 
 @media only screen and (max-width : 1024px) {
+
+
+.ViewFullPostIMAGE {
+height: auto;
+  
+}
+
 
   .notificationsLayout {
 
@@ -2514,6 +2539,8 @@ footer {
 
 @media only screen and (max-width : 767px) {
 
+      .modal-dialogFullPost {  width: 96%;}
+
       .paddingUnsetMobile {margin-left: 0px; margin-right:0px;}
 
       .col-md-6.borderRight.postContent {  padding-left: 0px;  padding-right: 0px;}
@@ -2544,6 +2571,19 @@ footer {
 
       
 .reportPost {  top: 0px;}
+
+  .ViewFullPostClose {
+  color: #ffffff;
+  margin-right: 10px;
+  margin-top: 45px;
+  opacity: 0.55;
+ 
+  position: absolute;
+  right: 0;
+  z-index: 9;
+}
+
+.MobileDialogHeightPopup {height: 415px; overflow-y: auto; overflow-x: hidden;}
 
 }
 
@@ -2587,6 +2627,15 @@ img.profile-photo-md {
 
 }
 
+.modal-dialogFullPost {
+  width: 96%;
+}
+
+.ViewFullPostIMAGE {
+  height: auto;
+  padding: 5px;
+}
+
 
 }
 /*==================================================
@@ -2594,6 +2643,10 @@ img.profile-photo-md {
   ==================================================*/
 
 @media only screen and (max-width : 480px) {
+
+.modal-dialogFullPost {
+  width: 95%;
+}
 
   .reportPost {  top: -20px;}
 
@@ -2627,6 +2680,10 @@ img.profile-photo-md {
 
     .join-new-place.btn.btn-primary {
   padding: 5px 10px;
+}
+
+.modal-dialogFullPost {
+  width: 92%;
 }
 
 

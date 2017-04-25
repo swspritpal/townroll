@@ -18,9 +18,7 @@ jQuery(document).ready(function($) {
 
         $('#signup_form_modal').modal('show');
 
-        $.get("http://ipinfo.io", function (response) {
-            
-
+        $.get("//ipinfo.io", function (response) {            
             country=response.country;
             city=response.city;
             state=response.region;

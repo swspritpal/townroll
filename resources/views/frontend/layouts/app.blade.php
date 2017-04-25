@@ -69,8 +69,8 @@
         <!-- Scripts -->
         @yield('before-scripts')
             {!! Html::script(mix('js/frontend.js')) !!}
-
-
+            {!! Html::script(asset('js/slick.min.js')) !!}
+            
             {!! Html::script(asset('js/jquery_002.js')) !!}
             {!! Html::script(asset('js/script.js')) !!}
             {!! Html::script(asset('js/jquery.jscroll.min.js')) !!}
@@ -79,12 +79,13 @@
             {!! Html::script(asset('js/jquery.validate.min.js')) !!}
             {!! Html::script(asset('js/geo/geo-min.js')) !!}
             {!! Html::script(asset('js/signup_form.js')) !!}
+            {!! Html::script(asset('js/getstream.js')) !!}
+
         @yield('after-scripts')
 
         @include('includes.partials.ga')
-
-        {!! Html::script(asset('js/slick.min.js')) !!}
-        {!! Html::script(asset('js/custom.js')) !!}
- 
+        
+        {!! Html::script(asset('js/stream_activity.js')) !!}
+        {!! Html::script(asset('js/custom.js')) !!} 
     </body>
 </html>

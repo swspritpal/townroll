@@ -10,13 +10,13 @@
 
               <a href="#" class="profile-link">{{ $comment->user->username }} </a>
                   <div class="commentLimit">
-                    @if(strlen($comment->content) > env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH'))                 
-                      {{ str_limit($comment->content,env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH',150)) }}
+                    @if(strlen($comment->html_content) > env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH'))                 
+                      {!! str_limit($comment->html_content,env('DEFAULT_HOME_PAGE_COMMENT_CONTENT_LENGTH',150)) !!}
                       <a href="javascript:void(0);"  data-toggle="modal" data-target="#viewSingleComment"  >Read more </a>';
                     @else
-                      {{ $comment->content }}
+                      {!! $comment->html_content !!}
                     @endif
-                  </div>  
+                  </div>
 
 
                <div class="comment-operation">

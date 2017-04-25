@@ -5,7 +5,7 @@
 	</div>
 	<div class="UserAction">
 	  <p class="marginUnset"><a href="javascript:void(0)">{{ $activity['actor']->username }}</a>  likes your post </p>
-	  <p class="marginUnset"><i class="fa fa-thumbs-up likedIconNotifi" aria-hidden="true"></i> {{ show_time($activity['time']) }}  </p>
+	  <p class="marginUnset"><i class="fa fa-heart " style="color:#FD3E3E;" aria-hidden="true"></i> {{ show_time($activity['time']) }}  </p>
 	</div>
 
 	@unless(empty($activity['object']->image_path))

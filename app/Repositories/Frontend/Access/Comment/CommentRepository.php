@@ -84,6 +84,28 @@ class CommentRepository extends Repository
         $comment->html_content = $this->markdownParser->parse($comment->content);
         $result = $commentable->comments()->save($comment);
 
+
+        // Comment posting Notification
+        $notifyTo=$commentable->user_id;
+
+        // when some other user comment on post then notify to Auther 
+        if($notifyTo != \Auth::id()){
+            $user_notification=\FeedManager::getUserFeed(\Auth::id());
+
+            // Push notification for Stream about the comment action
+            $data = [
+                "actor"=>"\App\Models\Access\User\User:".\Auth::user()->id,
+                "verb"=>"comment",
+                "object"=>$request->get('commentable_type').":".$commentable->id,
+                "foreign_id"=>"\App\Comment:".$result->id,
+                "is_read" => false,
+                "is_seen" => false,
+                'to' => ['notification:'.$notifyTo],
+            ];
+
+            $user_notification->addActivity($data);
+        }
+
         /**
          * mention user after comment saved
          */

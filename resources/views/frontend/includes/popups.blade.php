@@ -191,9 +191,6 @@
 
 
 <!--Boost Count Modal -->
-
-
-
 <div class="modal fade" id="allBoost" role="dialog">
 
     <div class="modal-dialog clearfix popupHeight"> 
@@ -866,5 +863,246 @@ veniam <i class="em em-muscle"></i></p>
 
 </div>
 
+<!--Boost Count Modal -->
 
+
+<div class="modal fade" id="ViewFullPost" role="dialog" >
+<button type="button" class="close ViewFullPostClose" data-dismiss="modal" style="">&times;</button>
+
+  <div class="modal-dialog clearfix modal-dialogFullPost"> 
+
+    <!-- Modal content-->
+
+<div class="modal-content clearfix MobileDialogHeightPopup">
+        
+
+
+
+
+          <div class="col-lg-12 paddingUnset">
+
+            <div class="col-lg-7 paddingUnset ViewFullPostLeft" >
+
+            <div class="ViewFullPostIMAGE" >
+
+                 <img src="http://localhost:8000/img/post_images/1398571707.jpeg" alt="post-image" class="img-responsive post-image"  >
+          </div>
+            </div>
+
+                <div class="col-lg-5 ViewFullPostRight" >
+
+                    <div class="modal-body clearfix">    
+
+                      <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
+
+                      <a href="#" class="profile-link">John </a>     
+
+                    </div>
+
+                    <div class="modal-body clearfix paddingUnset" >
+
+                    <div class="comment-main-wrappper">
+
+    <div class="reaction clearfix post-counter-bar">
+
+        <a  href="javascript:void(0);"  class="btn text-grey hoverRed paddingUnset " >
+          
+        </a>
+        <a href="javascript:void(0);"  class="btn text-grey hoverRed paddingUnset post-liked-users"> 
+            <span class="post-like-counter">5</span> Likes
+        </a>
+
+        <a class="btn text-grey hoverOlive " href="javascript:void(0);"  data-toggle="modal" data-target="#allComments"><i class="fa fa-comment-o"></i> <span class="home-comment-counter">5</span> Comments</a>
+        <a class="btn text-grey hoverCyan post-view-by-users" href="javascript:void(0);"  >
+          <i class="fa fa-eye"></i> 5  Views
+        </a>
+
+        <span class="pull-right"> 
+        <a class="btn text-grey hoverOrange paddingUnset" title="Boost post" data-toggle="modal" data-target="#postBoot"><i class="fa fa-rocket"></i> Boost</a> 
+        <a class="btn text-grey hoverOrange paddingUnset" href="javascript:void(0);"  data-toggle="modal" data-target="#allBoost">(8)</a> </span>
+        <div style="clear:both"> </div>
+    </div>
+    <div class="line-divider"></div>
+
+
+    
+
+    
+</div> <!-- .comment-main-wrappper --> 
+
+                    <div class="commentScroller">
+
+
+                <div class="clearfix">
+
+                    <p>
+
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
+
+                        <img src="img/user-11.jpg" alt="" class="profile-photo-sm">
+
+                        </div>
+
+                          <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+
+
+                          <a href="#" class="profile-link">Diana </a>
+
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+
+                            <p class="replyComment">
+
+                            <a href="javascript:void(0);"><i class="fa fa-reply replyIcon"></i> Reply </a>       
+
+                            </p>
+
+                          </div>
+
+                    </p> 
+
+                      
+
+                  </div>
+
+
+
+                  <div class="clearfix">
+
+                        <p>
+
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
+
+                            <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
+
+                            </div>
+
+                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+                             <a href="javascript:void(0);" data-toggle="modal" data-target="#myProfile" class="profile-link" class="profile-link">John </a>
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+
+                            <p class="replyComment"><a href="javascript:void(0);"><i class="fa fa-reply replyIcon"></i> Reply </a>       
+
+                          </p>
+
+                            </div>
+
+                        </p>     
+
+                  </div>
+
+                   <div class="clearfix">
+
+                        <p>
+
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
+
+                            <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
+
+                            </div>
+
+                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+                             <a href="javascript:void(0);" data-toggle="modal" data-target="#myProfile" class="profile-link" class="profile-link">John </a>
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+
+                            <p class="replyComment"><a href="javascript:void(0);"><i class="fa fa-reply replyIcon"></i> Reply </a>       
+
+                          </p>
+
+                            </div>
+
+                        </p>     
+
+                  </div>
+
+                   <div class="clearfix">
+
+                        <p>
+
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
+
+                            <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
+
+                            </div>
+
+                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+                             <a href="javascript:void(0);" data-toggle="modal" data-target="#myProfile" class="profile-link" class="profile-link">John </a>
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+
+                            <p class="replyComment"><a href="javascript:void(0);"><i class="fa fa-reply replyIcon"></i> Reply </a>       
+
+                          </p>
+
+                            </div>
+
+                        </p>     
+
+                  </div>
+
+                   <div class="clearfix">
+
+                        <p>
+
+                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
+
+                            <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
+
+                            </div>
+
+                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+                             <a href="javascript:void(0);" data-toggle="modal" data-target="#myProfile" class="profile-link" class="profile-link">John </a>
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+
+                            <p class="replyComment"><a href="javascript:void(0);"><i class="fa fa-reply replyIcon"></i> Reply </a>       
+
+                          </p>
+
+                            </div>
+
+                        </p>     
+
+                  </div>
+
+</div>
+
+                   <div class="clearfix">
+
+                   <p>
+
+
+                      <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 paddingUnset">
+
+                        <img src="img/user-1.jpg" alt="" class="profile-photo-sm">
+
+                      </div>
+
+                      <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 paddingUnset">
+
+                        <input class="form-control" placeholder="Post a comment" type="text">
+
+                      </div>
+
+</p>
+
+                  </div>
+
+        </div> 
+
+                </div>
+
+          </div>  
+
+        </div>    
+
+  </div>
+
+</div>
 

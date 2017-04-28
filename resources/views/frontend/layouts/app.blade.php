@@ -87,5 +87,7 @@
         
         {!! Html::script(asset('js/stream_activity.js')) !!}
         {!! Html::script(asset('js/custom.js')) !!} 
+        
+
     </body>
 </html>

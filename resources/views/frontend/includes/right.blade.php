@@ -1,7 +1,8 @@
 <div class="col-md-2 static hidden-xs hidden-sm">
     <div class="suggestions" id="sticky-sidebar" style="">
-      <div class="create-post"> 
-        <div class="row">
+      <div class="create-post ss-container" >
+
+        <div class="row" >
           <!-- <div class="col-md-12 col-sm-12 ">     
             <div class="form-group">  
               <textarea  cols="100" rows="1" class="form-control" placeholder="Write here anything..." data-toggle="modal" data-target="#myModal"></textarea>
@@ -41,7 +42,7 @@
         
       </div>
                       
-        <div class="rightLocations right-sidebar-locations">
+        <div class="rightLocations right-sidebar-locations" >
               <a href="javascript:void(0);"  class='locate-me-popup' > 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingUnset seperatorGroup locateMeButton">
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  paddingUnset">
@@ -74,7 +75,7 @@
         </div>
         <div style="clear:both"> </div>
 
-    </div>
+    </div> <!-- Create post Ends -->
 </div>
 <style>
 .place-active .groupTitle {

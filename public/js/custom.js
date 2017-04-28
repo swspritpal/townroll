@@ -246,10 +246,11 @@ jQuery(document).ready(function($) {
         });
     });
 
+  
+ var el = document.querySelector('.myClass');
+  SimpleScrollbar.initEl(el);
 
-
-
-
+  
 
 });
 

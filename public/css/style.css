@@ -2023,7 +2023,7 @@ footer {
 
 .rightLocations .groupTitle {    line-height:unset;}
 
-.createPostWrapper{border:#e8e8e8 solid thin; background: #f8f8f8; box-shadow: 0 1px 1px #e8e8e8; margin-bottom: 15px; }
+.createPostWrapper{border:#e8e8e8 solid thin; background: #f8f8f8; box-shadow: 0 1px 1px #e8e8e8; /*margin-bottom: 15px;*/ }
 
 .post-container {box-shadow: 0 1px 1px #e8e8e8; margin-bottom: 15px; background: #f7f7f7;}
 
@@ -2393,7 +2393,7 @@ footer {
 
 .commentLimit {overflow-wrap: break-word; }
 
-.commentScroller {  max-height: 335px;  min-height: 335px;  overflow-y: auto;  overflow-x: hidden;}
+.commentScroller {  max-height: 465px;  min-height: 465px;  overflow-y: scroll;  overflow-x: hidden;}
 
 .CountDigits:empty {display: none;}
 
@@ -2410,6 +2410,14 @@ p:empty{display:none;}
 .ViewFullPostRight{height:520px;}
 
 .ViewFullPostClose {border:#ff0000 solid thin; padding:60px; margin-top:50px;}
+
+
+.load-viewed-user-list .row{ padding:3px 8px;}
+
+.post-upload-image-preview.jcrop-init-target {  max-height: 200px;}
+
+
+
 
 /******Grid view ends *******/
 

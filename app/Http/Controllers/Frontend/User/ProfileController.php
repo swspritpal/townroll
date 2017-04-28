@@ -7,6 +7,7 @@ use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Repositories\Frontend\Access\User\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Access\User\User;
 
 use App\Repositories\Frontend\Access\Category\CategoryRepository;
 
@@ -95,4 +96,58 @@ class ProfileController extends Controller
             }*/
 
     }
+
+    public function userProfile(Request $request,$username){
+        
+        $user = User::whereUsername($username)->first();
+
+        if(!empty($user)){
+            $sort_by=[];
+
+            $posts = \App\Post::with(
+                    [
+                        'user',
+                        'categories'
+                    ]
+                )
+                ->whereUserId($user->id)
+                ->orderBy('created_at', 'desc')
+                ->withCount('comments')
+                //->toSql();
+                ->paginate(env('DEFAULT_HOME_PAGE_POST'));
+
+
+            $user_post_count = \App\Post::whereUserId($user->id)->count();
+
+            $user_place_count = \App\Category::whereHas('users', function ($query) use ($user){
+                $query->whereUserId($user->id);
+            })->count();
+
+            return view('frontend.user.profile.view',compact('user','user_post_count','user_place_count','posts','sort_by'));
+        }else{
+            abort(404);
+        }
+    }
+
+    public function popup(Request $request){
+
+        $user_id=$request->get('id');
+        $user = User::whereId($user_id)->first();
+
+        if(!empty($user)){
+            $user_post_count = \App\Post::whereUserId($user->id)->count();
+
+            $user_place_count = \App\Category::whereHas('users', function ($query) use ($user){
+                $query->whereUserId($user->id);
+            })->count();
+
+            $view = \View::make('frontend.includes.popups.user-profile-ajax',compact('user','user_post_count','user_place_count'));
+             //\View::make('frontend.comment.show',compact('comments', 'commentable','post_user_id'));
+            return $view->render();
+        }else{
+            abort(404);
+        }
+    }
+
+    
 }

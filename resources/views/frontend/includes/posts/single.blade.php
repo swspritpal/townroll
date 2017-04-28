@@ -7,16 +7,18 @@
 ================================================= -->
   <div class="post-content">
     <div class="post-container">
+      <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">
         <img src="{{ $post->user->picture }}" alt="user" class="profile-photo-md pull-left">
+      </a>
         
       <div class="post-detail">
         <div class="user-info">
-          <a href="javascript:void(0);" data-toggle="modal" data-target="#myProfile" class="profile-link">{{ $post->user->username }}</a> 
+          <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">{{ $post->user->username }}</a>
           <span class="GroupInfo">Published a post in 
 
               @unless(empty($post->categories))
                 @foreach($post->categories as $post_category)
-                  <a href="javascript:void(0)">{{ $post_category->name }}</a>,
+                  <a href="{{ route('frontend.index','cat='."$post_category->id") }}">{{ $post_category->name }}</a>,
                 @endforeach
               @endunless
                

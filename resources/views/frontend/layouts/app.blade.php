@@ -53,6 +53,7 @@
         @include('frontend.includes.popups.signup-form')
         @include('frontend.includes.popups.locate-me')
         @include('frontend.includes.popups.post-add')
+        @include('frontend.includes.popups.user-profile')
 
         <div id="page-contents">
             <div class="container-fluid" >
@@ -87,5 +88,6 @@
         
         {!! Html::script(asset('js/stream_activity.js')) !!}
         {!! Html::script(asset('js/custom.js')) !!} 
+        {!! Html::script(asset('js/popups.js')) !!}
     </body>
 </html>

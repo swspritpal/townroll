@@ -1,4 +1,10 @@
 <?php
+
+use App\Models\Access\User\User;
+use App\Models\Country\Country;
+use App\Models\Country\City;
+use Carbon\Carbon;
+
 /**
  * Global helpers file with misc functions.
  */
@@ -93,12 +99,6 @@ if (! function_exists('getRtlCss')) {
         return implode('/', $path).'/'.$filename.'.rtl.css';
     }
 }
-
-
-Use App\Models\Access\User\User;
-Use App\Models\Country\Country;
-Use App\Models\Country\City;
-use Carbon\Carbon;
 
 /**
  * App helpers
@@ -482,6 +482,23 @@ if (!function_exists('show_comment_content_in_notification')) {
         return trim($comment->html_content);
     }
 }
+
+
+if (!function_exists('is_username_exit')) {
+
+    function is_username_exit($username=null)
+    {
+        $model = User::where('username', '=',$username)->get(['username', 'id']);
+        if(!empty($model)){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+}
+
+
 
 
 

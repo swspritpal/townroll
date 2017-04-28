@@ -1,11 +1,11 @@
 <div class="col-md-2 static hidden-xs hidden-sm">
 <div id="sticky-sidebar-left">
             <div class="LeftSidebarProfile">
-                <a href="{{ route('frontend.user.account') }}" >
+                <a href="{{ route('frontend.auth.user.profile',$logged_in_user->username) }}" >
                   <img src="{{ $logged_in_user->picture }}" alt="user" class="profile-photo"> 
                 </a>
-                <h5><a href="{{ route('frontend.user.account') }}">{{ $logged_in_user->name }}</a></h5>
-                <i class="fa fa-map-marker" aria-hidden="true"></i> {{ get_city_name($logged_in_user->city_id) }}
+                <h5><a href="{{ route('frontend.auth.user.profile',$logged_in_user->username) }}">{{ $logged_in_user->name }}</a></h5>
+                <a href="{{ route('frontend.index','cat='."$logged_in_user->city_id") }}"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ get_city_name($logged_in_user->city_id) }}</a>
             </div><!--profile card ends-->
             <ul class="nav-news-feed HideLeftMeuIcons">
               <li>

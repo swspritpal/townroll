@@ -47,6 +47,7 @@ class SocialLoginController extends Controller
      */
     public function login(Request $request, $provider)
     {
+
         // There's a high probability something will go wrong
         $user = null;
 

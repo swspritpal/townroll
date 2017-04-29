@@ -23,7 +23,7 @@ Route::group(array('middleware' => 'auth:api'), function() {
 	
 	Route::group(['namespace' => 'Api'], function () {
 
-	    Route::get('login', 'UserController@login');
+	    Route::post('login', 'UserController@login');
 	    Route::get('user/check', 'UserController@check');
 	    Route::resource('user', 'UserController');
 	});

@@ -10,6 +10,7 @@ use Response;
 
 use App\Repositories\Frontend\Access\User\UserRepository;
 use App\Helpers\Frontend\Auth\Socialite as SocialiteHelper;
+use App\Models\Access\User\SocialLogin;
 
 class UserController extends Controller
 {
@@ -52,42 +53,30 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create($data)
     {
-        // There's a high probability something will go wrong
         $user = null;
-        $data=$request->all();
+        $provider=false;
 
-        $this->content['error'] = true;
-        $this->content['massage'] = $request->all();
-        $this->content['check'] = $provider;
-        $status = 200;
-
-        return response()->json($this->content, $status);
-
+        $provider=$data->provider;
 
         // Create the user if this is a new social account or find the one that is already there.
         try {
-            // User email may not provided.
-            $user_email = $data->email ?: "{$data->id}@{$provider}.com";
-
-            // Check to see if there is a user with this email first.
-            $user = $this->findByEmail($user_email);
-
+            
             /*
              * If the user does not exist create them
              * The true flag indicate that it is a social account
              * Which triggers the script to use some default values in the create method
              */
             if (! $user) {
-                // Registration is not enabled
+                /*// Registration is not enabled
                 if (! config('access.users.registration')) {
                     throw new GeneralException(trans('exceptions.frontend.auth.registration_disabled'));
-                }
+                }*/
 
-                $user = $this->create([
+                $user = $this->user->create([
                     'name'  => $data->name,
-                    'email' => $user_email,
+                    'email' => $data->email,
                 ], true);
             }
 
@@ -109,7 +98,10 @@ class UserController extends Controller
             }
 
             // Return the user object
-            return $user;
+            $this->content['error'] = false;
+            $this->content['massage'] = "user created successfully.";
+            $status = 200;
+
         } catch (GeneralException $e) {
             $this->content['error'] = true;
             $this->content['massage'] = $e->getMessage();
@@ -182,14 +174,15 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+        $data=(object) $request->all();
+
         if($request->has('email')){
             $user_exit=User::whereEmail(request('email'))->first();
             if(!empty($user_exit)){
                 $this->content['error'] = false;
                 $this->content['massage'] = "User exit";
             }else{
-                $this->content['massage'] = "User does not exit";
-                $this->content['error'] = true;
+                $this->create($data);
             }
             $status = 200;
         }
@@ -213,7 +206,7 @@ class UserController extends Controller
         return Socialite::driver($provider)->user();
     }
 
-    public function check(){
+    public function check(){        
         $this->content['massage'] = "Invalid params";
         $this->content['error'] = true;
         $status = 401;

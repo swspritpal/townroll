@@ -214,7 +214,11 @@ class UserController extends Controller
     }
 
     public function check(){
-        dd('working check in api ');
+        $this->content['massage'] = "Invalid params";
+        $this->content['error'] = true;
+        $status = 401;
+        return response()->json($this->content, $status);
+
     }
 }
 

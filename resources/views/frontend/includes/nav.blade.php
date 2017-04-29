@@ -11,12 +11,11 @@
             <ul class="nav navbar-nav navbar-right main-menu">
               
               <li class="dropdown">
-                <a href="javascript:void(0);"> <img src="{{ $logged_in_user->picture }}" alt="user" class="menu-profile-photo"> <span>
-                </span></a>
+                <a href="javascript:void(0);"> <img src="{{ $logged_in_user->picture }}" alt="user" class="menu-profile-photo"> </a>
                  
               </li>
               <li class="dropdown">
-                <a href="javascript:void(0);" data-toggle="modal" data-target="#add_post"> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i> </span></a>
+                <a href="javascript:void(0);" data-toggle="modal" data-target="#add_post"> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
                  
               </li>
               <li class="dropdown">

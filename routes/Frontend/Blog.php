@@ -12,6 +12,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('blog/{slug}', 'PostController@show')->name('show');
         
         Route::post('post/store', 'PostController@store')->name('store');
+        Route::delete('post/destroy/{post_id}', 'PostController@destroy')->name('destroy');
 
         // Viewed User list
         Route::get('post-viewed-users/{post_id}', 'PostController@viewedUsersList');

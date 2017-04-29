@@ -3,10 +3,12 @@
   @foreach ($user->users as $user)
     <div class="row">
         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 paddingUnset">
-          <img src="{{$user->picture}}" alt="" class="profile-photo-sm">
+          <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $user->id }}">
+            <img src="{{$user->picture}}" alt="" class="profile-photo-sm">
+          </a>
         </div>
        <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 ">
-          <a href="javascript:void(0);" class="profile-link">{{$user->username}}</a>
+          <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $user->id }}">{{$user->username}}</a>
         </div>
     </div>
   @endforeach

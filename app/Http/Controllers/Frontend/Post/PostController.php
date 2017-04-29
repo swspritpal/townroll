@@ -86,6 +86,22 @@ class PostController extends Controller
         }
     }
 
+
+    public function destroy($post_id)
+    {
+
+        if (request('force') == 'true') {
+            $post = Post::withTrashed()->findOrFail($post_id);
+        } else {
+            $post = Post::findOrFail($post_id);
+        }
+        
+        if ($this->postRepository->delete($post, request('force') == 'true')) {
+            return response()->json(['code' => 200, 'msg' => 'post delete successfully']);
+        }
+        return response()->json(['code' => 500, 'msg' => 'There was some error while deleting post. Please try again.']);
+    }
+
     /**
      * Show view post users
      *

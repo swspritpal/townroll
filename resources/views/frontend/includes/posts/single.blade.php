@@ -5,7 +5,7 @@
 
 <!-- Post Content
 ================================================= -->
-  <div class="post-content">
+  <div class="post-content content-item-wrapper">
     <div class="post-container">
       <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">
         <img src="{{ $post->user->picture }}" alt="user" class="profile-photo-md pull-left">
@@ -24,6 +24,17 @@
                
           </span> 
           <p class="text-muted"> {{ $post->created_at }}</p>
+
+          <aside class="delete-single-post">
+            @if(access()->user()->id == $post->user_id)
+                <a class="post-delete-operation swal-dialog-target"
+                   href="javascript:void (0)"
+                   data-url="{{ route('frontend.post.destroy',$post->id) }}" data-enable-ajax="1" data-operation-on="post">
+                    Delete
+                </a>
+            @endif
+          </aside>
+
           <div class="reportPost">
             <a href="javascript:void(0);"   data-toggle="modal" data-target="#reportPost">
               <span class="reportPostIcon"><i class="fa fa-exclamation-triangle" aria-hidden="true" ></i> Report post</span>

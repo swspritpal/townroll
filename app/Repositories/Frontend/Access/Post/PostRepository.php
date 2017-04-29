@@ -273,6 +273,14 @@ class PostRepository extends Repository
             ));
     }
 
+    public function delete(Post $post, $force = false)
+    {
+        $this->clearCache();        
+        if ($force)
+            return $post->forceDelete();
+        return $post->delete();
+    }
+
     public function tag()
     {
         return PostRepository::$tag;

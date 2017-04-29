@@ -76,17 +76,17 @@ class CommentController extends Controller
 
     public function destroy($comment_id)
     {
+
         if (request('force') == 'true') {
             $comment = Comment::withTrashed()->findOrFail($comment_id);
         } else {
             $comment = Comment::findOrFail($comment_id);
         }
-
         //$this->checkPolicy('manager', $comment);
 
         if ($this->commentRepository->delete($comment, request('force') == 'true')) {
-            return back()->with('success', 'comment delete successfully.');
+            return response()->json(['code' => 200, 'msg' => 'comment delete successfully']);
         }
-        return back()->withErrors('There was some error, Please try again.');
+        return response()->json(['code' => 500, 'msg' => 'There was some error while deleting comment. Please try again.']);
     }
 }

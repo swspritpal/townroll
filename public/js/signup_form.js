@@ -158,6 +158,7 @@ jQuery(document).ready(function($) {
                         if(data.status == "success"){
                             $('#signup_form_modal').modal('hide');
                             toastr.success(data.message);
+                            location.reload();
                         }else{
                             toastr.warning(data.message);                            
                         }

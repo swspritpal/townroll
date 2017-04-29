@@ -82,11 +82,11 @@ class CommentController extends Controller
             $comment = Comment::findOrFail($comment_id);
         }
 
-        $this->checkPolicy('manager', $comment);
+        //$this->checkPolicy('manager', $comment);
 
         if ($this->commentRepository->delete($comment, request('force') == 'true')) {
-            return back()->with('success', '删除成功');
+            return back()->with('success', 'comment delete successfully.');
         }
-        return back()->withErrors('删除失败');
+        return back()->withErrors('There was some error, Please try again.');
     }
 }

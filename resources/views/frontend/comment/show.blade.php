@@ -1,8 +1,8 @@
-<div class="clearfix comment-show-blade">
+<div class="clearfix comment-show-blade {{ (!empty($comment_pagination)? 'comment-infinite-scroll': '') }}">
   @if($comments->count() > 0)
     @foreach($comments as $comment)
 
-      <p class="comment">
+      <p class="comment clearfix">
           <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
             <a href="javascript:void(0);" data-action="user-profile" data-user-id="{{ $comment->user_id }}">
               <img src="{{ $comment->user->picture }}" alt="" class="profile-photo-sm">
@@ -22,24 +22,32 @@
 
 
                <div class="comment-operation">
-                  {{--*/ @if(access()->user()->id == $post_user_id)
+                  @if(access()->user()->id == $post_user_id)
                       <a class="comment-operation-item swal-dialog-target"
                          href="javascript:void (0)"
-                         data-url="{{ route('frontend.comment.destroy',$comment->id) }}">
+                         data-url="{{ route('frontend.comment.destroy',$comment->id) }}" data-enable-ajax="1" data-request-data="">
                           Delete
                       </a>
-                  @endif /*--}}
-                  <p class="replyComment">
+                  @endif
+                  <span class="replyComment">
                     <a class="comment-operation-reply"
                      title="Reply"
                      href="javascript:void(0);"
                      data-username="{{ $comment->user->username }}"><i class="fa fa-reply replyIcon"></i> Reply </a>       
-                  </p>
+                  </span>
               </div>
              
             </div>
+        <span class="clearfix"></span>
       </p>
     @endforeach
+
+    @unless(empty($comment_pagination))
+        <div class="comment-pagination">
+          {{ $comment_pagination->render()  }}
+        </div>
+    @endunless
+
   @endif
 </div>
 

@@ -14,7 +14,7 @@
       <div class="post-detail">
         <div class="user-info">
           <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">{{ $post->user->username }}</a>
-          <span class="GroupInfo">Published a post in 
+          <span class="GroupInfo">published a post in 
 
               @unless(empty($post->categories))
                 @foreach($post->categories as $post_category)
@@ -53,7 +53,7 @@
           @endunless
  
         </div>
-        @include('frontend.widget.comment')
+        @include('frontend.widget.comment',['load_all_comment'=>false])
     </div>
   </div>
 </div>

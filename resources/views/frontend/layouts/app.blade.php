@@ -54,6 +54,7 @@
         @include('frontend.includes.popups.locate-me')
         @include('frontend.includes.popups.post-add')
         @include('frontend.includes.popups.user-profile')
+        @include('frontend.includes.popups.post-single')
 
         <div id="page-contents">
             <div class="container-fluid" >

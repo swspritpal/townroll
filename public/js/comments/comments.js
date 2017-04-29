@@ -1,5 +1,6 @@
 $(document).ready(function () {
     Xblog.init();
+    initDeleteTarget();
 
     $(document).on('submit','.comment-form',function (e) {
         e.preventDefault();
@@ -95,17 +96,20 @@ $(document).ready(function () {
                 "</form>\n"
         }).click(function () {
             var deleteForm = $(this).find("form");
-            var method = ($(this).data('method') ? $(this).data('method') : 'delete');
+            var method = ($(this).data('method') ? $(this).data('method') : 'DELETE');
             var url = $(this).attr('data-url');
             var data = $(this).data('request-data') ? $(this).data('request-data') : '';
-            var title = $(this).data('dialog-title') ? $(this).data('dialog-title') : '删除';
+            var title = $(this).data('dialog-title') ? $(this).data('dialog-title') : 'Are you sure to delete this item?';
             var message = $(this).data('dialog-msg');
             var type = $(this).data('dialog-type') ? $(this).data('dialog-type') : 'warning';
-            var cancel_text = $(this).data('dialog-cancel-text') ? $(this).data('dialog-cancel-text') : '取消';
-            var confirm_text = $(this).data('dialog-confirm-text') ? $(this).data('dialog-confirm-text') : '确定';
+            var cancel_text = $(this).data('dialog-cancel-text') ? $(this).data('dialog-cancel-text') : 'Never mind';
+            var confirm_text = $(this).data('dialog-confirm-text') ? $(this).data('dialog-confirm-text') : 'Yes';
             var enable_html = $(this).data('dialog-enable-html') == '1';
             var enable_ajax = $(this).data('enable-ajax') == '1';
-            console.log(data);
+
+            alert(Laravel.csrfToken);
+            alert($(deleteForm).serialize());
+            
             if (enable_ajax) {
                 swal({
                         title: title,
@@ -126,30 +130,32 @@ $(document).ready(function () {
                             },
                             url: url,
                             type: method,
-                            data: data,
+                            data: $(deleteForm).serialize(),
                             success: function (res) {
                                 if (res.code == 200) {
-                                    swal({
+                                    /*swal({
                                         title: 'Succeed',
                                         text: res.msg,
                                         type: "success",
                                         timer: 1000,
                                         confirmButtonText: "OK"
-                                    });
+                                    });*/
+                                    toastr.success(res.msg);
                                 } else {
-                                    swal({
+                                    /*swal({
                                         title: 'Failed',
-                                        text: "操作失败",
+                                        text: "There was some error while deleting comment. Please try again.",
                                         type: "error",
                                         timer: 1000,
                                         confirmButtonText: "OK"
-                                    });
+                                    });*/
+                                    toastr.warning('There was some error while deleting comment. Please try again.');
                                 }
                             },
                             error: function (res) {
                                 swal({
                                     title: 'Failed',
-                                    text: "操作失败",
+                                    text: "There was some error while sending your request to server. Please try again.",
                                     type: "error",
                                     timer: 1000,
                                     confirmButtonText: "OK"
@@ -189,7 +195,7 @@ var Xblog = {
         this.bootUp();
     },
     bootUp: function () {
-        //console.log('bootUp');
+        console.log('bootUp');
         //loadComments(false, false);
         //initComment();
         initMarkdownTarget();

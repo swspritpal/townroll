@@ -77,6 +77,11 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable')->orderBy('created_at', 'desc')->limit(env('DEFAULT_HOME_PAGE_POST_COMMENTS'))->get();
     }
 
+    public function getCommentsWithPaginationAttribute()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->orderBy('created_at', 'desc')->paginate(10);
+    }
+
     public function configuration()
     {
         return $this->morphOne(Configuration::class, 'configurable');

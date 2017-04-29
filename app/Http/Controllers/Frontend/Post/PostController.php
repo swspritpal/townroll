@@ -74,7 +74,6 @@ class PostController extends Controller
                 ->where('id','=',$post->id)
                 ->withCount('comments')
                 ->first();
-            //dd($post);
 
             $view = \View::make('frontend.includes.posts.single',compact('post'));
             $html_result = $view->render();
@@ -120,4 +119,37 @@ class PostController extends Controller
 
         return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
     }
+
+
+    /**
+     * Show single post data ajax
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function single(Request $request,$post_id)
+    {
+
+        $html_result='';
+
+        if(!empty($post_id)){
+
+            $post = Post::with(
+                [
+                    'user',
+                    'categories'
+                ]
+            )
+            ->whereid($post_id)
+            ->withCount('comments')
+            ->first();
+
+            $view = \View::make('frontend.includes.popups.post-single-ajax',compact('post'));
+            return $view->render();
+        }else{
+            abort(404);
+        }
+        
+    }
+
 }

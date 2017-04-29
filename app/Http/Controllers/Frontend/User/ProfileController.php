@@ -142,7 +142,6 @@ class ProfileController extends Controller
             })->count();
 
             $view = \View::make('frontend.includes.popups.user-profile-ajax',compact('user','user_post_count','user_place_count'));
-             //\View::make('frontend.comment.show',compact('comments', 'commentable','post_user_id'));
             return $view->render();
         }else{
             abort(404);

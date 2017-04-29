@@ -478,8 +478,10 @@ if (!function_exists('show_comment_content_in_notification')) {
     function show_comment_content_in_notification($model=null)
     {
         list($model,$id)=explode(':', $model);
-        $comment=app($model)->select('html_content')->whereId($id)->firstOrFail();
-        return trim($comment->html_content);
+        $comment=app($model)->select('html_content')->whereId($id)->first();
+        if(!empty($comment)){
+            return trim($comment->html_content);
+        }
     }
 }
 

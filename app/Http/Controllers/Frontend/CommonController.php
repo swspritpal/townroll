@@ -113,9 +113,8 @@ class CommonController extends Controller
                       </div>
                   </div>
                   <div class="col-lg-8 col-md-6 col-sm-6 col-xs-6">
-                        <h4 class="margin-top-unset">'.$place['name'].'</h4>'
-                            .(!empty(get_place_users_count($place['place_id'])) ? '<div>Joined User:'.get_place_users_count($place['place_id']).'</div>': '').                        
-                        '<p class="make-line-height">'.$place['vicinity'].'</p>
+                        <h4 class="margin-top-unset">'.$place['name'].'</h4>
+                        <p class="make-line-height">'.$place['vicinity'].'</p>
                   </div>
                   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <form class="add-new-place-form">
@@ -125,8 +124,11 @@ class CommonController extends Controller
                         <input type="hidden" name="latitude" value="'.$place['geometry']['location']['lat'].'" >
                         <input type="hidden" name="longitude" value="'.$place['geometry']['location']['lng'].'" >                        
                         <input type="hidden" name="place_image_path" value="'.$place_photo.'" >
-                        <button class="join-new-place btn btn-primary">Join</button>
-                    </form>
+                        <button class="join-new-place btn btn-primary">Join</button>'
+                            .(!empty(get_place_users_count($place['place_id'])) ? '
+                                <div><i class="fa fa-users" aria-hidden="true"></i>
+                                '.get_place_users_count($place['place_id']).'</div>': '').                       
+                    '</form>
                   </div>
                 </div>';
             }

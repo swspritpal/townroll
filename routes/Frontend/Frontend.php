@@ -13,6 +13,11 @@ Route::get('macros', 'FrontendController@macros')->name('macros');
  * All route names are prefixed with 'frontend.'
  */
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('@{username}','User\ProfileController@userProfile')->name('auth.user.profile');
+    Route::get('profile-popup','User\ProfileController@popup')->name('auth.user.profile-popup');
+
+
     Route::group(['namespace' => 'User', 'as' => 'user.'], function () {
         /*
          * User Dashboard Specific

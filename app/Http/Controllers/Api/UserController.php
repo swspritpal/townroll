@@ -8,13 +8,35 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Access\User\User;
 use Response;
 
+use App\Repositories\Frontend\Access\User\UserRepository;
+use App\Helpers\Frontend\Auth\Socialite as SocialiteHelper;
+
 class UserController extends Controller
 {
 
-    public function __construct(){
+    /**
+     * @var UserRepository
+     */
+    protected $user;
 
+    /**
+     * @var SocialiteHelper
+     */
+    protected $helper;
+
+    /**
+     * SocialLoginController constructor.
+     *
+     * @param UserRepository  $user
+     * @param SocialiteHelper $helper
+     */
+    public function __construct(UserRepository $user, SocialiteHelper $helper)
+    {
+        $this->user = $user;
+        $this->helper = $helper;
         $this->content = array();
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,9 +52,76 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        // There's a high probability something will go wrong
+        $user = null;
+        $data=$request->all();
+
+        $this->content['error'] = true;
+        $this->content['massage'] = $request->all();
+        $this->content['check'] = $provider;
+        $status = 200;
+
+        return response()->json($this->content, $status);
+
+
+        // Create the user if this is a new social account or find the one that is already there.
+        try {
+            // User email may not provided.
+            $user_email = $data->email ?: "{$data->id}@{$provider}.com";
+
+            // Check to see if there is a user with this email first.
+            $user = $this->findByEmail($user_email);
+
+            /*
+             * If the user does not exist create them
+             * The true flag indicate that it is a social account
+             * Which triggers the script to use some default values in the create method
+             */
+            if (! $user) {
+                // Registration is not enabled
+                if (! config('access.users.registration')) {
+                    throw new GeneralException(trans('exceptions.frontend.auth.registration_disabled'));
+                }
+
+                $user = $this->create([
+                    'name'  => $data->name,
+                    'email' => $user_email,
+                ], true);
+            }
+
+            // See if the user has logged in with this social account before
+            if (! $user->hasProvider($provider)) {
+                // Gather the provider data for saving and associate it with the user
+                $user->providers()->save(new SocialLogin([
+                    'provider'    => $provider,
+                    'provider_id' => $data->id,
+                    'token'       => $data->token,
+                    'avatar'      => $data->avatar,
+                ]));
+            } else {
+                // Update the users information, token and avatar can be updated.
+                $user->providers()->update([
+                    'token'       => $data->token,
+                    'avatar'      => $data->avatar,
+                ]);
+            }
+
+            // Return the user object
+            return $user;
+        } catch (GeneralException $e) {
+            $this->content['error'] = true;
+            $this->content['massage'] = $e->getMessage();
+            $status = 401;
+        }
+
+        if (is_null($user) || ! isset($user)) {
+            $this->content['error'] = true;
+            $this->content['massage'] = "Unknow error";
+            $status = 401;
+        }
+        return response()->json($this->content, $status); 
     }
 
     /**
@@ -97,6 +186,7 @@ class UserController extends Controller
             $user_exit=User::whereEmail(request('email'))->first();
             if(!empty($user_exit)){
                 $this->content['error'] = false;
+                $this->content['massage'] = "User exit";
             }else{
                 $this->content['massage'] = "User does not exit";
                 $this->content['error'] = true;
@@ -104,10 +194,28 @@ class UserController extends Controller
             $status = 200;
         }
         else{
-            $this->content['error'] = "Invalid params";
-             $status = 401;
+            $this->content['massage'] = "Invalid params";
+            $this->content['error'] = true;
+            $status = 401;
         }
 
         return response()->json($this->content, $status); 
     }
+
+
+    /**
+     * @param $provider
+     *
+     * @return mixed
+     */
+    private function getSocialUser($provider)
+    {
+        return Socialite::driver($provider)->user();
+    }
+
+    public function check(){
+        dd('working check in api ');
+    }
 }
+
+

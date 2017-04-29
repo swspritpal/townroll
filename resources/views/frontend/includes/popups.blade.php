@@ -1005,7 +1005,7 @@ veniam <i class="em em-muscle"></i></p>
                               <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 paddingUnset">
                                 <img src="img/user-1.jpg" alt="" class="profile-photo-sm">
                               </div>
-                              <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 paddingUnset">
+                              <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 ">
                                 <input class="form-control" placeholder="Post a comment" type="text">
                               </div>
                           </p>

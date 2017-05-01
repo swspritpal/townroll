@@ -57,7 +57,7 @@ class CategoryRepository extends Repository
      * @param Request $request
      * @return Category
      */
-    public function create($city_id,$country_sortname)
+    public function create($city_id,$country_sortname,$input=null)
     {
         $this->clearCache();
 
@@ -69,37 +69,53 @@ class CategoryRepository extends Repository
 
             $place_id=$photo_reference=$place_photo_name='';
 
-            $get_place_details=geocoding($city_id,get_latitude().','.get_longitude(),$country_sortname);
-
-            if(!empty($get_place_details['status'] == "OK")){
-                $place_id=$get_place_details['results'][0]['place_id'];
-
-                if(!empty($place_id)){
-                    $place_photo_reference=placedetails($place_id);
-
-                    if(!empty($place_photo_reference['status'] == "OK")){
-                        $photo_reference=$place_photo_reference['result']['photos'][0]['photo_reference'];
-
-                        $place_photo_response=placephoto($photo_reference,$place_id);
-                        if($place_photo_response != "error"){
-                            $place_photo_name=$place_photo_response;
-                        }                      
-
-                    }else{
-                        throw new GeneralException("Place details API return error.");
-                    }
-                }
-                else{
-                    throw new GeneralException("Geo place_id empty.");
-                }
-
-            }else{
-                throw new GeneralException("Geo coding return invalid request !");
+            //If request from App then GEO details is already there in request.
+            if(!empty($input)){
+                $place_id=$input['place_id'];
+                $latitude=$input['latitude'];
+                $longitude=$input['longitude'];
+                
+                // need to upload the photo to server
+                $place_photo_name=$input['place_photo_name'];
             }
+
+            if(empty($place_id)){
+                $latitude=get_latitude();
+                $longitude=get_longitude();
+
+                $get_place_details=geocoding($city_id,$latitude.','.$longitude,$country_sortname);
+
+                if(!empty($get_place_details['status'] == "OK")){
+                    $place_id=$get_place_details['results'][0]['place_id'];
+
+                    if(!empty($place_id)){
+                        $place_photo_reference=placedetails($place_id);
+
+                        if(!empty($place_photo_reference['status'] == "OK")){
+                            $photo_reference=$place_photo_reference['result']['photos'][0]['photo_reference'];
+
+                            $place_photo_response=placephoto($photo_reference,$place_id);
+                            if($place_photo_response != "error"){
+                                $place_photo_name=$place_photo_response;
+                            }                      
+
+                        }else{
+                            throw new GeneralException("Place details API return error.");
+                        }
+                    }
+                    else{
+                        throw new GeneralException("Geo place_id empty.");
+                    }
+
+                }else{
+                    throw new GeneralException("Geo coding return invalid request !");
+                }
+            }
+            
 
             if(!empty($place_id)){
                 try {
-                    $category = Category::create(['name' => get_city_name($city_id),'geo_place_id'=>$place_id,'latitude'=>get_latitude(),'longitude'=>get_longitude(),'place_image_path'=>$place_photo_name,'is_parent'=>'yes','city_id'=>$city_id ]);
+                    $category = Category::create(['name' => get_city_name($city_id),'geo_place_id'=>$place_id,'latitude'=>$latitude,'longitude'=>$longitude,'place_image_path'=>$place_photo_name,'is_parent'=>'yes','city_id'=>$city_id ]);
                     return $category->id;
                 }
                 catch (Illuminate\Database\QueryException $e){

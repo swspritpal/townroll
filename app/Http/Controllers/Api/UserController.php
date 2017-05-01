@@ -11,6 +11,8 @@ use Response;
 use App\Repositories\Frontend\Access\User\UserRepository;
 use App\Helpers\Frontend\Auth\Socialite as SocialiteHelper;
 use App\Models\Access\User\SocialLogin;
+use App\Repositories\Frontend\Access\Category\CategoryRepository;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -19,6 +21,8 @@ class UserController extends Controller
      * @var UserRepository
      */
     protected $user;
+
+    protected $category;
 
     /**
      * @var SocialiteHelper
@@ -31,10 +35,11 @@ class UserController extends Controller
      * @param UserRepository  $user
      * @param SocialiteHelper $helper
      */
-    public function __construct(UserRepository $user, SocialiteHelper $helper)
+    public function __construct(UserRepository $user, SocialiteHelper $helper,CategoryRepository $category)
     {
         $this->user = $user;
         $this->helper = $helper;
+        $this->category = $category;
         $this->content = array();
     }
 
@@ -100,18 +105,19 @@ class UserController extends Controller
             // Return the user object
             $this->content['error'] = false;
             $this->content['massage'] = "user created successfully.";
+            $this->content['user_id'] = $user->id;
             $status = 200;
 
         } catch (GeneralException $e) {
             $this->content['error'] = true;
             $this->content['massage'] = $e->getMessage();
-            $status = 401;
+            $status = 500;
         }
 
         if (is_null($user) || ! isset($user)) {
             $this->content['error'] = true;
             $this->content['massage'] = "Unknow error";
-            $status = 401;
+            $status = 500;
         }
         return response()->json($this->content, $status); 
     }
@@ -135,7 +141,26 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!empty($id)){
+            $user_exit=User::whereId($id)->first()->toArray();
+            if(!empty($user_exit)){
+                $this->content['error'] = false;
+                $this->content['massage'] = "User exit";
+                $this->content['user'] = $user_exit;
+                $status = 200;
+            }else{
+                $this->content['massage'] = "User does not exit";
+                $this->content['error'] = true;
+                $status = 500;
+            }
+        }
+        else{
+            $this->content['massage'] = "Invalid params";
+            $this->content['error'] = true;
+            $status = 500;
+        }
+
+        return response()->json($this->content, $status); 
     }
 
     /**
@@ -181,6 +206,7 @@ class UserController extends Controller
             if(!empty($user_exit)){
                 $this->content['error'] = false;
                 $this->content['massage'] = "User exit";
+                $this->content['user_id'] = $user_exit->id;
             }else{
                 $this->create($data);
             }
@@ -189,7 +215,7 @@ class UserController extends Controller
         else{
             $this->content['massage'] = "Invalid params";
             $this->content['error'] = true;
-            $status = 401;
+            $status = 500;
         }
 
         return response()->json($this->content, $status); 
@@ -209,8 +235,55 @@ class UserController extends Controller
     public function check(){        
         $this->content['massage'] = "Invalid params";
         $this->content['error'] = true;
-        $status = 401;
+        $status = 500;
         return response()->json($this->content, $status);
+
+    }
+
+    /**
+     * @param UpdateProfileRequest $request
+     *
+     * @return mixed
+     */
+    public function signUp(Request $request)
+    {
+        $input=$request->all();
+
+        if(!empty($input)){
+            $user = $this->user->find($input['user_id']);
+
+            $user->username = $input['username'];
+            $user->profile_uri = clean_username($input['username']);
+            $user->city_id = $input['city'];
+            $user->state_id = $input['state'];
+            $user->country_id = getCountryId($input['country']);
+
+            
+            $defaultCategoryAliasPlaceModel = $this->category->create($input['city'],$input['country']);
+
+
+
+            DB::transaction(function () use ($user,$defaultCategoryAliasPlaceModel) {
+                if ($user->save()) {
+                    /*
+                     * Add the default place/category to the new user
+                     */                
+                    $user->Categories()->attach($defaultCategoryAliasPlaceModel);
+
+                }
+            });
+
+            $this->content['error'] = false;
+            $this->content['massage'] = "User signup completed";
+            $this->content['user'] = $user;
+            $status = 200;
+
+        }else{
+            $this->content['massage'] = "Invalid params";
+            $this->content['error'] = true;
+            $status = 500;
+        }
+        return response()->json($this->content, $status);      
 
     }
 }

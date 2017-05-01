@@ -23,7 +23,7 @@ class CommonController extends Controller
     {   
         $country_id=getCountryId($country_sortname);
 
-        $states = State::where('country_id', '=',$country_id)->orderBy('name')->pluck('name', 'id')->toArray();
+        $states = getStateList($country_id);
 
         if(!empty($states)){
             return response()
@@ -41,7 +41,7 @@ class CommonController extends Controller
     public function getCities(Request $request,$state_id)
     {   
 
-        $cities = City::where('state_id', '=',$state_id)->orderBy('name')->pluck('name', 'id')->toArray();
+        $cities = getCityList($state_id);
 
         if(!empty($cities)){
             return response()

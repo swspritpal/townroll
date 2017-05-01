@@ -23,9 +23,21 @@ Route::group(array('middleware' => 'auth:api'), function() {
 	
 	Route::group(['namespace' => 'Api'], function () {
 
-	    Route::post('login', 'UserController@login');
 	    Route::get('user/check', 'UserController@check');
+
+	    
+	    Route::get('get-countires', 'CommonController@get_countries');
+	    Route::get('get-states/{country_sortname}', 'CommonController@getStates');
+	    Route::get('get-cities/{state_id}', 'CommonController@getCities');
+	    Route::post('unique-username/', 'CommonController@unique_username');
+
+
+	    Route::get('posts/{user_id}/{sort_by?}', 'PostController@index');
+	    Route::get('categories/{user_id}', 'CategoriesController@index');
+
+	    Route::post('login', 'UserController@login');
 	    Route::resource('user', 'UserController');
+	    Route::post('user/signup', 'UserController@signUp');
 	});
 });
 

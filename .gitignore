@@ -1,5 +1,6 @@
 /node_modules
 /public/index.php
+/public/mix-manifest.json
 /public/img/goole_places_image/*
 /public/img/post_images/*
 /public/hot

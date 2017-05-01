@@ -2,6 +2,7 @@
 
 use App\Models\Access\User\User;
 use App\Models\Country\Country;
+Use App\Models\Country\State;
 use App\Models\Country\City;
 use Carbon\Carbon;
 
@@ -248,7 +249,32 @@ if (!function_exists('getCountiesList')) {
         if(!empty($countries)){
             return $countries;
         }else{
-            return "NA";
+            return "";
+        }
+    }
+}
+
+
+if (!function_exists('getStateList')) {
+    function getStateList($country_id=null)
+    {
+        $states=State::where('country_id', '=',$country_id)->orderBy('name')->pluck('name', 'id')->toArray();
+        if(!empty($states)){
+            return $states;
+        }else{
+            return "";
+        }
+    }
+}
+
+if (!function_exists('getCityList')) {
+    function getCityList($state_id=null)
+    {
+        $cities = City::where('state_id', '=',$state_id)->orderBy('name')->pluck('name', 'id')->toArray();
+        if(!empty($cities)){
+            return $cities;
+        }else{
+            return "";
         }
     }
 }
@@ -269,9 +295,10 @@ if (!function_exists('getCountryId')) {
 if (!function_exists('is_username_unique')) {
     function is_username_unique($username)
     {
-        $username=clean_username($username);
-        $model = User::where('profile_uri', '=',$username)->get(['username', 'id']);
-        if(empty($model)){
+        $username=clean_username($username);                
+        $model = User::whereProfileUri($username)->first(['username', 'id']);
+
+        if(empty($model) || is_null($model)){
             return false;
         }else{
             return true;

@@ -189,10 +189,13 @@ class PostRepository extends Repository
             $success = file_put_contents($file, $data);
 
             if(env('USE_OPTIMIZER')){
-                // optimize
+               // optimize
                 $imageOptimizer->optimizeImage($file);
-                // save
-                dd(Storage::put($image_name, File::get($file)));
+                // reverride the previous image
+                $is_optimized=\Storage::put($image_name, \File::get($file));
+                if($is_optimized == false || empty($is_optimized)){
+                    \Log::warning('Post Image does not optimized.named : '.$image_name);
+                }
             }
             if(empty($success)){
                 return response()

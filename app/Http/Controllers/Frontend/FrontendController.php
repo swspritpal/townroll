@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use GetStream\StreamLaravel\Enrich;
 
+
 /**
  * Class FrontendController.
  */
@@ -21,7 +22,7 @@ class FrontendController extends Controller
      * @return \Illuminate\View\View
      */
     public function index(Request $request)
-    {
+    {  
         $sort_by=[];
 
         if($request->has('cat')){
@@ -86,12 +87,7 @@ class FrontendController extends Controller
             $posts = Post::with(
                     [
                         'user',
-                        'categories' /*=> function($cat_q){
-                            $cat_q->whereHas('users', function ($query) {
-                                $query->where('user_id', '=', \Auth::user()->id);
-                            });
-                        },*/
-
+                        'categories'
                         /*'comments'=>function($comment_q){
                             $comment_q->with('user')
                                 ->orderBy('created_at', 'desc')

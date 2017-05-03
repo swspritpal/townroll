@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
                         $('ul.pagination').remove();
                     }
                 });
-                
+                initDeleteTarget();
             },
             complete: function(){
                 $('.add-single-post-data').find('.loader-image').remove();

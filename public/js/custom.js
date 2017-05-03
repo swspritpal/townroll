@@ -1,3 +1,101 @@
+function initDeleteTarget() {
+    $('.swal-dialog-target').append(function () {
+        return "\n" +
+            "<form action='" + $(this).attr('data-url') + "' method='post' style='display:none'>\n" +
+            "   <input type='hidden' name='_method' value='" + ($(this).data('method') ? $(this).data('method') : 'delete') + "'>\n" +
+            "   <input type='hidden' name='_token' value='" + Laravel.csrfToken + "'>\n" +
+            "</form>\n"
+    }).click(function () {
+        var deleteForm = $(this).find("form");
+        var method = ($(this).data('method') ? $(this).data('method') : 'DELETE');
+        var operationOn = ($(this).data('operation-on') ? $(this).data('operation-on') : 'comment');
+        var url = $(this).attr('data-url');
+        var data = $(this).data('request-data') ? $(this).data('request-data') : '';
+        var title = $(this).data('dialog-title') ? $(this).data('dialog-title') : 'Are you sure to delete this item?';
+        var message = $(this).data('dialog-msg');
+        var type = $(this).data('dialog-type') ? $(this).data('dialog-type') : 'warning';
+        var cancel_text = $(this).data('dialog-cancel-text') ? $(this).data('dialog-cancel-text') : 'Never mind';
+        var confirm_text = $(this).data('dialog-confirm-text') ? $(this).data('dialog-confirm-text') : 'Yes';
+        var enable_html = $(this).data('dialog-enable-html') == '1';
+        var enable_ajax = $(this).data('enable-ajax') == '1';
+
+        if (enable_ajax) {
+            swal({
+                    title: title,
+                    text: message,
+                    type: type,
+                    html: enable_html,
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    cancelButtonText: cancel_text,
+                    confirmButtonText: confirm_text,
+                    showLoaderOnConfirm: true,
+                    closeOnConfirm: true
+                },
+                function () {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': Laravel.csrfToken
+                        },
+                        url: url,
+                        type: method,
+                        data: $(deleteForm).serialize(),
+                        success: function (res) {
+                            if (res.code == 200) {
+                                /*swal({
+                                    title: 'Succeed',
+                                    text: res.msg,
+                                    type: "success",
+                                    timer: 1000,
+                                    confirmButtonText: "OK"
+                                });*/
+                                if(operationOn == "comment"){
+                                    $(deleteForm).parents('.comment-wrapper').remove();
+                                }else{
+                                    $(deleteForm).parents('.content-item-wrapper').remove();
+                                }
+                                
+                                toastr.success(res.msg);
+                            } else {
+                                /*swal({
+                                    title: 'Failed',
+                                    text: "There was some error while deleting comment. Please try again.",
+                                    type: "error",
+                                    timer: 1000,
+                                    confirmButtonText: "OK"
+                                });*/
+                                toastr.warning(res.msg);
+                            }
+                        },
+                        error: function (res) {
+                            swal({
+                                title: 'Failed',
+                                text: "There was some error while sending your request to server. Please try again.",
+                                type: "error",
+                                timer: 1000,
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    })
+                });
+        } else {
+            swal({
+                    title: title,
+                    text: message,
+                    type: type,
+                    html: enable_html,
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    cancelButtonText: cancel_text,
+                    confirmButtonText: confirm_text,
+                    closeOnConfirm: true
+                },
+                function () {
+                    deleteForm.submit();
+                });
+        }
+    });
+}
 jQuery(document).ready(function($) {
 
     $("#notificationDropdown").click(function(){
@@ -144,6 +242,10 @@ jQuery(document).ready(function($) {
 
         var form=$(this).parents('.add-new-place-form');
 
+        var slick_last_index=$('.add-new-location-in-header').find('.slick-track a:last-child').attr('data-slick-index');
+        var slick_last_index_input = $("<input type=\"hiden\" name=\"slick_last_index\" />");
+        form.append(slick_last_index_input);
+
         $.ajax({
             url: APP_URL + '/add-new-place',
             type: 'post',
@@ -157,7 +259,9 @@ jQuery(document).ready(function($) {
             {
                 if(data.status == 200){
                     $('#locateMe').modal('hide');
-                    $('.right-sidebar-locations').append(data.html_result);
+                    $('.right-sidebar-locations').append(data.html_result['horizontal']);
+                    //$('.add-new-location-in-header').find('.slick-track').append(data.html_result['vertical']);
+                    $('.add-new-location-in-header').find('.slick-track .locate-me-popup').after(data.html_result['vertical']);
                 }else{
                     toastr.warning(data.message);
                 }

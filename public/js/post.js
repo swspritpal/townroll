@@ -435,8 +435,11 @@ jQuery(document).ready(function($) {
                     $('#add_post').modal('hide');
                     toastr.success(data.message);
                     $('.append-new-post-content').prepend(data.html_result);
-                    //$(data.html_result).insertAfter(".append-new-post-content");
 
+                    // remove no post method 
+                    if($('.no-post').length != 0){
+                      $('.no-post').remove();
+                    }
                     //$progressbar.css('width', '100%');
                 }else{
                     toastr.warning(data.message);                            

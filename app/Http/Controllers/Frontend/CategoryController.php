@@ -48,32 +48,21 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $category = $this->categoryRepository->add_new($request);
+        $slick_last_index=$request->get('slick_last_index');
 
         if(!empty($category)){
             
             // Attach user id to category model
             $category->users()->attach(\Auth::user()->id);
-
             $category->withCount('users');
 
-            $link=route("frontend.index", ["cat" =>$category->id ]);
-            $image_path=asset("img/goole_places_image/".$category->place_image_path);
+            $user_category=Category::whereId($category->id)->withCount('users')->first();
 
-             $html_result='<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingUnset  seperatorGroup">
-                <a href="'.$link.'" class="filter-posts" >
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  paddingUnset">
-                        <img src="'.$image_path.'" class="imgCircle">
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 ">
-                        <div class="groupTitle">
-                            '.$category->name.'
-                        </div> 
-                        <div class="groupPopulation text-muted">
-                            <i aria-hidden="true" class="fa fa-users"></i> '.$category->users_count.' population
-                        </div>
-                    </div>
-                </a>
-            </div>';
+            $view = \View::make('frontend.includes.categories.horizontal',['user_category'=>$user_category]);
+            $html_result['horizontal'] = $view->render();
+
+            $view = \View::make('frontend.includes.categories.vertical',['user_category'=>$user_category,'slick_last_index'=>$slick_last_index]);
+            $html_result['vertical'] = $view->render();
 
             return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
         }else{

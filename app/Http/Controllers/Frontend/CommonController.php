@@ -64,10 +64,10 @@ class CommonController extends Controller
 
         if($response){
             return response()
-            ->json('true');
+            ->json('Username already taken.');
         }else{
             return response()
-            ->json('Username already taken.');
+            ->json('true');
         }
     }
 
@@ -83,9 +83,7 @@ class CommonController extends Controller
         $radius=env('DEFAULT_PALCES_SEARCH_RADIUS');
         $response=nearbysearch(get_latitude().','.get_longitude(),$radius);
 
-        //dd($response);
-
-        $image_base_path='/img/goole_places_image/';
+        $image_base_path=env('PLACE_IMAGES_FOLDER');
 
         if(!empty($response) && $response['status'] == 'OK'){
             foreach($response['results'] as $place){
@@ -134,8 +132,8 @@ class CommonController extends Controller
             }
         }else{
             $html_result='<div class="row">
-                        <h4>no result found</h4>
-                        </div>';
+                <h4>no result found</h4>
+                </div>';
         }
 
         return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);

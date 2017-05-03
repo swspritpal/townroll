@@ -116,7 +116,7 @@ class CategoryRepository extends Repository
             if(!empty($place_id)){
                 try {
                     $category = Category::create(['name' => get_city_name($city_id),'geo_place_id'=>$place_id,'latitude'=>$latitude,'longitude'=>$longitude,'place_image_path'=>$place_photo_name,'is_parent'=>'yes','city_id'=>$city_id ]);
-                    return $category->id;
+                    return $category;
                 }
                 catch (Illuminate\Database\QueryException $e){
                     if (!App::environment('production', 'staging'))

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Access\User\User;
+use App\Category;
 
 class CategoryUser extends Model
 {
@@ -12,10 +13,10 @@ class CategoryUser extends Model
     protected $table = 'category_user';
 
     public function users() {
-        return $this->belongsTo('users');
+        return $this->belongsTo('App\Models\Access\User\User');
     }
 
     public function categories() {
-        return $this->belongsTo('categories');
+        return $this->belongsTo('App\Category');
     }
 }

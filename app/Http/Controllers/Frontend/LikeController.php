@@ -76,17 +76,12 @@ class LikeController extends Controller
                 }])
                 ->orderBy('created_at','desc')
                 ->selectRaw('`likes`.*,(select count(*) from `users` inner join `likes` on `users`.`id` = `likes`.`user_id` where  `likes`.`likeable_id` = '.$post_id.' and `users`.`deleted_at` is null) as `users_count`')
-
-                //->limit(env('DEFAULT_HOME_PAGE_LIKED_USERS_LIMIT'))
-                //->get();
-                ->paginate(env('DEFAULT_HOME_PAGE_LIKED_USERS_LIMIT'));
+                ->paginate(env('DEFAULT_HOME_PAGE_VIEWED_OR_LIKED_USERS_LIMIT'));
                 //->toSql();
 
-        //dd($liked_users);
 
         if(!empty($liked_users)){
-
-            $view = \View::make('frontend.includes.posts.liked_list',compact('liked_users'));
+            $view = \View::make('frontend.includes.posts.viewed_or_liked_list',['viewed_or_liked_users'=>$liked_users]);
             $html_result = $view->render();
         }else{
             $html_result = 'users not found ';

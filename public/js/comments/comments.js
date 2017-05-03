@@ -92,7 +92,7 @@ var Xblog = {
         this.bootUp();
     },
     bootUp: function () {
-        console.log('bootUp');
+        //console.log('bootUp');
         //loadComments(false, false);
         //initComment();
         initMarkdownTarget();

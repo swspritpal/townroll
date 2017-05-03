@@ -19,6 +19,7 @@
         "erusev/parsedown": "^1.6",
         "get-stream/stream-laravel": "~2.2.6",
         "hieu-le/active": "~3.0",
+        "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/passport": "^2.0",
         "laravel/socialite": "^3.0",

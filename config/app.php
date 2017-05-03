@@ -209,6 +209,7 @@ return [
         Approached\LaravelImageOptimizer\ServiceProvider::class,
         GetStream\StreamLaravel\StreamLaravelServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -270,8 +271,9 @@ return [
         'Socialite'   => Laravel\Socialite\Facades\Socialite::class,
 
         'XblogConfig' => App\Facades\XblogConfig::class,
-        'GoogleMaps' => GoogleMaps\Facade\GoogleMapsFacade::class,
-        'FeedManager'=> GetStream\StreamLaravel\Facades\FeedManager::class,
+        'GoogleMaps'  => GoogleMaps\Facade\GoogleMapsFacade::class,
+        'FeedManager' => GetStream\StreamLaravel\Facades\FeedManager::class,
+        'Image'       => Intervention\Image\Facades\Image::class,
 
     ],
 

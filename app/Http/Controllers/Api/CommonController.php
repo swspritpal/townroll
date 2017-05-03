@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 
 class CommonController extends Controller
 {
@@ -94,8 +95,7 @@ class CommonController extends Controller
                 $this->content['error'] = false;
                 $this->content['massage'] = "Username unique.";
                 $this->content['data'] = true;
-                $status = 200;           
-                
+                $status = 200;
             }
 
         }else{
@@ -106,5 +106,68 @@ class CommonController extends Controller
             
         return response()->json($this->content, $status);
     }
-    
+
+
+    /**
+     * @params Image Raw string
+     * @return \Illuminate\Response\Json
+     */
+    public function upload_image(Request $request)
+    {   
+        $image_source=$urlOrRawString=$extension=$save_path=null;
+        //inilize
+        $urlOrRawString=$request->get('url_or_raw_string');
+        $image_source=$request->get('image_source');
+        $extension=$request->get('extension');
+        $save_path=$request->get('save_path');
+
+        if($urlOrRawString == "url"){
+            $path = $image_source;
+            $filename = basename($path);
+
+            $is_uploaded=Image::make($path)->save(public_path($save_path. $filename));
+            if(!empty($is_uploaded)){
+                $this->content['error'] = false;
+                $this->content['massage'] = "upload_successfull.";
+                $this->content['data'] =$filename;
+                $status = 200;
+            }else{
+                $this->content['massage'] = "error_while_uploading_image";
+                $this->content['error'] = true;
+                $status = 500;
+            }
+        }
+
+        // save Raw image data into server
+        if($urlOrRawString == "raw_string"){
+
+            //$image_data=is_base64_encoded($image_source);
+
+            $upload_dir=public_path().$save_path;
+
+            list($type, $data) = explode(';', $image_source);
+            list(, $data)      = explode(',', $data);
+            list($type_content, $extension) = explode('/', $type);
+            $image_source = str_replace(' ', '+', $data);
+            $data = base64_decode($image_source);        
+
+            $image_name=mt_rand().'.'.$extension;      
+            $file = $upload_dir.$image_name;
+
+            $is_uploaded = file_put_contents($file, $data);
+            if(!empty($is_uploaded)){
+                $this->content['error'] = false;
+                $this->content['massage'] = "upload_successfull.";
+                $this->content['data'] =$image_name;
+                $status = 200;
+            }else{
+                $this->content['massage'] = "error_while_uploading_image";
+                $this->content['error'] = true;
+                $status = 500;
+            }
+        }
+
+        return response()->json($this->content, $status);
+    }
+
 }

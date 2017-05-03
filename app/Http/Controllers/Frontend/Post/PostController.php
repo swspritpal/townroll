@@ -118,16 +118,12 @@ class PostController extends Controller
                 ->limit(env('DEFAULT_HOME_PAGE_VIEWED_USERS_LIMIT'))
                 ->orderBy('created_at','desc')
                 ->selectRaw('`views`.*,(select count(*) from `users` inner join `views` on `users`.`id` = `views`.`user_id` where  `views`.`post_id` = '.$post_id.' and `users`.`deleted_at` is null) as `users_count`')
-                ->get();
+                ->paginate(env('DEFAULT_HOME_PAGE_VIEWED_OR_LIKED_USERS_LIMIT'));
                 //->toSql();
-
-
-        //dd($viewed_users);
-
 
         if(!empty($viewed_users)){
 
-            $view = \View::make('frontend.includes.posts.viewed_list',compact('viewed_users'));
+            $view = \View::make('frontend.includes.posts.viewed_or_liked_list',['viewed_or_liked_users'=>$viewed_users]);
             $html_result = $view->render();
         }else{
             $html_result = 'users not found ';

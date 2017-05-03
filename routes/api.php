@@ -38,6 +38,11 @@ Route::group(array('middleware' => 'auth:api'), function() {
 	    Route::post('login', 'UserController@login');
 	    Route::resource('user', 'UserController');
 	    Route::post('user/signup', 'UserController@signUp');
+	    Route::get('user-counter-data/{user_id}', 'UserController@getUserCountData');
+
+
+	    // Image upload Route
+	    Route::post('upload-image', 'CommonController@upload_image');
 	});
 });
 

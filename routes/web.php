@@ -117,3 +117,23 @@ Route::get('/nearbysearch', function () {
     dd(json_decode($response));
 });
 
+
+
+Route::get('/upload-image-test', function () {
+
+    $path = 'https://i.stack.imgur.com/koFpQ.png';
+    $path = 'http://patrickcoombe.com/wp-content/uploads/2015/09/new-google-logo-2015.png';
+    $filename = basename($path);
+
+    $check=Image::make($path)->save(public_path('img/check/' . $filename));
+    if(!empty($check)){
+        echo $filename;
+    }else{
+        echo "Some error";
+    }   
+});
+
+
+
+
+

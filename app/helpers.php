@@ -452,7 +452,7 @@ if (!function_exists('placephoto')) {
         list(, $data)      = explode(',', $data);
         $data = base64_decode($data);
 
-        $is_saved=file_put_contents(public_path().'/img/goole_places_image/'.$place_id.'.png', $data);
+        $is_saved=file_put_contents(public_path().env('PLACE_IMAGES_FOLDER').$place_id.'.png', $data);
 
         if (!empty($is_saved))
             return $place_id.'.png';
@@ -527,8 +527,17 @@ if (!function_exists('is_username_exit')) {
     }
 }
 
+if (!function_exists('is_base64_encoded')) {
 
-
+    function is_base64_encoded($data)
+    {
+        if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $data)) {
+           return TRUE;
+        } else {
+           return FALSE;
+        }
+    }
+}
 
 
 

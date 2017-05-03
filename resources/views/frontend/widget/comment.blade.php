@@ -29,12 +29,12 @@
         </a>
 
         @if($load_all_comment)
-          <a class="btn text-grey hoverOlive " href="javascript:void(0);" ><i class="fa fa-comment-o"></i> <span class="home-comment-counter">{!! $post->comments_count !!}</span> Comments</a>
+          <a class="btn text-grey hoverOlive paddingUnset" href="javascript:void(0);" ><i class="fa fa-comment-o"></i> <span class="home-comment-counter">{!! $post->comments_count !!}</span> Comments</a>
         @else
           <a class="btn text-grey hoverOlive " href="javascript:void(0);"  data-action="post-single-popup" data-post="{{ $post->id }}"><i class="fa fa-comment-o"></i> <span class="home-comment-counter">{!! $post->comments_count !!}</span> Comments</a>
         @endif
 
-        <a class="btn text-grey hoverCyan post-view-by-users" href="javascript:void(0);"  data-post-id="{{ $post->id }}">
+        <a class="btn text-grey hoverCyan post-view-by-users {{ ($load_all_comment) ? 'paddingUnset':'' }}" href="javascript:void(0);"  data-post-id="{{ $post->id }}">
           <i class="fa fa-eye"></i> {{ !empty($post->view_count()) ? $post->view_count() : "0" }}  Views
         </a>
 

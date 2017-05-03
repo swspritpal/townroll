@@ -20,7 +20,7 @@
 
           <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 paddingUnset">
 
-        <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
+        <img src="img/google_places_image/na.png" alt="" class="profile-photo-sm">
 
         </div>
 
@@ -37,126 +37,6 @@
     </div>
 
 </div>
-
-
-
-<!--Comments Count Modal -->
-
-
-
-<div class="modal fade" id="allComments" role="dialog">
-
-    <div class="modal-dialog clearfix  popupHeight"> 
-
-      <!-- Modal content-->
-
-      <div class="modal-content clearfix">
-
-        <div class="modal-header">
-
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-          <h5 class="modal-title">Peoples Who Commented</h5>
-
-        </div>
-
-        <div class="modal-body clearfix">
-
-         <div class="clearfix">
-
-                    <p>
-
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
-
-                        <img src="img/user-11.jpg" alt="" class="profile-photo-sm">
-
-                        </div>
-
-                          <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-
-
-
-                          <a href="#" class="profile-link">Diana </a>
-
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-
-                            <p class="replyComment">
-
-                            <a href="javascript:void(0);"><i class="fa fa-reply replyIcon"></i> Reply </a>       
-
-                            </p>
-
-                          </div>
-
-                    </p> 
-
-                      
-
-                  </div>
-
-
-
-                  <div class="clearfix">
-
-                        <p>
-
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 paddingUnset">
-
-                            <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
-
-                            </div>
-
-                             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-
-                             <a href="javascript:void(0);" data-toggle="modal" data-target="#myProfile" class="profile-link" class="profile-link">John </a>
-
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-
-                            <p class="replyComment"><a href="javascript:void(0);"><i class="fa fa-reply replyIcon"></i> Reply </a>       
-
-                          </p>
-
-                            </div>
-
-                        </p>     
-
-                  </div>
-
-
-
-                   <div class="clearfix">
-
-                   <p><a href="javascript:void(0);"> View more comments </a></p>
-
-                    
-
-                      <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 paddingUnset">
-
-                        <img src="img/user-1.jpg" alt="" class="profile-photo-sm">
-
-                      </div>
-
-                      <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 paddingUnset">
-
-                        <input class="form-control" placeholder="Post a comment" type="text">
-
-                      </div>
-
-
-
-                  </div>
-
-        </div>   
-
-      </div>    
-
-    </div>
-
-</div>
-
-
-
-
 
 <!-- Boost Post -->
 
@@ -190,7 +70,7 @@
 
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1  paddingUnset">
 
-                                      <img src="img/user-14.jpg" class="imgCircle" />
+                                      <img src="img/google_places_image/na.png" class="imgCircle" />
 
                                     </div>
 
@@ -224,7 +104,7 @@
 
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1  paddingUnset">
 
-                                      <img src="img/user-14.jpg" class="imgCircle" />
+                                      <img src="img/google_places_image/na.png" class="imgCircle" />
 
                                     </div>
 
@@ -260,7 +140,7 @@
 
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1  paddingUnset">
 
-                                      <img src="img/user-14.jpg" class="imgCircle" />
+                                      <img src="img/google_places_image/na.png" class="imgCircle" />
 
                                     </div>
 
@@ -298,7 +178,7 @@
 
                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1  paddingUnset">
 
-                                      <img src="img/user-14.jpg" class="imgCircle" />
+                                      <img src="img/google_places_image/na.png" class="imgCircle" />
 
                                     </div>
 
@@ -332,7 +212,7 @@
 
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1  paddingUnset">
 
-                                      <img src="img/user-14.jpg" class="imgCircle" />
+                                      <img src="img/google_places_image/na.png" class="imgCircle" />
 
                                     </div>
 
@@ -368,7 +248,7 @@
 
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1  paddingUnset">
 
-                                      <img src="img/user-14.jpg" class="imgCircle" />
+                                      <img src="img/google_places_image/na.png" class="imgCircle" />
 
                                     </div>
 
@@ -426,75 +306,7 @@
 
 </div>
 
-
-
-<div class="modal fade" id="viewSingleComment" role="dialog">
-
-    <div class="modal-dialog clearfix popupHeight"> 
-
-      <!-- Modal content-->
-
-      <div class="modal-content clearfix">
-
-         <div class="modal-header">
-
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-          
-
-        </div>
-
-        <div class="modal-body clearfix">
-
-            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 paddingUnset">
-
-            <img src="img/user-4.jpg" alt="" class="profile-photo-sm">
-
-            </div>
-
-           <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 ">
-
-           <a href="#" class="profile-link">John </a>
-
-           </div>
-
-
-
-           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-
-          Lorem ipsum dolor sit amet, consectetur 
-
-                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
-
-                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa 
-
-                        qui officia deserunt mollit anim id est laborum.
-
-           </div>
-
-
-
-
-
-        </div>   
-
-      </div>    
-
-    </div>
-
-</div>
-
-
-
-
-
-<!-- Reposrt Post -->
+<!-- Report Post -->
 
 
 

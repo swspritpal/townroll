@@ -4,7 +4,7 @@
         <img class="img-responsive" src="{{ $activity['actor']->picture }}"/>
       </div>
       <div class="UserAction">
-        <p class="marginUnset">{{ $activity['actor']->username }} you are mention in comment  </p>
+        <p class="marginUnset">{{ $activity['actor']->username }} mentioned you in comment  </p>
         <p class="marginUnset"><i class="fa fa-comment commentIconNotifi" aria-hidden="true"></i></i> {{ show_time($activity['time']) }}  </p>
       </div>
 

@@ -75,7 +75,7 @@
                           <div class="LeftMenuLi">
                             <a href="#" class="LeftSidebarCounter">
                             <span class="CounterFontStyle pull-left">  Viewer's </span>
-                            <span class="pull-right">0 </span></a>
+                            <span class="pull-right">{{ $total_places_users }} </span></a>
                             <div style="clear:both"> </div>
                           </div>
                           </li>

@@ -1,4 +1,4 @@
-@if (is_array($activity) && $activity->enriched())
+@if (is_array($activity) || $activity->enriched())
     @if ($activity['verb'] == "like")
        @include('frontend.includes.notifications.like')
 

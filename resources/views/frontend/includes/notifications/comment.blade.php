@@ -6,7 +6,7 @@
       </div>
 
       <div class="UserAction">
-        <p class="marginUnset">{{ $activity['actor']->username }} comments on your post.</p>
+        <p class="marginUnset">{{ $activity['actor']->username }} comment on your post.</p>
         <p class="marginUnset"><i class="fa fa-comment commentIconNotifi" aria-hidden="true"></i></i> {{ show_time($activity['time']) }}  </p>
       </div>
 

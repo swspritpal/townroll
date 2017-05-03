@@ -1,7 +1,7 @@
 <!-- Likes Count Modal -->
-
 <div class="modal fade" id="post_liked_users" role="dialog">
     <div class="modal-dialog clearfix popupHeight"> 
+
       <!-- Modal content-->
       <div class="modal-content clearfix">
         <div class="modal-header">

@@ -7,7 +7,6 @@
   </div>
     <div class="NotifiWrapper">
        
-
         @forelse($activities as $activityData)
           @php
             $activityArrays = $enricher->enrichActivities($activityData['activities']);

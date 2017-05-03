@@ -1,8 +1,4 @@
 {{ $post->onPostShowing($post)}}
-
-@include('frontend.includes.popups.post-view')
-@include('frontend.includes.popups.post-liked')
-
 <!-- Post Content
 ================================================= -->
   <div class="post-content content-item-wrapper">

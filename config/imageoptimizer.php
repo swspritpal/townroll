@@ -17,8 +17,7 @@ return [
 //        'optipng_bin' => '/usr/bin/optipng',
 //        'optipng_options' => ['-i0', '-o2', '-quiet'],
 //
-        //'pngquant_bin'     => env('PNGQUANT', '/usr/bin/pngquant'),
-        'pngquant_bin'     =>  'pngquant',
+        'pngquant_bin'     => env('PNGQUANT', '/usr/bin/pngquant'),
         'pngquant_options' => ['--force'],
 //
 //        'pngcrush_bin' => '/usr/bin/pngcrush',

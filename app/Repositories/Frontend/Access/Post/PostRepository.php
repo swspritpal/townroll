@@ -191,7 +191,7 @@ class PostRepository extends Repository
             if(env('USE_OPTIMIZER')){
                // optimize
                 $imageOptimizer->optimizeImage($file);
-                // reverride the previous image
+                // override the previous image with optimized once
                 $is_optimized=\Storage::put($image_name, \File::get($file));
                 if($is_optimized == false || empty($is_optimized)){
                     \Log::warning('Post Image does not optimized.named : '.$image_name);

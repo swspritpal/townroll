@@ -187,7 +187,7 @@ class PostRepository extends Repository
             $file = $upload_dir.$image_name;
             $success = file_put_contents($file, $data);
 
-            if(env('USE_OPTIMIZER') && (\File::exists($myfile))){
+            if(env('USE_OPTIMIZER') && (\File::exists($file))){
                // optimize
                 $imageOptimizer->optimizeImage($file);
                 // override the previous image with optimized once

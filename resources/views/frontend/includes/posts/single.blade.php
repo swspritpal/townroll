@@ -2,12 +2,11 @@
 <!-- Post Content
 ================================================= -->
   <div class="post-content content-item-wrapper">
-    <div class="post-container">
-      <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">
-        <img src="{{ $post->user->picture }}" alt="user" class="profile-photo-md pull-left">
-      </a>
-        
+    <div class="post-container">        
       <div class="post-detail">
+         <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">
+          <img src="{{ $post->user->picture }}" alt="user" class="profile-photo-md pull-left">
+        </a>
         <div class="user-info">
           <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">{{ $post->user->username }}</a>
           <span class="GroupInfo">published a post in 
@@ -27,6 +26,10 @@
                    href="javascript:void (0)"
                    data-url="{{ route('frontend.post.destroy',$post->id) }}" data-enable-ajax="1" data-operation-on="post">
                     Delete
+                    <form action="{{ route('frontend.post.destroy',$post->id) }}" method='post' style='display:none'>
+                      <input type='hidden' name='_method' value="delete">
+                      {!! csrf_field() !!}
+                    </form>
                 </a>
             @endif
           </aside>

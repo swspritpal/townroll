@@ -40,19 +40,8 @@ jQuery(document).ready(function($) {
             success: function(data)
             {
                 $('.add-single-post-data').append(data);
-
-                $('.comment-pagination ul.pagination').hide();
-                $('.comment-infinite-scroll').jscroll({
-                    autoTrigger: true,
-                    loadingHtml: '<img class="center-block img-responsive" src="'+APP_URL+'/img/loader.gif" alt="Loading..." />',
-                    padding: 0,
-                    nextSelector: '.comment-pagination .pagination li.active + li a',
-                    contentSelector: 'div.comment-infinite-scroll',
-                    callback: function() {
-                        $('ul.pagination').remove();
-                    }
-                });
                 initDeleteTarget();
+                init_comment_read_more();
             },
             complete: function(){
                 $('.add-single-post-data').find('.loader-image').remove();

@@ -1,5 +1,52 @@
+function init_comment_read_more(){
+    // Configure/customize these variables.
+    var showChar = 200;  // How many characters are shown by default
+    var ellipsestext = "...";
+    var moretext = "Read more";
+    var lesstext = "Read less";
+
+    var elementSelected='';
+
+    if($('.commentLimit').find('.morecontent').length == 0 ){
+        elementSelected=$('.commentLimit');
+    }else{
+        elementSelected=$('.ViewFullPostRight .commentLimit');
+    }
+    $(elementSelected).each(function() {
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar, content.length - showChar);
+ 
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+ 
+            $(this).html(html);
+        }
+    });
+    
+    // @Caution Don't use on click dynamic method here. Becuase morelink class does not exit at the time. 
+    $('.morelink').click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parents('.commentLimit').find('.moreellipses').toggle();
+        $(this).parents('.commentLimit').find('.morecontent span').toggle();
+        return false;
+    });
+
+
+}
+
 $(document).ready(function () {
     Xblog.init();
+
+    init_comment_read_more();
 
     $(document).on('submit','.comment-form',function (e) {
         e.preventDefault();
@@ -84,6 +131,30 @@ $(document).ready(function () {
             });
         }
     }
+
+
+    $(document).on('click','[data-action="load_more_comments"]',function(){
+        var currenctObject=$(this);
+        var uri=$(this).attr('data-uri');
+        
+        $.ajax({
+            url: uri,
+            type: 'get',
+            dataType: 'html',
+            beforeSend: function() {
+                $(currenctObject).html('<img class="center-block loader-image img-responsive" src="'+APP_URL+'/img/ajax-small-loader.gif" alt="Loading..." />');
+            },
+            success: function(data)
+            {
+                $(currenctObject).parents('.load-more-comments-post-single').prepend($(data).find('.comment-infinite-scroll').html());
+                $(currenctObject).parents('.load-more-comments-post-single').prepend($(data).find('.comment-pagination-load-more').html());
+                initDeleteTarget();
+            },
+            complete: function(e, xhr, settings){
+                $(currenctObject).find('.loader-image').remove();
+            },
+        });
+    });
     
 });
 

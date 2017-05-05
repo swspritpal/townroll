@@ -156,6 +156,7 @@ class PostController extends Controller
             ->withCount('comments')
             ->first();
 
+
             $view = \View::make('frontend.includes.popups.post-single-ajax',compact('post'));
             return $view->render();
         }else{

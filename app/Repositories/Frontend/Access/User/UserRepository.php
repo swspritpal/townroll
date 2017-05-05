@@ -257,4 +257,69 @@ class UserRepository extends BaseRepository
 
         throw new GeneralException(trans('exceptions.frontend.auth.password.change_mismatch'));
     }
+
+
+    /**
+     * 
+     * @throws GeneralException
+     *
+     * @return mixed
+     */
+    public function get_user_total_post($user_id)
+    {
+        $user_post_count = \App\Post::whereUserId($user_id)->count();
+        return $user_post_count;
+    }
+
+    public function get_user_total_categories($user_id)
+    {
+        $user_place_count = \App\Category::whereHas('users', function ($query) use ($user_id){
+            $query->whereUserId($user_id);
+        })->count();
+        return $user_place_count;
+    }
+    public function get_user_total_categories_user($user_id)
+    {
+        $total_places_users=null;
+        $total_places_users = \Illuminate\Support\Facades\DB::select("SELECT SUM(`users_count`) as `grand_total_of_users` FROM (select (select count(*) from `users` inner join `category_user` on `users`.`id` = `category_user`.`user_id` where `categories`.`id` = `category_user`.`category_id` and `users`.`deleted_at` is null) as `users_count` from `categories` where exists (select * from `users` inner join `category_user` on `users`.`id` = `category_user`.`user_id` where `categories`.`id` = `category_user`.`category_id` and `user_id` = ? and `users`.`deleted_at` is null)) as Alias_subquery",[$user_id]);
+
+        if(!empty($total_places_users)){
+            $total_places_users=$total_places_users['0']->grand_total_of_users;
+        }
+        return $total_places_users;
+    }
+
+    public function upload_profile_image($image_source,$user,$save_path)
+    {
+       $upload_dir=public_path().$save_path;
+
+        list($type, $data) = explode(';', $image_source);
+        list(, $data)      = explode(',', $data);
+        list($type_content, $extension) = explode('/', $type);
+        $image_source = str_replace(' ', '+', $data);
+        $data = base64_decode($image_source);        
+
+        $image_name=$user-> username.'-'.mt_rand().'.'.$extension;
+        $file = $upload_dir.$image_name;
+
+        $is_uploaded = file_put_contents($file, $data);
+        if(!empty($is_uploaded)){
+
+            if(env('USE_OPTIMIZER')){
+               // optimize
+                $imageOptimizer->optimizeImage($file);
+                // override the previous image with optimized once
+                $is_optimized = file_put_contents($file, \File::get($file));
+                if($is_optimized == false || empty($is_optimized)){
+                    \Log::warning('User profile Image does not optimized. Named : '.$image_name);
+                }
+            }
+            return $image_name;
+        }else{
+            return false;
+        }
+    }
+
+    
 }
+ 

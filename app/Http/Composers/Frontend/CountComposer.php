@@ -6,15 +6,25 @@ use App\Models\Access\User\User;
 use App\Post;
 use App\Category;
 
+use App\Repositories\Frontend\Access\User\UserRepository;
+
 class CountComposer
 {
 
-   /* protected $categoryRepository;
+   /**
+     * @var UserRepository
+     */
+    protected $user;
 
-    public function __construct(CategoryRepository $categoryRepository)
+    /**
+     * CountComposer constructor.
+     *
+     * @param UserRepository $user
+     */
+    public function __construct(UserRepository $user)
     {
-        $this->categoryRepository = $categoryRepository;
-    }*/
+        $this->user = $user;
+    }
 
     /**
      * Bind data to the view.
@@ -24,20 +34,13 @@ class CountComposer
      */
     public function compose(View $view)
     {
-        $total_places_users='';
 
-        $user_post_count = Post::whereUserId(\Auth::id())->count();
+        $user_id=\Auth::id();
+        
+        $user_post_count=$this->user->get_user_total_post($user_id);
+        $user_place_count=$this->user->get_user_total_categories($user_id);
+        $total_places_users=$this->user->get_user_total_categories_user($user_id);
 
-        $user_place_count = Category::whereHas('users', function ($query) {
-            $query->whereUserId(\Auth::id());
-        })->count();
-
-
-        $total_places_users = \Illuminate\Support\Facades\DB::select("SELECT SUM(`users_count`) as `grand_total_of_users` FROM (select (select count(*) from `users` inner join `category_user` on `users`.`id` = `category_user`.`user_id` where `categories`.`id` = `category_user`.`category_id` and `users`.`deleted_at` is null) as `users_count` from `categories` where exists (select * from `users` inner join `category_user` on `users`.`id` = `category_user`.`user_id` where `categories`.`id` = `category_user`.`category_id` and `user_id` = ? and `users`.`deleted_at` is null)) as Alias_subquery",[\Auth::id()]);
-
-        if(!empty($total_places_users)){
-            $total_places_users=$total_places_users['0']->grand_total_of_users;
-        }
         $view->with(compact('user_post_count','user_place_count','total_places_users'));
     }
 }

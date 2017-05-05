@@ -125,17 +125,9 @@ class ProfileController extends Controller
                 ->paginate(env('DEFAULT_HOME_PAGE_POST'));
 
 
-            $user_post_count = \App\Post::whereUserId($user->id)->count();
-
-            $user_place_count = \App\Category::whereHas('users', function ($query) use ($user){
-                $query->whereUserId($user->id);
-            })->count();
-
-            $total_places_users = \Illuminate\Support\Facades\DB::select("SELECT SUM(`users_count`) as `grand_total_of_users` FROM (select (select count(*) from `users` inner join `category_user` on `users`.`id` = `category_user`.`user_id` where `categories`.`id` = `category_user`.`category_id` and `users`.`deleted_at` is null) as `users_count` from `categories` where exists (select * from `users` inner join `category_user` on `users`.`id` = `category_user`.`user_id` where `categories`.`id` = `category_user`.`category_id` and `user_id` = ? and `users`.`deleted_at` is null)) as Alias_subquery",[$user->id]);
-
-            if(!empty($total_places_users)){
-                $total_places_users=$total_places_users['0']->grand_total_of_users;
-            }
+            $user_post_count=$this->user->get_user_total_post($user->id);
+            $user_place_count=$this->user->get_user_total_categories($user->id);
+            $total_places_users=$this->user->get_user_total_categories_user($user->id);
 
             return view('frontend.user.profile.view',compact('user','user_post_count','user_place_count','posts','sort_by','total_places_users'));
         }else{
@@ -149,14 +141,55 @@ class ProfileController extends Controller
         $user = User::whereId($user_id)->first();
 
         if(!empty($user)){
-            $user_post_count = \App\Post::whereUserId($user->id)->count();
 
-            $user_place_count = \App\Category::whereHas('users', function ($query) use ($user){
-                $query->whereUserId($user->id);
-            })->count();
+            $user_post_count=$this->user->get_user_total_post($user->id);
+            $user_place_count=$this->user->get_user_total_categories($user->id);
+            $total_places_users=$this->user->get_user_total_categories_user($user->id);
 
-            $view = \View::make('frontend.includes.popups.user-profile-ajax',compact('user','user_post_count','user_place_count'));
+            $view = \View::make('frontend.includes.popups.user-profile-ajax',compact('user','user_post_count','user_place_count','total_places_users'));
             return $view->render();
+        }else{
+            abort(404);
+        }
+    }
+
+    public function save_profile_image(Request $request){
+
+        $user_id=\Auth::id();
+        $save_path=env('USER_PROFILES_FOLDER');
+
+        $user = User::whereId($user_id)->first();
+        $image_source=$request->get('image_src');
+        $old_image_source=$request->get('old_image_src');        
+
+        if(!empty($user)){
+            $is_image_upload=$this->user->upload_profile_image($image_source,$user,$save_path);
+
+            if(!empty($is_image_upload)){
+                // collection full web URL of image need to be insert
+                $uploaded_image_name=route('frontend.index').$save_path.$is_image_upload;
+
+                // check Image is unique to insertion
+                $is_model_exit=\App\Models\Access\User\UserOldProfiles::whereUserId($user_id)->whereAvatar($uploaded_image_name)->first();
+                if(empty($is_model_exit)){
+                    $model=new \App\Models\Access\User\UserOldProfiles;
+                    $model->user_id=$user_id;
+                    $model->avatar=$old_image_source;
+                    $is_saved=$model->save();
+                }
+                
+
+                $user->profile_image=$uploaded_image_name;
+                $is_saved=$user->save();
+
+                if(!empty($is_saved)){
+                    return response()->json(['status' => 'success', 'msg' => 'Profile has been uploaded successfully.']);
+                }else{
+                    return response()->json(['status' => 'error', 'msg' => 'There was some error while saving your image.Please try again.']);
+                }
+            }else{
+                return response()->json(['status' => 'error', 'msg' => 'There was some error while uploading your image.Please try again.']);
+            }
         }else{
             abort(404);
         }

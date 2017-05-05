@@ -186,15 +186,20 @@ class PostRepository extends Repository
             $image_name=mt_rand().'.'.$extension;      
             $file = $upload_dir.$image_name;
 
+            if(env('USE_OPTIMIZER')){
+               // optimize
+                $imageOptimizer->optimizeImage($file);
+            }
+
             $success = file_put_contents($file, $data);
 
             if(env('USE_OPTIMIZER')){
                // optimize
                 $imageOptimizer->optimizeImage($file);
                 // override the previous image with optimized once
-                $is_optimized=\Storage::put($image_name, \File::get($file));
+                $is_optimized = file_put_contents($file, \File::get($file));
                 if($is_optimized == false || empty($is_optimized)){
-                    \Log::warning('Post Image does not optimized.named : '.$image_name);
+                    \Log::warning('Post Image does not optimized. Named : '.$image_name);
                 }
             }
             if(empty($success)){

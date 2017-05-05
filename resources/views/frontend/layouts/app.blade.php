@@ -58,7 +58,7 @@
         @include('frontend.includes.popups.post-view')
         @include('frontend.includes.popups.post-liked')
 
-        <div id="page-contents" id="app">
+        <div id="page-contents">
             <div class="container-fluid" >
                 @include('includes.partials.logged-in-as')
                 <div class="row paddingUnsetMobile">

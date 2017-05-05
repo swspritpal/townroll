@@ -53,12 +53,18 @@ trait UserAttribute
      */
     public function getPictureAttribute()
     {
-        $picture=\App\Models\Access\User\SocialLogin::where('user_id','=',$this->id)->select('avatar')->first();
-        if(!empty($picture->avatar)){
-            return $picture->avatar;
+        $user=\App\Models\Access\User\User::where('id','=',$this->id)->select('profile_image')->first();
+        if(!empty($user->profile_image)){
+            return $user->profile_image;
         }else{
-            return $this->getPicture();    
-        }        
+            $picture=\App\Models\Access\User\SocialLogin::where('user_id','=',$this->id)->select('avatar')->first();
+            if(!empty($picture->avatar)){
+                return $picture->avatar;
+            }else{
+                return $this->getPicture();    
+            }
+        }
+                
     }
 
     /**

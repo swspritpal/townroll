@@ -10,6 +10,16 @@
                     <div class="profile-info">
                      
                       <img src="{{ $user->picture }}" alt="" class="img-responsive profile-photo user-profile-image"> 
+                      @if($user->id == access()->id())
+                        <div class="edit-profile-icon edit">
+                          <a href="javascript:void(0);"><i class="ion-android-camera"></i></a>
+                          <!-- <a href="javascript:void(0);" class="hidden profile-image-click-target">hidden content which will trigger auto upload image</a> -->
+                        </div>
+                        <span class="profile-image-data-wrapper">
+                          {{ Form::file('profile_image', ['id' => 'user_profile_image_input' ,'class'=>'hidden']) }}
+                          {{ Form::hidden('old_image_src',$user->picture,['class' => 'old_image_src']) }}
+                        </span>
+                      @endif
                       <h4>{{ $user->username }}</h4>
                       <p class="text-muted"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ get_city_name($user->city_id) }}</p>
                     </div>
@@ -40,46 +50,7 @@
                 <div class="col-lg-6 col-md-6  col-sm-6 col-xs-2 ">&nbsp; </div>
 
                 <div class="col-lg-4 col-md-4  col-sm-4 col-xs-7  profileCounter">
-                    <ul class= "nav-news-feed profile-menu">
-
-                          <li><i class="icon ion-ios-paper"></i>
-
-                          <div class="LeftMenuLi">
-                            <a href="#" class="LeftSidebarCounter">
-                            <span class="CounterFontStyle pull-left"> Posts </span> 
-                            <span class="pull-right">{{ $user_post_count }} </span></a>
-                            <div style="clear:both"> </div>
-                          </div>
-                          </li>
-                          <li><i class="icon ion-ios-people"></i>
-
-                          <div class="LeftMenuLi">
-                            <a href="#" class="LeftSidebarCounter ">
-                            <span class="CounterFontStyle pull-left">  Boost Posts </span>
-                            <span class="pull-right">0 </span></a>
-                            <div style="clear:both"> </div>
-                          </div>
-                          </li>
-                          <li><i class="icon ion-ios-people-outline"></i>
-
-                          <div class="LeftMenuLi">
-                              <a href="#" class="LeftSidebarCounter">
-                              <span class="CounterFontStyle pull-left">  Groups </span>
-                              <span class="pull-right">{{ $user_place_count }} </span></a>
-                              <div style="clear:both"> </div>
-                          </div>
-                          </li>
-
-                          <li><i class="fa fa-eye"></i>
-
-                          <div class="LeftMenuLi">
-                            <a href="#" class="LeftSidebarCounter">
-                            <span class="CounterFontStyle pull-left">  Viewer's </span>
-                            <span class="pull-right">{{ $total_places_users }} </span></a>
-                            <div style="clear:both"> </div>
-                          </div>
-                          </li>
-                    </ul>
+                    @include('frontend.user.profile.counter-data')
                 </div>
         </div>
 

@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    <div class="col-md-6 borderRight postContent postContentHome ">
+    <div class="col-md-6 borderRight postContent postContentHome " id="app">
         @include('frontend.includes.places')
         @include('frontend.includes.posts.create')
 

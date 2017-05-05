@@ -1,11 +1,13 @@
 function initDeleteTarget() {
-    $('.swal-dialog-target').append(function () {
+    /*$('.swal-dialog-target').append(function () {
         return "\n" +
             "<form action='" + $(this).attr('data-url') + "' method='post' style='display:none'>\n" +
             "   <input type='hidden' name='_method' value='" + ($(this).data('method') ? $(this).data('method') : 'delete') + "'>\n" +
             "   <input type='hidden' name='_token' value='" + Laravel.csrfToken + "'>\n" +
             "</form>\n"
-    }).click(function () {
+    })*/
+
+    $(document).on('click','.swal-dialog-target',function () {
         var deleteForm = $(this).find("form");
         var method = ($(this).data('method') ? $(this).data('method') : 'DELETE');
         var operationOn = ($(this).data('operation-on') ? $(this).data('operation-on') : 'comment');
@@ -42,13 +44,7 @@ function initDeleteTarget() {
                         data: $(deleteForm).serialize(),
                         success: function (res) {
                             if (res.code == 200) {
-                                /*swal({
-                                    title: 'Succeed',
-                                    text: res.msg,
-                                    type: "success",
-                                    timer: 1000,
-                                    confirmButtonText: "OK"
-                                });*/
+                               
                                 if(operationOn == "comment"){
                                     $(deleteForm).parents('.comment-wrapper').remove();
                                 }else{
@@ -57,13 +53,7 @@ function initDeleteTarget() {
                                 
                                 toastr.success(res.msg);
                             } else {
-                                /*swal({
-                                    title: 'Failed',
-                                    text: "There was some error while deleting comment. Please try again.",
-                                    type: "error",
-                                    timer: 1000,
-                                    confirmButtonText: "OK"
-                                });*/
+                               
                                 toastr.warning(res.msg);
                             }
                         },
@@ -311,78 +301,81 @@ jQuery(document).ready(function($) {
         });
     });
 
-  
+    $('.edit-profile-icon').click(function() {
+        $('#user_profile_image_input').trigger('click');
+    });
 
-  
+    $('#user_profile_image_input').change(function(event)
+    {
+        event.preventDefault();
+
+        var imgPath = $(this)[0].value;
+        var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+        var file_size = $(this)[0].files[0].size;
+
+        if (extn == "tif" || extn == "tiff" || extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg" || extn == "GIF" || extn == "PNG" || extn == "JPG" || extn == "JPEG" || extn == "TIF" || extn == "TIFF" || file_size <= 2097152) {
+            if (typeof (FileReader) != "undefined") {
+
+               if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.user-profile-image').attr('src', '').attr('src', e.target.result);
+                        //$('.profile-image-click-target').trigger('click');
+
+                        var image_src=$('.user-profile-image').attr('src');
+                        var old_image_src=$('.old_image_src').val();
+
+                        $.ajax({
+                            url: APP_URL+'/save-profile-image',
+                            type: 'POST',
+                            data:{image_src:image_src,old_image_src:old_image_src},
+                            dataType: 'json',
+                            beforeSend: function() {
+                            },
+                            success: function(data)
+                            {
+                                if(data.status =="success"){
+                                    toastr.success(res.msg);
+                                } else {
+                                    $('.user-profile-image').attr('src', '').attr('src',old_image_src);                                 
+                                    toastr.warning(res.msg);
+                                }
+                            },
+                            complete: function(){
+                            },
+                        });
+
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }                
+
+            } else {
+                swal({
+                  title: "Sorry!!!",
+                  text: 'This browser does not support FileReader.Please upgrade your browser.',
+                  type: "warning",
+                  showCancelButton: true,  
+                  //confirmButtonColor: "ff0000",
+                  confirmButtonText: "Ok",
+                  closeOnConfirm: true,
+                });
+            }
+        } else {
+            swal({
+              title: "Sorry!!!",
+              text: 'Your photo couldn\'t be uploaded. Photo should be less than 2 MB and saved as JPG, PNG, GIF or TIFF files.',
+              type: "warning",
+              showCancelButton: true,  
+              //confirmButtonColor: "ff0000",
+              confirmButtonText: "Ok",
+              closeOnConfirm: true,
+            });
+        }
+    });
+    
 
 });
-
-
-
-/*
-function prompt(window, pref, message, callback) {
-    let branch = Components.classes["@mozilla.org/preferences-service;1"]
-                           .getService(Components.interfaces.nsIPrefBranch);
-
-    if (branch.getPrefType(pref) === branch.PREF_STRING) {
-        switch (branch.getCharPref(pref)) {
-        case "always":
-            return callback(true);
-        case "never":
-            return callback(false);
-        }
-    }
-
-    let done = false;
-
-    function remember(value, result) {
-        return function() {
-            done = true;
-            branch.setCharPref(pref, value);
-            callback(result);
-        }
-    }
-
-    let self = window.PopupNotifications.show(
-        window.gBrowser.selectedBrowser,
-        "geolocation",
-        message,
-        "geo-notification-icon",
-        {
-            label: "Share Location",
-            accessKey: "S",
-            callback: function(notification) {
-                done = true;
-                callback(true);
-            }
-        }, [
-            {
-                label: "Always Share",
-                accessKey: "A",
-                callback: remember("always", true)
-            },
-            {
-                label: "Never Share",
-                accessKey: "N",
-                callback: remember("never", false)
-            }
-        ], {
-            eventCallback: function(event) {
-                if (event === "dismissed") {
-                    if (!done) callback(false);
-                    done = true;
-                    window.PopupNotifications.remove(self);
-                }
-            },
-            persistWhileVisible: true
-        });
-}
-
-prompt(window,
-       "extensions.foo-addon.allowGeolocation",
-       "Foo Add-on wants to know your location.",
-       function callback(allowed) { alert(allowed); });*/
-
 
 
 

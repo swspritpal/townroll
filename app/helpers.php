@@ -539,5 +539,3 @@ if (!function_exists('is_base64_encoded')) {
     }
 }
 
-
-

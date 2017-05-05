@@ -2410,7 +2410,22 @@ p:empty{display:none;}
 
 .ViewFullPostRight{height:520px;}
 
-.ViewFullPostClose {border:#ff0000 solid thin; padding:60px; margin-top:50px;}
+/*.ViewFullPostClose {border:#ff0000 solid thin; padding:60px; margin-top:50px;}*/
+
+
+.post-popup-close {
+  color: #fff;
+  float: right;
+  font-size: 27px;
+  margin: -11px 17px 0 0;
+}
+.ViewFullPostClose {
+  background-color: #fd3e3e;
+  border: 1px none;
+  border-radius: 90%;
+  position: absolute;
+  z-index: 99;
+}
 
 
 .load-viewed-user-list .row{ padding:3px 8px;}
@@ -2969,9 +2984,29 @@ img.profile-photo-md {
   z-index: 9999999;
 }
 
-.sweet-alert {
-  z-index: 9999999;
+.sweet-alert, .toast-message  {
+  z-index: 99999 !important;
 }
 .fa.fa-heart {
   color: #fd3e3e;
+}
+
+.morecontent span {
+    display: none;
+}
+.morelink {
+    display: inline-block;
+}
+.commentLimit p {
+  display: inline;
+}
+.edit-profile-icon {
+  font-size: 32px;
+  left: 48%;
+  position: absolute;
+  top: 47%;
+  z-index: 9999;
+}
+.edit-profile-icon a:hover{
+  color:#000000;
 }

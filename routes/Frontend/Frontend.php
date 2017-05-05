@@ -16,6 +16,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('@{username}','User\ProfileController@userProfile')->name('auth.user.profile');
     Route::get('profile-popup','User\ProfileController@popup')->name('auth.user.profile-popup');
+    Route::post('save-profile-image','User\ProfileController@save_profile_image')->name('auth.user.save-profile-image');
 
 
     Route::group(['namespace' => 'User', 'as' => 'user.'], function () {

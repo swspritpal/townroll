@@ -1,6 +1,7 @@
 @php
   if($load_all_comment){
-    $post->comments=$post->comments_with_pagination->reverse();
+    $comment_pagination=$post->comments_with_pagination;
+    $post->comments=$comment_pagination->reverse();
   }else{
     $post->comments=$post->lastest_comments->reverse();
   }
@@ -46,15 +47,26 @@
     <div class="line-divider"></div>
 
 
-    <div class="comments-container"
+    <div class="comments-container load-more-comments-post-single"
          data-api-url="{{ route('frontend.comment.show',[$post->id,
          'commentable_type'=>'App\Post',
          'last_comment_id'=>!empty($post->comments->last())? $post->comments->last()->id:0]) }}">
+         <p class="comment-pagination-load-more">
+             @if(!empty($post->comments_count) && $post->comments_count > env('DEFAULT_HOME_PAGE_POST_COMMENTS') )
+                @if($load_all_comment)
+                  @if(!empty($comment_pagination->nextPageUrl()))
+                    <a href="javascript:void(0);" data-action="load_more_comments" data-uri="{{ $comment_pagination->nextPageUrl() }}"> View more comments </a>
+                  @else
+                    <!-- when no more comment avaliable to show but in popup -->
+                  @endif
 
-         @if(!empty($post->comments_count) && $post->comments_count > env('DEFAULT_HOME_PAGE_POST_COMMENTS') )
-           <p><a href="javascript:void(0);" data-action="post-single-popup" data-post="{{ $post->id }}"> View more comments </a></p>
-        @endif
-        @include('frontend.comment.show',[ 'comments' => $post->comments,'post_user_id' =>$post->user->id ])
+                @else
+                  <a href="javascript:void(0);" data-action="post-single-popup" data-post="{{ $post->id }}"> View more comments </a>
+                @endif
+            @endif
+          </p>
+
+        @include('frontend.comment.show',[ 'comments' => $post->comments,'post_user_id' =>$post->user->id, 'load_all_comment'=>$load_all_comment ])
 
     </div>
     @if(empty($load_all_comment))

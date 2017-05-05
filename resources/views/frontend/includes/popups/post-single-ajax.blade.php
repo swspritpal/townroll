@@ -12,13 +12,11 @@
     <div class="col-lg-{{ empty($post->image_path) ? '12': '5'}} ViewFullPostRight comment-main-wrappper">
         <div class="commentScroller ">
           <div class="modal-body clearfix">
-
-            <a href="javascript:void(0);" data-action="user-profile" data-user-id="{{ $post->user_id }}">
-              <img src="{{ $post->user->picture }}" class="profile-photo-sm">
+            <a href="{{ route('frontend.auth.user.profile',$post->user->username) }}" >
+              <img src="{{ $post->user->picture }}" alt="user" class="profile-photo-sm">
             </a>
-
-            <a href="javascript:void(0);" data-action="user-profile" data-user-id="{{ $post->user_id }}">{{ $post->user->username }}</a>
-
+            
+            <a href="{{ route('frontend.auth.user.profile',$post->user->username) }}" >{{  $post->user->username }}</a>
             <span class="GroupInfo">published a post in 
 
               @unless(empty($post->categories))

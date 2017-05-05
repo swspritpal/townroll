@@ -306,6 +306,7 @@ class UserRepository extends BaseRepository
         if(!empty($is_uploaded)){
 
             if(env('USE_OPTIMIZER')){
+                $imageOptimizer=new \Approached\LaravelImageOptimizer\ImageOptimizer;
                // optimize
                 $imageOptimizer->optimizeImage($file);
                 // override the previous image with optimized once

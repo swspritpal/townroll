@@ -336,10 +336,10 @@ jQuery(document).ready(function($) {
                             success: function(data)
                             {
                                 if(data.status =="success"){
-                                    toastr.success(res.msg);
+                                    toastr.success(data.msg);
                                 } else {
                                     $('.user-profile-image').attr('src', '').attr('src',old_image_src);                                 
-                                    toastr.warning(res.msg);
+                                    toastr.warning(data.msg);
                                 }
                             },
                             complete: function(){

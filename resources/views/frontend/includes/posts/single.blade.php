@@ -1,7 +1,7 @@
 {{ $post->onPostShowing($post)}}
 <!-- Post Content
 ================================================= -->
-  <div class="post-content content-item-wrapper">
+  <div class="post-content content-item-wrapper" data-post-id="{{ $post->id }}" data-auto-refresh="false">
     <div class="post-container">        
       <div class="post-detail">
          <a href="javascript:void(0);" class="profile-link" data-action="user-profile" data-user-id="{{ $post->user_id }}">

@@ -87,6 +87,9 @@ $(document).ready(function () {
             return false;
         }
 
+        
+        var commentable_id=$(form).find('input[name="commentable_id"]').val();
+
         $.ajax({
             method: 'post',
             url: $(form).attr('action'),
@@ -97,6 +100,7 @@ $(document).ready(function () {
         }).done(function (data) {
             if (data.status === 200) {
                 commentContent.val('');
+                $(document).find('[data-post-id="'+commentable_id+'"]').attr('data-auto-refresh','true');
                 loadComments(true, true,form);
             } else {
                 toastr.warning(data.message);                

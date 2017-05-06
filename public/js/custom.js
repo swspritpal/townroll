@@ -8,6 +8,8 @@ function initDeleteTarget() {
     })*/
 
     $(document).on('click','.swal-dialog-target',function () {
+        var comment_post_id='';
+
         var deleteForm = $(this).find("form");
         var method = ($(this).data('method') ? $(this).data('method') : 'DELETE');
         var operationOn = ($(this).data('operation-on') ? $(this).data('operation-on') : 'comment');
@@ -20,6 +22,11 @@ function initDeleteTarget() {
         var confirm_text = $(this).data('dialog-confirm-text') ? $(this).data('dialog-confirm-text') : 'Yes';
         var enable_html = $(this).data('dialog-enable-html') == '1';
         var enable_ajax = $(this).data('enable-ajax') == '1';
+
+        if(operationOn == "comment"){
+            comment_post_id = $(this).data('post-id');
+        }
+        
 
         if (enable_ajax) {
             swal({
@@ -46,7 +53,20 @@ function initDeleteTarget() {
                             if (res.code == 200) {
                                
                                 if(operationOn == "comment"){
+                                    // Remove 1 from total comment counter
+                                    var comment_counter_container=$(deleteForm).parents('.comment-main-wrappper').find('.home-comment-counter');
+                                    var total_comments_count=$(comment_counter_container).html();
+                                    var new_value_comment_count=parseInt(total_comments_count) - parseInt(1);
+                                    if(parseInt(new_value_comment_count) > 0){
+                                        $(comment_counter_container).html(new_value_comment_count);
+                                    }else{
+                                        $(comment_counter_container).html('0');
+                                    }                                   
+
                                     $(deleteForm).parents('.comment-wrapper').remove();
+
+                                    // auto refresh TRUE
+                                    $(document).find('[data-post-id="'+comment_post_id+'"]').attr('data-auto-refresh','true');
                                 }else{
                                     $(deleteForm).parents('.content-item-wrapper').remove();
                                 }
@@ -88,6 +108,16 @@ function initDeleteTarget() {
 }
 jQuery(document).ready(function($) {
 
+    // Hide the notification menu when click on Document
+    $(document).on("click", function(event){
+        var $trigger = $("#notificationDropdown");
+        if($trigger !== event.target && !$trigger.has(event.target).length){
+            if(!$("#Notifi").hasClass("hidden")){
+                $("#Notifi").addClass("hidden");
+            }
+        }            
+    });
+    // open notification dropdwon
     $("#notificationDropdown").click(function(){
         if($("#Notifi").hasClass('hidden')){
             $("#Notifi").removeClass('hidden');
@@ -372,8 +402,7 @@ jQuery(document).ready(function($) {
               closeOnConfirm: true,
             });
         }
-    });
-    
+    });   
 
 });
 

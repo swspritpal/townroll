@@ -17,7 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Viewed User list
         Route::get('post-viewed-users/{post_id}', 'PostController@viewedUsersList');
         // Single post popup
-        Route::get('post-single-popup/{post_id}', 'PostController@single');
+        Route::get('post-single-popup/{post_id}/{post_view?}', 'PostController@single');
 
     });
     // Category

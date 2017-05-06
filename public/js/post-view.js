@@ -11,6 +11,8 @@ jQuery(document).ready(function($) {
         var counterElement=$(current_element).parents('.post-counter-bar').find('.post-like-counter');
         var counterElementVal=$(counterElement).html();
 
+        $(document).find('[data-post-id="'+postId+'"]').attr('data-auto-refresh','true');
+
         if($(this).hasClass('fa-heart'))
         {
             var newCount=parseFloat(counterElementVal) - 1;
@@ -117,7 +119,6 @@ jQuery(document).ready(function($) {
             },
         });
     });
-
     
 });
 

@@ -28,7 +28,7 @@
                   @if(access()->user()->id == $post_user_id)
                       <a class="comment-operation-item swal-dialog-target"
                          href="javascript:void (0)"
-                         data-url="{{ route('frontend.comment.destroy',$comment->id) }}" data-enable-ajax="1" data-operation-on="comment">
+                         data-url="{{ route('frontend.comment.destroy',$comment->id) }}" data-enable-ajax="1" data-operation-on="comment" data-post-id="{{ isset($post->id)?$post->id:'' }}">
                           Delete
                           <form action="{{ route('frontend.comment.destroy',$comment->id) }}" method='post' style='display:none'>
                             <input type='hidden' name='_method' value="delete">

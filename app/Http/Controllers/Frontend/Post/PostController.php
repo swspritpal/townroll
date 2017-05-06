@@ -139,9 +139,8 @@ class PostController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function single(Request $request,$post_id)
-    {
-
+    public function single(Request $request,$post_id,$post_view=false)
+    {      
         $html_result='';
 
         if(!empty($post_id)){
@@ -156,6 +155,10 @@ class PostController extends Controller
             ->withCount('comments')
             ->first();
 
+            if($post_view){
+                $view = \View::make('frontend.includes.posts.single',compact('post'));
+                return $view->render();
+            }
 
             $view = \View::make('frontend.includes.popups.post-single-ajax',compact('post'));
             return $view->render();

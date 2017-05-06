@@ -522,8 +522,7 @@ if (!function_exists('is_username_exit')) {
             return true;
         }else{
             return false;
-        }
-        
+        }        
     }
 }
 

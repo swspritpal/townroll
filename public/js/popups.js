@@ -29,6 +29,7 @@ jQuery(document).ready(function($) {
 
         $('#single_post_popup').modal('show');
         $('.add-single-post-data').html('');
+        $(document).find('[data-post-id="'+post_id+'"]').attr('data-auto-refresh','false');
         
         $.ajax({
             url: APP_URL + '/post-single-popup/'+post_id,
@@ -47,7 +48,38 @@ jQuery(document).ready(function($) {
                 $('.add-single-post-data').find('.loader-image').remove();
             },
         });
-    });   
+    }); 
+
+
+
+    // When Single post popup is about to close then check IS there need to refresh the post 
+    $(document).on('hidden.bs.modal','#single_post_popup', function (e) {
+        // Need to get updated data from server for post
+        if($('.append-new-post-content').find('[data-auto-refresh="true"]').length != 0){
+
+            var current_obj=$('.append-new-post-content').find('[data-auto-refresh="true"]');
+            var post_id=$(current_obj).data('post-id');
+            $(current_obj).html('');
+                        
+            $.ajax({
+                url: APP_URL + '/post-single-popup/'+post_id+'/true',
+                type: 'get',
+                dataType: 'html',
+                beforeSend: function() {
+                    $(current_obj).html('<img class="center-block loader-image img-responsive" src="'+APP_URL+'/img/loader.gif" alt="Loading..." />');
+                },
+                success: function(data)
+                {
+                    $(current_obj).append(data);
+                    initDeleteTarget();
+                    init_comment_read_more();
+                },
+                complete: function(){
+                    $(current_obj).find('.loader-image').remove();
+                },
+            });
+        }
+    })
 
 });
 

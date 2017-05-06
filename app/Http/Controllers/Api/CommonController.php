@@ -16,9 +16,9 @@ class CommonController extends Controller
 
     public function get_countries(){
 
-		$countries = getCountiesList();
+        $countries = getCountiesList();
 
-    	if(!empty($countries)){
+        if(!empty($countries)){
             $this->content['error'] = false;
             $this->content['massage'] = "Countries list.";
             $this->content['data'] = $countries;
@@ -127,6 +127,19 @@ class CommonController extends Controller
 
             $is_uploaded=Image::make($path)->save(public_path($save_path. $filename));
             if(!empty($is_uploaded)){
+
+                $file=$save_path. $filename;
+                if(env('USE_OPTIMIZER') && (\File::exists($file))){
+                    $imageOptimizer=new \Approached\LaravelImageOptimizer\ImageOptimizer;
+                   // optimize
+                    $imageOptimizer->optimizeImage($file);
+                    // override the previous image with optimized once
+                    $is_optimized = file_put_contents($file, \File::get($file));
+                    if($is_optimized == false || empty($is_optimized)){
+                        \Log::warning('Image does not optimized Sent from API. Named : '.$image_name);
+                    }
+                }
+                
                 $this->content['error'] = false;
                 $this->content['massage'] = "upload_successfull.";
                 $this->content['data'] =$filename;
@@ -156,6 +169,17 @@ class CommonController extends Controller
 
             $is_uploaded = file_put_contents($file, $data);
             if(!empty($is_uploaded)){
+
+                if(env('USE_OPTIMIZER') && (\File::exists($file))){
+                    $imageOptimizer=new \Approached\LaravelImageOptimizer\ImageOptimizer;
+                   // optimize
+                    $imageOptimizer->optimizeImage($file);
+                    // override the previous image with optimized once
+                    $is_optimized = file_put_contents($file, \File::get($file));
+                    if($is_optimized == false || empty($is_optimized)){
+                        \Log::warning('Image does not optimized Sent from API. Named : '.$image_name);
+                    }
+                }
                 $this->content['error'] = false;
                 $this->content['massage'] = "upload_successfull.";
                 $this->content['data'] =$image_name;

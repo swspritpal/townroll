@@ -12,5 +12,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('unique-username', 'CommonController@unique_username')->name('unique_username');
 
     Route::get('mark-notification-read', 'CommonController@markNotificationRead')->name('unique_username');
+
+    Route::get('suggest-user-list', 'CommonController@suggest_user_list');
     
 });

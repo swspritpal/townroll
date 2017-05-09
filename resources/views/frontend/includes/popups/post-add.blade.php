@@ -73,7 +73,7 @@
         </div>
 
         <div class="form-group">
-          <textarea  name="post_content" cols="60" rows="2" class="form-control"  id="post_content" placeholder="Write here some thing..." autofocus></textarea>       
+          <textarea  name="post_content" cols="60" rows="2" class="form-control suggest-user-list"  id="post_content" placeholder="Write here some thing..." autofocus></textarea>       
         </div>
 
 

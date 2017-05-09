@@ -33,6 +33,7 @@ Route::group(array('middleware' => 'auth:api'), function() {
 
 
 	    Route::get('posts/{user_id}/{sort_by?}', 'PostController@index');
+	    Route::post('post/store', 'PostController@store');
 	    Route::get('categories/{user_id}', 'CategoriesController@index');
 
 	    Route::post('login', 'UserController@login');
@@ -43,6 +44,8 @@ Route::group(array('middleware' => 'auth:api'), function() {
 
 	    // Image upload Route
 	    Route::post('upload-image', 'CommonController@upload_image');
+
+
 	});
 });
 

@@ -108,6 +108,89 @@ function initDeleteTarget() {
 }
 jQuery(document).ready(function($) {
 
+
+
+    $(document).on('keyup','.suggest-user-list',function(e) {
+        /*if(e.which == 64) {
+        }*/
+        var curenct_obj=$(this);
+
+        var enter_char =$(curenct_obj).val();
+
+        // get one charactor from all values
+        /*if(enter_char.indexOf(' ') > -1){
+            enter_char= enter_char.substr(enter_char.indexOf('@'), enter_char.indexOf(' '));
+        }else{
+            enter_char= enter_char.substr(enter_char.indexOf('@'));
+        }*/
+
+        if(enter_char.indexOf(' ') > -1){
+            enter_char= enter_char.substr(enter_char.lastIndexOf('@'), enter_char.lastIndexOf(' '));
+        }else{
+            enter_char= enter_char.substr(enter_char.lastIndexOf('@'));
+        }
+        
+
+        //if(enter_char.length > 1 && enter_char.indexOf('@') > -1){
+
+        if(enter_char.length > 1 && enter_char.lastIndexOf('@') > -1){
+
+            //$(curenct_obj).parent().find('.suggest-user-output').remove();
+
+            $.ajax({
+                url: APP_URL + '/suggest-user-list?search='+enter_char,
+                type: 'get',
+                //dataType: 'json',
+                beforeSend: function() {
+                },
+                success: function(data)
+                {
+                    $(curenct_obj).parent().find('.suggest-user-output').each(function( index ) {
+                        $(this).remove();
+                    });
+
+                    $(curenct_obj).parent().append(data);
+
+                },
+                complete: function(){
+                },
+            });
+        }else{
+            $(curenct_obj).parent().find('.suggest-user-output').remove();
+        }
+        
+    });
+
+    $(document).on('click','.suggest-user-click',function(e) {
+        var curenct_obj=$(this);
+        var input_field_obj=$(curenct_obj).parent().prev('.suggest-user-list');
+
+        var selected_user=$(curenct_obj).find('.suggest-selected-username').html();
+
+        var input_text=$(input_field_obj).val();
+
+         // get one charactor from all values
+        //var replace_string= input_text.substr(input_text.indexOf('@')+1, input_text.indexOf(' '));
+
+        if(input_text.indexOf(' ') > -1){
+            var replace_string= input_text.substr(input_text.lastIndexOf('@')+1, input_text.lastIndexOf(' '));
+        }else{
+            var replace_string= input_text.substr(input_text.lastIndexOf('@')+1);
+        }        
+
+        //var auto_complete_full_name = input_text.replace('/'+replace_string+'/g',selected_user);
+
+        var auto_complete_full_name = input_text.replace(replace_string,selected_user);
+
+        auto_complete_full_name=auto_complete_full_name+" ";
+
+        $(input_field_obj).val(auto_complete_full_name);
+        $(curenct_obj).parents('.suggest-user-output').remove();
+            
+    });
+
+    
+
     // Hide the notification menu when click on Document
     $(document).on("click", function(event){
         var $trigger = $("#notificationDropdown");

@@ -10,12 +10,17 @@ use App\Models\Access\User\User;
 use App\Post;
 use App\Category;
 use Carbon\Carbon;
+use App\Repositories\Frontend\Access\Post\PostRepository;
+
 
 class PostController extends Controller
 {
 
-    public function __construct()
+    protected $postRepository;
+
+    public function __construct(PostRepository $postRepository)
     {
+        $this->postRepository = $postRepository;
         $this->content = array();
     }
 
@@ -100,7 +105,39 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $imageOptimizer=new \Approached\LaravelImageOptimizer\ImageOptimizer;
+
+        $post= $this->postRepository->create($request,$imageOptimizer,$call_from_api=true);
+
+        if(!empty($post)){
+
+            /*$post=Post::with(
+                    [
+                        'user',
+                        'categories'
+                    ]
+                )
+                ->where('status','=','1')
+                ->where('id','=',$post->id)
+                ->withCount('comments')
+                ->first();
+
+            $view = \View::make('frontend.includes.posts.single',compact('post'));
+            $html_result = $view->render();
+             
+            return response()
+                ->json(['status' => 'success','message'=>'Your post published successfully.','html_result'=>$html_result]);*/
+
+            $this->content['massage'] = "post_saved_successfully";
+            $this->content['error'] = false;
+            $status = 200;
+        }else{
+            $this->content['massage'] = "post_not_saved_error_unknown";
+            $this->content['error'] = true;
+            $status = 500;
+        }
+
+        return response()->json($this->content, $status); 
     }
 
     /**

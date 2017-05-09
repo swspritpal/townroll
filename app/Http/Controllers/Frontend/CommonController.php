@@ -158,4 +158,37 @@ class CommonController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Response\Json
+     */
+    public function suggest_user_list(Request $request)
+    {   
+        $html_result='';
+
+        $search_char=$request->get('search');
+        $search_char=str_replace('@','',$search_char);
+
+        if(!empty($search_char)){
+            $users=\App\Models\Access\User\User::like('username', $search_char)->orderBy('username','DESC')->limit(env('DEFAULT_USER_SUGGESTION_LIMIT'))->get();
+            
+            if(!empty($users)){
+                $html_result.='<div class="suggest-user-output">';
+                    foreach ($users as $user) {
+                        $html_result.='
+                            <div class="row suggest-user-click '.$user->id.'">
+                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 paddingUnset">
+                                    <img src="'.$user->picture.'" alt="" class="profile-photo-sm">
+                                </div>
+                               <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 ">
+                                  <span class="suggest-selected-username">'.$user->username.'</span>
+                                </div>
+                            </div>';
+                    }
+                $html_result.='</div>';
+                return $html_result;
+            }
+        }
+        
+    }
+
 }

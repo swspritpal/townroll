@@ -3010,3 +3010,12 @@ img.profile-photo-md {
 .edit-profile-icon a:hover{
   color:#000000;
 }
+.suggest-user-output {
+  width: 50%;
+  position: absolute;
+  margin: 0 0 0 32px;
+  background-color: white;
+}
+.suggest-user-click{
+  cursor: pointer;
+}

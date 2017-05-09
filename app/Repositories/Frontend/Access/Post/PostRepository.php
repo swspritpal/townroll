@@ -154,7 +154,7 @@ class PostRepository extends Repository
      * @return mixed
      */
 
-    public function create(Request $request,ImageOptimizer $imageOptimizer)
+    public function create(Request $request,ImageOptimizer $imageOptimizer,$call_from_api=false)
     {
         $this->clearAllCache();
 
@@ -173,50 +173,72 @@ class PostRepository extends Repository
             $request['published_at'] = Carbon::now();
         }*/
 
-        $upload_dir=public_path().env('POST_IMAGES_FOLDER');
-        if($request->has('file')){
-             $img=$request->input('file');
+        if($call_from_api == false){
+            $upload_dir=public_path().env('POST_IMAGES_FOLDER');
+            if($request->has('file')){
+                 $img=$request->input('file');
 
-            list($type, $data) = explode(';', $img);
-            list(, $data)      = explode(',', $data);
-            list($type_content, $extension) = explode('/', $type);
-            $img = str_replace(' ', '+', $data);
-            $data = base64_decode($img);        
+                list($type, $data) = explode(';', $img);
+                list(, $data)      = explode(',', $data);
+                list($type_content, $extension) = explode('/', $type);
+                $img = str_replace(' ', '+', $data);
+                $data = base64_decode($img);        
 
-            $image_name=mt_rand().'.'.$extension;      
-            $file = $upload_dir.$image_name;
-            $success = file_put_contents($file, $data);
+                $image_name=mt_rand().'.'.$extension;      
+                $file = $upload_dir.$image_name;
+                $success = file_put_contents($file, $data);
 
-            if(env('USE_OPTIMIZER') && (\File::exists($file))){
-               // optimize
-                $imageOptimizer->optimizeImage($file);
-                // override the previous image with optimized once
-                $is_optimized = file_put_contents($file, \File::get($file));
-                if($is_optimized == false || empty($is_optimized)){
-                    \Log::warning('Post Image does not optimized. Named : '.$image_name);
+                if(env('USE_OPTIMIZER') && (\File::exists($file))){
+                   // optimize
+                    $imageOptimizer->optimizeImage($file);
+                    // override the previous image with optimized once
+                    $is_optimized = file_put_contents($file, \File::get($file));
+                    if($is_optimized == false || empty($is_optimized)){
+                        \Log::warning('Post Image does not optimized. Named : '.$image_name);
+                    }
+                }
+                if(empty($success)){
+                    return response()
+                            ->json(['status' => 'error','message'=>'Image not uploaded. Please try again.']);
                 }
             }
-            if(empty($success)){
-                return response()
-                        ->json(['status' => 'error','message'=>'Image not uploaded. Please try again.']);
-            }
+        }else{
+            $image_name=$request->get('image_name');
+            $user_modal=\App\Models\Access\User\User::whereId($request->get('user_id'))->first();
+        }
+        
+
+        if($call_from_api == false){
+            $post = auth()->user()->posts()->create(
+                [
+                    'html_content' => $this->markDownParser->parse($request->get('post_content'), false),
+                    'content' => $request->get('post_content'),
+                    'image_path' => $image_name,
+                    'status' => '1',
+                ]
+                
+            );
+        }else{            
+            $post = $user_modal->posts()->create(
+                [
+                    'html_content' => $this->markDownParser->parse($request->get('post_content'), false),
+                    'content' => $request->get('post_content'),
+                    'image_path' => $image_name,
+                    'status' => '1',
+                ]
+                
+            );
         }
 
-
-        $post = auth()->user()->posts()->create(
-        [
-            'html_content' => $this->markDownParser->parse($request->get('post_content'), false),
-            'content' => $request->get('post_content'),
-            'image_path' => $image_name,
-            'status' => '1',
-        ]
-        
-    );
     $categories=$request->get('post_categories');
-    
-    // If option containng All then attach post to all categories
+
+    // If option containing All then attach post to all categories
     if( (is_array($categories) && in_array('all', $categories)) || (strpos($categories,'all') !== false) ) {
-        $categories=auth()->user()->categories()->pluck('categories.id')->toArray();
+        if($call_from_api == false){
+            $categories=auth()->user()->categories()->pluck('categories.id')->toArray();
+        }else{
+            $categories=$user_modal->categories()->pluck('categories.id')->toArray();
+        }
     }else{
         $categories=explode(',', $categories);
     }
@@ -230,7 +252,7 @@ class PostRepository extends Repository
             $post->categories()->attach($categories);
         }
 
-    });
+    });    
     return $post;
 
         //$post->tags()->sync($ids);

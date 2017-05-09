@@ -111,4 +111,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'views', 'user_id', 'post_id')->withTimeStamps();
         //return $this->belongsToMany(\App\View::class, 'views', 'user_id', 'post_id')->withTimeStamps();
     }
+
+    public  function scopeLike($query, $field, $value){
+            return $query->where($field, 'LIKE', "$value%");
+    }
 }

@@ -103,6 +103,11 @@ class User extends Authenticatable
         return $this->morphedByMany('App\Post', 'likeable')->whereDeletedAt(null);
     }
 
+    public function slappedPosts()
+    {
+        return $this->morphedByMany('App\Post', 'slapable')->whereDeletedAt(null);
+    }
+
     /**
      * The user that belong to the view post.
      */
@@ -120,27 +125,7 @@ class User extends Authenticatable
 
         $previous_posts_on_certain_time= \Carbon\Carbon::now()->subHours(env('DEFAULT_RECENT_POST_MERGE_IN_HOURS'))->toDateTimeString();
 
-        /*return $user_model
-                ->with([
-                    'posts'=>function($post_inner_q) use($previous_posts_on_certain_time,$user_model) {
-                        $post_inner_q->where('created_at','>=',$previous_posts_on_certain_time)
-                                ->orderBy('created_at', 'desc')
-                                ->whereUserId($user_model->id);
-                        }
-                    ])
-                ->whereHas('posts',function($post_q) use($previous_posts_on_certain_time,$user_model) {
-                    $post_q->where('created_at','>=',$previous_posts_on_certain_time)
-                            ->orderBy('created_at', 'desc')
-                            ->whereUserId($user_model->id);
-                })
-                ->first();*/
-
         return \App\Post::with(['user','categories'])
-                /*->whereHas('posts',function($post_q) use($previous_posts_on_certain_time,$user_model) {
-                    $post_q->where('created_at','>=',$previous_posts_on_certain_time)
-                            ->orderBy('created_at', 'desc')
-                            ->whereUserId($user_model->id);
-                })*/
                 ->where('created_at','>=',$previous_posts_on_certain_time)
                 ->whereUserId($user_model->id)
                 ->orderBy('created_at', 'desc')

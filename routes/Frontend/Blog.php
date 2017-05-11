@@ -35,6 +35,11 @@ Route::group(['middleware' => 'auth'], function () {
     // Like
     Route::get('post/like/{id}', ['as' => 'post.like', 'uses' => 'LikeController@likePost']);
     // Liked User list
-    Route::get('post-liked-users/{post_id}', 'LikeController@likedUsersList');  
+    Route::get('post-liked-users/{post_id}', 'LikeController@likedUsersList');
+
+    // Slap
+    Route::get('post/slap/{id}', ['as' => 'post.slpa', 'uses' => 'SlapController@slapPost']);
+    // Slapped User list
+    Route::get('post-slapped-users/{post_id}', 'SlapController@slappedUsersList');  
 
 });

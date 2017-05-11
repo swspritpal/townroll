@@ -2,9 +2,11 @@
     @if ($activity['verb'] == "like")
        @include('frontend.includes.notifications.like')
 
+    @elseif ($activity['verb'] == "slap")
+    	@include('frontend.includes.notifications.slap')
     @elseif ($activity['verb'] == "mention_in_comment")
     	@include('frontend.includes.notifications.mention_in_comment')
-    @else
+    @elseif ($activity['verb'] == "comment")
        @include('frontend.includes.notifications.comment')
     @endif
 @else

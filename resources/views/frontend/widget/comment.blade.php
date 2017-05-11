@@ -39,6 +39,20 @@
           <i class="fa fa-eye"></i> {{ !empty($post->view_count()) ? $post->view_count() : "0" }}  Views
         </a>
 
+        <a  href="javascript:void(0);"  class="btn text-grey hoverRed paddingUnset " data-post-id="{{ $post->id }}">
+          <i class=" fa  {{ $post->is_slapped ? 'fa-hand-paper-o slapped-class' : 'fa-hand-paper-o' }} post-slap-click"></i>
+        </a>
+
+        @if(access()->user()->id == $post->user_id)
+          <a href="javascript:void(0);" data-post-id="{{ $post->id }}" class="btn text-grey hoverRed paddingUnset post-slapped-users">
+              <span class="post-slap-counter">{{ !empty($post->slap_count()) ? $post->slap_count() : "0" }}</span> Slaps
+          </a>
+        @else
+          <a href="javascript:void(0)">
+            <span class="post-slap-counter">{{ !empty($post->slap_count()) ? $post->slap_count() : "0" }}</span> Slaps
+          <a href="">
+        @endif
+
         <span class="pull-right"> 
         <a class="btn text-grey hoverOrange paddingUnset" title="Boost post" data-toggle="modal" data-target="#postBoot"><i class="fa fa-rocket"></i> Boost</a> 
         <a class="btn text-grey hoverOrange paddingUnset" href="javascript:void(0);"  data-toggle="modal" data-target="#allBoost">(0)</a> </span>

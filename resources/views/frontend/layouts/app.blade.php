@@ -58,6 +58,7 @@
         @include('frontend.includes.popups.post-single')
         @include('frontend.includes.popups.post-view')
         @include('frontend.includes.popups.post-liked')
+        @include('frontend.includes.popups.post-slapped')
 
         <div id="page-contents">
             <div class="container-fluid" >

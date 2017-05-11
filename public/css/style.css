@@ -3019,3 +3019,6 @@ img.profile-photo-md {
 .suggest-user-click{
   cursor: pointer;
 }
+.slapped-class {
+    color: blue;
+}

@@ -168,4 +168,28 @@ class Post extends Model
         return (int) View::where('post_id', $this->id)
                             ->count();
     }
+
+     /**
+     * Determine whether a post slap counter
+     *
+     * @return int
+     */
+    public function slap_count()
+    {
+        return (int) \App\Slap::where('slapable_id', $this->id)
+                            ->count();
+    }
+
+
+    /**
+     * Determine whether a post has been marked as like by a user.
+     *
+     * @return boolean
+     */
+    public function getIsSlappedAttribute()
+    {
+        return (bool) \App\Slap::where('user_id', \Auth::id())
+                            ->where('slapable_id', $this->id)
+                            ->first();
+    }
 }

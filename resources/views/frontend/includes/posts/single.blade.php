@@ -43,7 +43,7 @@
           </div>
         </div>
           @unless(empty($post->image_path))
-            <img src="{{ asset(env('POST_IMAGES_FOLDER').$post->image_path) }}" alt="post-image" class="img-responsive post-image" href="javascript:void(0);"   data-toggle="modal" data-target="#ViewFullPost">
+              <img src="{{ asset(env('POST_IMAGES_FOLDER').$post->image_path) }}" alt="post-image" class="img-responsive post-image post-slap-click-trigger" href="javascript:void(0);"   data-toggle="modal" data-target="#ViewFullPost">
           @endunless
 
         

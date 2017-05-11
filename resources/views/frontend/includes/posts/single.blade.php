@@ -1,4 +1,5 @@
 {{ $post->onPostShowing($post)}}
+
 <!-- Post Content
 ================================================= -->
   <div class="post-content content-item-wrapper" data-post-id="{{ $post->id }}" data-auto-refresh="false">

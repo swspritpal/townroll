@@ -125,7 +125,7 @@ jQuery(document).ready(function($) {
         }*/
 
         if(enter_char.indexOf(' ') > -1){
-            enter_char= enter_char.substr(enter_char.lastIndexOf('@'), enter_char.lastIndexOf(' '));
+            enter_char= enter_char.substr(enter_char.lastIndexOf('@'), enter_char.indexOf(' '));
         }else{
             enter_char= enter_char.substr(enter_char.lastIndexOf('@'));
         }
@@ -173,7 +173,7 @@ jQuery(document).ready(function($) {
         //var replace_string= input_text.substr(input_text.indexOf('@')+1, input_text.indexOf(' '));
 
         if(input_text.indexOf(' ') > -1){
-            var replace_string= input_text.substr(input_text.lastIndexOf('@')+1, input_text.lastIndexOf(' '));
+            var replace_string= input_text.substr(input_text.lastIndexOf('@')+1, input_text.indexOf(' '));
         }else{
             var replace_string= input_text.substr(input_text.lastIndexOf('@')+1);
         }        
@@ -363,7 +363,6 @@ jQuery(document).ready(function($) {
                 if(data.status == 200){
                     $('#locateMe').modal('hide');
                     $('.right-sidebar-locations').append(data.html_result['horizontal']);
-                    //$('.add-new-location-in-header').find('.slick-track').append(data.html_result['vertical']);
                     $('.add-new-location-in-header').find('.slick-track .locate-me-popup').after(data.html_result['vertical']);
                 }else{
                     toastr.warning(data.message);
@@ -410,6 +409,7 @@ jQuery(document).ready(function($) {
             contentSelector: 'div.infinite-scroll',
             callback: function() {
                 $('ul.pagination').remove();
+                init_comment_read_more();
             }
         });
     });
@@ -485,12 +485,26 @@ jQuery(document).ready(function($) {
               closeOnConfirm: true,
             });
         }
-    });   
+    });
+
+    //$('.merging-posts-wrapper').slick(getPostSlickSliderSettings());
+
+    /*$('.merging-posts-wrapper').slick({
+      infinite: true,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    });*/
+
+    $('.merging-posts-wrapper').slick(getPostSlickSliderSettings());
 
 });
 
-
-
-
-
-
+function getPostSlickSliderSettings(){
+  return {
+      dots: true,
+      infinite: false,
+      speed: 300,
+      slidesToShow: 1,
+      adaptiveHeight: true
+  }
+}

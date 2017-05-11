@@ -20,8 +20,32 @@
 	    	</div>
 	  	</div>
         <div class="infinite-scroll append-new-post-content">
-        	@each('frontend.includes.posts.single',$posts,'post','frontend.includes.posts.empty')
+            @forelse ($posts as $post)
+                @php
+                    $recent_post=$post->user->recent_posts($post->user);
+                @endphp
+
+                @if(!empty($recent_post) && count($recent_post) > 1 )
+                    @foreach($recent_post as $recent_post_data)
+                        @php
+                            $recent_posts_ids[]=$recent_post_data->id;
+                        @endphp
+                    @endforeach
+
+                    @if(in_array($post->id,$recent_posts_ids))
+                        @include('frontend.includes.posts.merge-posts-by-single-user',compact('recent_post'))
+                    @else
+                        @include('frontend.includes.posts.single')
+                    @endif
+                @else
+                    @include('frontend.includes.posts.single')
+                @endif
+
+            @empty
+                @include('frontend.includes.posts.empty')
+            @endforelse
             
+
         	{{ $posts
                 ->appends($sort_by)
                 ->render()

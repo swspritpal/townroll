@@ -115,4 +115,36 @@ class User extends Authenticatable
     public  function scopeLike($query, $field, $value){
             return $query->where($field, 'LIKE', "$value%");
     }
+
+    public  function recent_posts($user_model){
+
+        $previous_posts_on_certain_time= \Carbon\Carbon::now()->subHours(env('DEFAULT_RECENT_POST_MERGE_IN_HOURS'))->toDateTimeString();
+
+        /*return $user_model
+                ->with([
+                    'posts'=>function($post_inner_q) use($previous_posts_on_certain_time,$user_model) {
+                        $post_inner_q->where('created_at','>=',$previous_posts_on_certain_time)
+                                ->orderBy('created_at', 'desc')
+                                ->whereUserId($user_model->id);
+                        }
+                    ])
+                ->whereHas('posts',function($post_q) use($previous_posts_on_certain_time,$user_model) {
+                    $post_q->where('created_at','>=',$previous_posts_on_certain_time)
+                            ->orderBy('created_at', 'desc')
+                            ->whereUserId($user_model->id);
+                })
+                ->first();*/
+
+        return \App\Post::with(['user','categories'])
+                /*->whereHas('posts',function($post_q) use($previous_posts_on_certain_time,$user_model) {
+                    $post_q->where('created_at','>=',$previous_posts_on_certain_time)
+                            ->orderBy('created_at', 'desc')
+                            ->whereUserId($user_model->id);
+                })*/
+                ->where('created_at','>=',$previous_posts_on_certain_time)
+                ->whereUserId($user_model->id)
+                ->orderBy('created_at', 'desc')
+                //->toSql();
+                ->get();
+    }
 }

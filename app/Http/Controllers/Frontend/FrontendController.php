@@ -84,20 +84,49 @@ class FrontendController extends Controller
             $notification_feed = $notification_feed->getActivities(0,25)['results'];
             $notification_feed = $enricher->enrichActivities($notification_feed);*/
 
+
+            $previous_posts_on_certain_time= \Carbon\Carbon::now()->subHours(env('DEFAULT_RECENT_POST_MERGE_IN_HOURS'))->toDateTimeString();
+            $excluded_recent_posts=[];
+
+            $login_user_categoreis_wise_posts = Post::
+                whereIn('id', function($category_post_query) use($sort_by){
+                    $category_post_query
+                        ->select('post_id')
+                        ->from(with(new \App\CategoryPost)->getTable())
+                        ->whereIn('category_id',function($category_query) use($sort_by){
+                                $category_query
+                                    ->select(['category_id'])
+                                    ->from(with(new \App\CategoryUser)->getTable())
+                                    ->where('user_id', '=', \Auth::id());
+
+                                if(!empty($sort_by)){
+                                    $category_query->where('category_id', '=', $sort_by['cat']);
+                                }
+                                $category_query->get()
+                                ->toArray();
+                        })
+                        ->get()
+                        ->toArray();
+
+                })
+                ->where('created_at','>=',$previous_posts_on_certain_time)
+                
+                ->groupBy(['posts.user_id','posts.id'])
+                ->orderBy('created_at', 'desc')
+                //->toSql();
+                ->get(['posts.id','posts.user_id'])
+                ->toArray();
+
+            $last_posts_ids_by_particular_user = array_column($login_user_categoreis_wise_posts,'id','user_id');
+            $all_recent_posts_only_ids=array_column($login_user_categoreis_wise_posts,'id');
+            $excluded_recent_posts=array_diff($all_recent_posts_only_ids,$last_posts_ids_by_particular_user);
+
             $posts = Post::with(
                     [
                         'user',
                         'categories'
-                        /*'comments'=>function($comment_q){
-                            $comment_q->with('user')
-                                ->orderBy('created_at', 'desc')
-                                ->limit(env('DEFAULT_HOME_PAGE_POST_COMMENTS'))
-                                ->get();
-                        },*/
                     ]
                 )
-                ->where('status','=','1')
-                ->orderBy('created_at', 'desc')
                 ->withCount('comments')
 
                 ->whereIn('id', function($category_post_query) use($sort_by){
@@ -120,7 +149,13 @@ class FrontendController extends Controller
                         ->toArray();
 
                 })
+                // merge recent post logic
+                ->whereNotIn('id',$excluded_recent_posts)
+
+                ->orderBy('posts.created_at', 'desc')
                 //->toSql();
+                /*->limit(env('DEFAULT_HOME_PAGE_POST'))
+                ->get();*/
                 ->paginate(env('DEFAULT_HOME_PAGE_POST'));
 
             //dd($posts);

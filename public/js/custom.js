@@ -410,6 +410,7 @@ jQuery(document).ready(function($) {
             callback: function() {
                 $('ul.pagination').remove();
                 init_comment_read_more();
+                $('.merging-posts-wrapper').slick(getPostSlickSliderSettings());
             }
         });
     });
@@ -486,14 +487,6 @@ jQuery(document).ready(function($) {
             });
         }
     });
-
-    //$('.merging-posts-wrapper').slick(getPostSlickSliderSettings());
-
-    /*$('.merging-posts-wrapper').slick({
-      infinite: true,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    });*/
 
     $('.merging-posts-wrapper').slick(getPostSlickSliderSettings());
 

@@ -70,11 +70,11 @@ jQuery(document).ready(function($) {
     // slap action on Image then trigger html click
     $(document).on('dblclick','.post-slap-click-trigger',function (e) {        
         var current_element=$(this);
-        $(current_element).parents('.post-container').find('.post-counter-bar .post-slap-click').trigger('dblclick');
+        $(current_element).parents('.post-container').find('.post-counter-bar .post-slap-click').trigger('click');
     });
 
      // slap  action on counter 
-    $(document).on('dblclick','.post-slap-click',function (e) {
+    $(document).on('click','.post-slap-click',function (e) {
         var postId=$(this).parent('a').attr('data-post-id');
         var current_element=$(this);
 

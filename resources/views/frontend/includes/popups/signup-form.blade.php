@@ -2,10 +2,16 @@
 
 $countriesList=getCountiesList();
 
-if(is_username_unique(clean_username(Auth::user()->name))){
+if(!is_username_unique(clean_username(Auth::user()->name))){
   $username_suggest=clean_username(Auth::user()->name);
 }else{
-  $username_suggest="";
+  $username_suggest=clean_username(Auth::user()->name);
+  $username_suggest_add_random=$username_suggest=clean_username(Auth::user()->name).mt_rand(10,22);
+  if(!is_username_unique($username_suggest_add_random)){
+    $username_suggest=$username_suggest_add_random;
+  }else{
+    $username_suggest="";  
+  }
 }
 
 ?>

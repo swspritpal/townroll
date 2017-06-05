@@ -289,6 +289,13 @@ class UserRepository extends BaseRepository
         return $total_places_users;
     }
 
+
+    public function get_user_total_boost_posts($user_id)
+    {
+        $boost_post_counter = \App\BoostPost::whereUserId($user_id)->count();
+        return $boost_post_counter;
+    }
+
     public function upload_profile_image($image_source,$user,$save_path)
     {
        $upload_dir=public_path().$save_path;

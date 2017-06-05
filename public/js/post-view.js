@@ -210,6 +210,30 @@ jQuery(document).ready(function($) {
             },
         });
     });
+
+    // Load more user pagination for all popup Likes, viewers, slaps
+    $(document).on('click','.load-more-users-popup',function(){
+        var next_page_url=$(this).data('next-page-url');
+        $('.popup-user-paginator').html('');
+
+        $.ajax({
+            url: next_page_url,
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function() {
+                $(".popup-user-paginator").append('<img class="center-block loader-image img-responsive" src="'+APP_URL+'/img/loader.gif" alt="Loading..." />');
+            },
+            success: function(data)
+            {
+                if(data.status == '200'){
+                    $('.load-more-users-pagination-output').append(data.html_result);
+                }                
+            },
+            complete: function(){
+                $(".popup-user-paginator").find('.loader-image').remove();
+            }
+        });
+    });
     
 });
 

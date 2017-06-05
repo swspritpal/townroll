@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class SlapController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->content = array();
+    }
 
     public function slapPost(Request $request,$id)
     {
@@ -75,22 +78,38 @@ class SlapController extends Controller
         $html_result='';
 
         $slapped_users=Slap::where('slapable_id', $post_id)
-                ->with(['users'=>function($user_query){
-                	$user_query->select('users.id','username','profile_uri');
+                ->with(['user'=>function($user_query){
+                	$user_query->select('users.id','username','profile_uri','profile_image');
                 }])
                 ->orderBy('created_at','desc')
-                ->selectRaw('`slaps`.*,(select count(*) from `users` inner join `slaps` on `users`.`id` = `slaps`.`user_id` where  `slaps`.`slapable_id` = '.$post_id.' and `users`.`deleted_at` is null) as `users_count`')
                 ->paginate(env('DEFAULT_HOME_PAGE_VIEWED_OR_LIKED_USERS_LIMIT'));
                 //->toSql();
 
-        if(!empty($slapped_users)){
-            $view = \View::make('frontend.includes.posts.viewed_or_liked_list',['viewed_or_liked_users'=>$slapped_users]);
-            $html_result = $view->render();
-        }else{
-            $html_result = 'users not found ';
-        }
+        // For web response
+        if($request->is('api/*') == false){
+            if(!empty($slapped_users)){
+                $view = \View::make('frontend.includes.posts.viewed_or_liked_list',['viewed_or_liked_users'=>$slapped_users]);
+                $html_result = $view->render();
+            }else{
+                $html_result = 'users not found ';
+            }
 
-        return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
+            return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
+        }else{
+
+            if(!empty($slapped_users)){
+                $this->content['error'] = false;
+                $this->content['massage'] = "slapped_users";
+                $this->content['data'] = $slapped_users->toArray();
+                $status = 200;
+            }else{
+                $this->content['error'] = false;
+                $this->content['massage'] = "no_users.";
+                $this->content['data'] ='';
+                $status = 200;
+            }
+            return response()->json($this->content, $status);
+        }
     }
 
 }

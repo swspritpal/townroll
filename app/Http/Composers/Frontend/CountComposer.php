@@ -40,7 +40,8 @@ class CountComposer
         $user_post_count=$this->user->get_user_total_post($user_id);
         $user_place_count=$this->user->get_user_total_categories($user_id);
         $total_places_users=$this->user->get_user_total_categories_user($user_id);
+        $total_boost_posts=$this->user->get_user_total_boost_posts($user_id);
 
-        $view->with(compact('user_post_count','user_place_count','total_places_users'));
+        $view->with(compact('user_post_count','user_place_count','total_places_users','total_boost_posts'));
     }
 }

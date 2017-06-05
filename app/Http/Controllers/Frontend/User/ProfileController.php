@@ -128,8 +128,9 @@ class ProfileController extends Controller
             $user_post_count=$this->user->get_user_total_post($user->id);
             $user_place_count=$this->user->get_user_total_categories($user->id);
             $total_places_users=$this->user->get_user_total_categories_user($user->id);
+            $total_boost_posts=$this->user->get_user_total_boost_posts($user->id);
 
-            return view('frontend.user.profile.view',compact('user','user_post_count','user_place_count','posts','sort_by','total_places_users'));
+            return view('frontend.user.profile.view',compact('user','user_post_count','user_place_count','posts','sort_by','total_places_users','total_boost_posts'));
         }else{
             abort(404);
         }
@@ -145,8 +146,9 @@ class ProfileController extends Controller
             $user_post_count=$this->user->get_user_total_post($user->id);
             $user_place_count=$this->user->get_user_total_categories($user->id);
             $total_places_users=$this->user->get_user_total_categories_user($user->id);
+            $total_boost_posts=$this->user->get_user_total_boost_posts($user_id);
 
-            $view = \View::make('frontend.includes.popups.user-profile-ajax',compact('user','user_post_count','user_place_count','total_places_users'));
+            $view = \View::make('frontend.includes.popups.user-profile-ajax',compact('user','user_post_count','user_place_count','total_places_users','total_boost_posts'));
             return $view->render();
         }else{
             abort(404);

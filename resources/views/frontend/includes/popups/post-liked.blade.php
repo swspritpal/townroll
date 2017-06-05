@@ -8,7 +8,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h5 class="modal-title">Peoples Who Liked</h5>
         </div>
-        <div class="modal-body clearfix load-post-liked-user-list">
+        <div class="modal-body clearfix load-post-liked-user-list load-more-users-pagination-output">
          
         </div>
       </div>

@@ -64,7 +64,7 @@ class CommentRepository extends Repository
         return $comments;
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$user_id=null)
     {
         $this->clearCache();
 
@@ -78,8 +78,12 @@ class CommentRepository extends Repository
 
 
         $content = $request->get('content');
-        $comment->ip_id = $request->ip();
-        $comment->user_id = access()->user()->id;
+        // If request from WEB
+        if($request->is('api/*') == false){
+            $comment->ip_id = $request->ip();
+        }
+        
+        $comment->user_id = $user_id;
         $comment->content = $this->mention->parse($content);
         $comment->html_content = $this->markdownParser->parse($comment->content);
         $result = $commentable->comments()->save($comment);
@@ -89,12 +93,12 @@ class CommentRepository extends Repository
         $notifyTo=$commentable->user_id;
 
         // when some other user comment on post then notify to Auther 
-        if($notifyTo != \Auth::id()){
-            $user_notification=\FeedManager::getUserFeed(\Auth::id());
+        if($notifyTo != $user_id){
+            $user_notification=\FeedManager::getUserFeed($user_id);
 
             // Push notification for Stream about the comment action
             $data = [
-                "actor"=>"\App\Models\Access\User\User:".\Auth::user()->id,
+                "actor"=>"\App\Models\Access\User\User:".$user_id,
                 "verb"=>"comment",
                 "object"=>$request->get('commentable_type').":".$commentable->id,
                 "foreign_id"=>"\App\Comment:".$result->id,

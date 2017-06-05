@@ -232,14 +232,6 @@ class UserController extends Controller
         return Socialite::driver($provider)->user();
     }
 
-    public function check(){        
-        $this->content['massage'] = "Invalid params";
-        $this->content['error'] = true;
-        $status = 500;
-        return response()->json($this->content, $status);
-
-    }
-
     /**
      * @param UpdateProfileRequest $request
      *

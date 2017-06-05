@@ -42,4 +42,12 @@ Route::group(['middleware' => 'auth'], function () {
     // Slapped User list
     Route::get('post-slapped-users/{post_id}', 'SlapController@slappedUsersList');  
 
+
+    // Boost Post Route
+
+    Route::get('/boost/create/{post_id}/{search_key?}', ['uses' => 'BoostController@create', 'as' => 'boost.create']);
+
+    Route::post('/boost/store', ['uses' => 'BoostController@store', 'as' => 'boost.store']);
+    Route::get('post-boosted-users/{post_id}', ['uses' => 'BoostController@boostedUsers']);
+
 });

@@ -37,6 +37,7 @@ class PostController extends Controller
 
         $this->postRepository = $postRepository;
         $this->commentRepository = $commentRepository;
+        $this->content = array();
     }
 
 
@@ -114,22 +115,42 @@ class PostController extends Controller
         $html_result='';
 
         $viewed_users=View::where('post_id', $post_id)
-                ->with('users')
+                 ->with(['user'=>function($user_query){
+                    $user_query->select('users.id','username','profile_uri','profile_image');
+                }])
                 ->limit(env('DEFAULT_HOME_PAGE_VIEWED_USERS_LIMIT'))
                 ->orderBy('created_at','desc')
-                ->selectRaw('`views`.*,(select count(*) from `users` inner join `views` on `users`.`id` = `views`.`user_id` where  `views`.`post_id` = '.$post_id.' and `users`.`deleted_at` is null) as `users_count`')
+                //->selectRaw('`views`.*,(select count(*) from `users` inner join `views` on `users`.`id` = `views`.`user_id` where  `views`.`post_id` = '.$post_id.' and `users`.`deleted_at` is null) as `users_count`')
                 ->paginate(env('DEFAULT_HOME_PAGE_VIEWED_OR_LIKED_USERS_LIMIT'));
                 //->toSql();
 
-        if(!empty($viewed_users)){
 
-            $view = \View::make('frontend.includes.posts.viewed_or_liked_list',['viewed_or_liked_users'=>$viewed_users]);
-            $html_result = $view->render();
+         // For web response
+        if($request->is('api/*') == false){
+            if(!empty($viewed_users)){
+
+                $view = \View::make('frontend.includes.posts.viewed_or_liked_list',['viewed_or_liked_users'=>$viewed_users]);
+                $html_result = $view->render();
+            }else{
+                $html_result = 'users not found ';
+            }
+
+            return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
         }else{
-            $html_result = 'users not found ';
-        }
 
-        return response()->json(['status' => 200, 'message' => 'success','html_result'=>$html_result]);
+            if(!empty($viewed_users)){
+                $this->content['error'] = false;
+                $this->content['massage'] = "viewed_users";
+                $this->content['data'] = $viewed_users->toArray();
+                $status = 200;
+            }else{
+                $this->content['error'] = false;
+                $this->content['massage'] = "no_users.";
+                $this->content['data'] ='';
+                $status = 200;
+            }
+            return response()->json($this->content, $status);
+        }
     }
 
 
@@ -165,7 +186,6 @@ class PostController extends Controller
         }else{
             abort(404);
         }
-        
     }
 
 }

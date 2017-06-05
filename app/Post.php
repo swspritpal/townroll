@@ -115,21 +115,18 @@ class Post extends Model
     public function views()
     {
         return $this->belongsToMany(User::class, 'views', 'post_id', 'user_id')->withTimeStamps();
-        //return $this->belongsToMany(View::class, 'views', 'post_id', 'user_id')->withTimeStamps();
     }
 
-    /*public function like()
-    {
-        //testing
-        return $this->hasMany(\App\Like::class)->withTimeStamps();
-
-        //return $this->belongsToMany(User::class, 'views', 'post_id', 'user_id')->withTimeStamps();
-        //return $this->belongsToMany(\App\like::class, 'likes', 'post_id', 'user_id')->withTimeStamps();
-    }*/
 
     public function likes()
     {
-        return $this->morphToMany(User::class, 'likes')->whereDeletedAt(null);
+        //return $this->morphToMany(User::class, 'likes')->whereDeletedAt(null);
+        return $this->morphToMany(User::class, 'likeable','likes')->where('likes.deleted_at','=',null);
+    }
+
+    public function slaps()
+    {
+        return $this->morphToMany(User::class, 'slapable','slaps')->where('slaps.deleted_at','=',null);
     }
 
     
@@ -140,47 +137,8 @@ class Post extends Model
      */
     public function getIsLikedAttribute()
     {
-        //$like = $this->likes()->whereUserId(\Auth::id())->first();        
-        //return (!is_null($like)) ? true : false;
-
-        return (bool) Like::where('user_id', \Auth::id())
-                            ->where('likeable_id', $this->id)
-                            ->first();
+        return is_post_liked_by_user($this->id,\Auth::id());
     }
-
-    /**
-     * Determine whether a post like counter
-     *
-     * @return int
-     */
-    public function like_count()
-    {
-        return (int) Like::where('likeable_id', $this->id)
-                            ->count();
-    }
-    /**
-     * Post total views
-     *
-     * @return int
-     */
-    public function view_count()
-    {
-        return (int) View::where('post_id', $this->id)
-                            ->count();
-    }
-
-     /**
-     * Determine whether a post slap counter
-     *
-     * @return int
-     */
-    public function slap_count()
-    {
-        return (int) \App\Slap::where('slapable_id', $this->id)
-                            ->count();
-    }
-
-
     /**
      * Determine whether a post has been marked as like by a user.
      *
@@ -192,4 +150,33 @@ class Post extends Model
                             ->where('slapable_id', $this->id)
                             ->first();
     }
+
+
+   /**
+     * Get the boost for the post.
+     */
+    public function boosts()
+    {
+        return $this->hasMany('\App\BoostPost');
+    }
+
+    /**
+     * Determine counter for boost
+     *
+     * @return int
+     */
+    public function boost_count()
+    {
+        $boost_count_model=\App\BoostPostCategories::whereIn('boost_post_id',function($boost_post_category_query){
+                            $boost_post_category_query
+                                ->select(['id'])
+                                ->from(with(new \App\BoostPost)->getTable())
+                                ->wherePostId($this->id);
+                            $boost_post_category_query->get()
+                            ->toArray();
+                        })
+                        ->count(['category_id']);
+
+        return (int) !empty($boost_count_model) ? $boost_count_model : 0;
+     }
 }

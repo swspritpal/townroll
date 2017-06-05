@@ -3022,3 +3022,6 @@ img.profile-photo-md {
 .slapped-class {
     color: blue;
 }
+.empty_boost_form_error {
+  color: red;
+}

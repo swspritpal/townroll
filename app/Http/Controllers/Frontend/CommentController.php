@@ -48,7 +48,7 @@ class CommentController extends Controller
             );
         }
 
-        if ($comment = $this->commentRepository->create($request))
+        if ($comment = $this->commentRepository->create($request,\Auth::id()))
             return response()->json(['status' => 200, 'msg' => 'success']);
         return response()->json(['status' => 500, 'msg' => 'your comment was not posted. Please try again.']);
     }

@@ -12,7 +12,7 @@
     <div class="LeftMenuLi">
       <a href="#" class="LeftSidebarCounter ">
       <span class="CounterFontStyle pull-left">  Boost Posts </span>
-      <span class="pull-right">0 </span></a>
+      <span class="pull-right">{{ $total_boost_posts }} </span></a>
       <div style="clear:both"> </div>
     </div>
     </li>

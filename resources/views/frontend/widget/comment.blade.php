@@ -5,7 +5,6 @@
   }else{
     $post->comments=$post->lastest_comments->reverse();
   }
-  
 @endphp
 
 @section('after-scripts')
@@ -15,7 +14,7 @@
   {!! Html::script(asset('js/comments/imgLiquid-min.js')) !!}
   {!! Html::script(asset('js/comments/marked.js')) !!}
   {!! Html::script(asset('js/comments/comments.js')) !!}
-@endsection
+@endsection 
 
 <!-- 'redirect'=>(isset($redirect) && $redirect ? $redirect:'') -->
 
@@ -26,7 +25,7 @@
           <i class=" fa  {{ $post->is_liked ? 'fa-heart' : 'fa-heart-o' }} post-like-click"></i>
         </a>
         <a href="javascript:void(0);" data-post-id="{{ $post->id }}" class="btn text-grey hoverRed paddingUnset post-liked-users"> 
-            <span class="post-like-counter">{{ !empty($post->like_count()) ? $post->like_count() : "0" }}</span> Likes
+            <span class="post-like-counter">{{ !empty($post->likes_count) ? $post->likes_count : "0" }}</span> Likes
         </a>
 
         @if($load_all_comment)
@@ -36,7 +35,7 @@
         @endif
 
         <a class="btn text-grey hoverCyan post-view-by-users {{ ($load_all_comment) ? 'paddingUnset':'' }}" href="javascript:void(0);"  data-post-id="{{ $post->id }}">
-          <i class="fa fa-eye"></i> {{ !empty($post->view_count()) ? $post->view_count() : "0" }}  Views
+          <i class="fa fa-eye"></i> {{ !empty($post->views_count) ? $post->views_count : "0" }}  Views
         </a>
 
         <a  href="javascript:void(0);"  class="btn text-grey hoverRed paddingUnset " data-post-id="{{ $post->id }}">
@@ -45,17 +44,26 @@
 
         @if(access()->user()->id == $post->user_id)
           <a href="javascript:void(0);" data-post-id="{{ $post->id }}" class="btn text-grey hoverRed paddingUnset post-slapped-users">
-              <span class="post-slap-counter">{{ !empty($post->slap_count()) ? $post->slap_count() : "0" }}</span> Slaps
+              <span class="post-slap-counter">{{ !empty($post->slaps_count) ? $post->slaps_count : "0" }}</span> Slaps
           </a>
         @else
           <a href="javascript:void(0)">
-            <span class="post-slap-counter">{{ !empty($post->slap_count()) ? $post->slap_count() : "0" }}</span> Slaps
-          <a href="">
+            <span class="post-slap-counter">{{ !empty($post->slaps_count) ? $post->slaps_count : "0" }}</span> Slaps
+          </a>
         @endif
 
         <span class="pull-right"> 
-        <a class="btn text-grey hoverOrange paddingUnset" title="Boost post" data-toggle="modal" data-target="#postBoot"><i class="fa fa-rocket"></i> Boost</a> 
-        <a class="btn text-grey hoverOrange paddingUnset" href="javascript:void(0);"  data-toggle="modal" data-target="#allBoost">(0)</a> </span>
+          @if(access()->user()->id == $post->user_id)
+            <a class="btn text-grey hoverOrange paddingUnset "></i> Boost</a>
+          @else
+            <a class="btn text-grey hoverOrange paddingUnset boost-this-post" title="Boost"  data-post-id="{{ $post->id }}"><i class="fa fa-rocket"></i> Boost</a> 
+          @endif
+
+        <!-- <a class="btn text-grey hoverOrange paddingUnset" href="javascript:void(0);"  data-toggle="modal" data-target="#allBoost">({{ !empty($post->boost_count()) ? $post->boost_count() : "0" }})</a> </span> -->
+
+          ({{ !empty($post->boost_count()) ? $post->boost_count() : "0" }}) 
+        </span>
+
         <div style="clear:both"> </div>
     </div>
     <div class="line-divider"></div>

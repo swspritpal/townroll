@@ -44,6 +44,9 @@ class PostController extends Controller
                 )
                 ->orderBy('created_at', 'desc')
                 ->withCount('comments')
+                ->withCount('likes')
+                ->withCount('views')
+                ->withCount('slaps')
                 ->whereIn('id', function($category_post_query) use($sort_by,$user_id){
                     $category_post_query
                         ->select('post_id')
@@ -65,7 +68,7 @@ class PostController extends Controller
 
                 })
                 ->paginate(env('DEFAULT_HOME_PAGE_POST_FOR_APP'))
-                ->toArray();
+               ->toArray();
 
             if(!empty($posts)){
                 $this->content['error'] = false;
@@ -105,29 +108,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $imageOptimizer=new \Approached\LaravelImageOptimizer\ImageOptimizer;
 
         $post= $this->postRepository->create($request,$imageOptimizer,$call_from_api=true);
 
         if(!empty($post)){
-
-            /*$post=Post::with(
-                    [
-                        'user',
-                        'categories'
-                    ]
-                )
-                ->where('status','=','1')
-                ->where('id','=',$post->id)
-                ->withCount('comments')
-                ->first();
-
-            $view = \View::make('frontend.includes.posts.single',compact('post'));
-            $html_result = $view->render();
-             
-            return response()
-                ->json(['status' => 'success','message'=>'Your post published successfully.','html_result'=>$html_result]);*/
-
             $this->content['massage'] = "post_saved_successfully";
             $this->content['error'] = false;
             $status = 200;
@@ -204,48 +190,62 @@ class PostController extends Controller
         //
     }
 
-    public function login(Request $request)
-    {
-        $data=(object) $request->all();
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function is_post_liked_by_user($post_id=null,$user_id=null)
+    {        
+        if(!empty($post_id) && !empty($user_id)){
+            $result=is_post_liked_by_user($post_id,$user_id);
 
-        if($request->has('email')){
-            $user_exit=User::whereEmail(request('email'))->first();
-            if(!empty($user_exit)){
+            if($result){
                 $this->content['error'] = false;
-                $this->content['massage'] = "User exit";
-                $this->content['user_id'] = $user_exit->id;
+                $this->content['massage'] = "user_liked_this_post";
+                $this->content['result'] = $result;
+                $status = 200;
             }else{
-                $this->create($data);
+                $this->content['massage'] = "user_does_not_liked_this_post";
+                $this->content['error'] = false;
+                $this->content['result'] = $result;
+                $status = 200;
             }
-            $status = 200;
-        }
-        else{
-            $this->content['massage'] = "Invalid params";
+        }else{
+            $this->content['massage'] = "invalid_params";
             $this->content['error'] = true;
             $status = 500;
         }
+        return response()->json($this->content, $status);        
+    }
 
-        return response()->json($this->content, $status); 
+    public function is_post_slapped_by_user($post_id=null,$user_id=null)
+    {        
+        if(!empty($post_id) && !empty($user_id)){
+            $result=is_post_slapped_by_user($post_id,$user_id);
+
+            if($result){
+                $this->content['error'] = false;
+                $this->content['massage'] = "user_slaped_this_post";
+                $this->content['result'] = $result;
+                $status = 200;
+            }else{
+                $this->content['massage'] = "user_does_not_slaped_this_post";
+                $this->content['error'] = false;
+                $this->content['result'] = $result;
+                $status = 200;
+            }
+        }else{
+            $this->content['massage'] = "invalid_params";
+            $this->content['error'] = true;
+            $status = 500;
+        }
+        return response()->json($this->content, $status);        
     }
 
 
-    /**
-     * @param $provider
-     *
-     * @return mixed
-     */
-    private function getSocialUser($provider)
-    {
-        return Socialite::driver($provider)->user();
-    }
-
-    public function check(){        
-        $this->content['massage'] = "Invalid params";
-        $this->content['error'] = true;
-        $status = 500;
-        return response()->json($this->content, $status);
-
-    }
+    
 }
 
 

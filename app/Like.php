@@ -21,9 +21,10 @@ class Like extends Model
 
 	//protected $dates = ['deleted_at'];
 
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany(User::class,'likes','id','user_id');
+        //return $this->belongsToMany(User::class,'likes','id','user_id');
+        return $this->belongsTo(User::class);
     }
     /**
      * Get all of the posts that are assigned this like.

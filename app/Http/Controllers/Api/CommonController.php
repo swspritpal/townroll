@@ -6,11 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 
+
+use App\Repositories\Frontend\Access\Comment\CommentRepository;
+
 class CommonController extends Controller
 {
 
-    public function __construct()
+    protected $commentRepository;
+
+    public function __construct(CommentRepository $commentRepository)
     {
+        $this->commentRepository = $commentRepository;
         $this->content = array();
     }
 
@@ -194,4 +200,47 @@ class CommonController extends Controller
         return response()->json($this->content, $status);
     }
 
+
+    public function commentStore(Request $request)
+    {
+        if (!$request->get('content')) {
+            $this->content['massage'] = "content_must_not_be_empty";
+            $this->content['error'] = true;
+            $status = 500;
+
+            return response()->json($this->content, $status);
+        }
+
+        if ($comment = $this->commentRepository->create($request,$request->get('user_id'))){
+            $this->content['error'] = false;
+            $this->content['massage'] = "success";
+            $status = 200;
+        }else{
+            $this->content['error'] = false;
+            $this->content['massage'] = "error_while_saving";
+            $status = 200;
+        }
+        
+        return response()->json($this->content, $status);
+    }
+    
+
+    public function comments(Request $request,$commentable_id=null,$commentable_type=null)
+    {
+        $comment=\App\Comment::where('commentable_id', $commentable_id)->where('commentable_type', $commentable_type)->paginate(env('DEFAULT_SINGLE_POST_COMMENTS_LIMIT'))->toArray();
+
+        if (!empty($comment)){
+            $this->content['error'] = false;
+            $this->content['massage'] = "success";
+            $this->content['data'] = $comment;
+            $status = 200;
+        }else{
+            $this->content['error'] = false;
+            $this->content['massage'] = "error_while_fatching";
+            $this->content['data'] = null;
+            $status = 200;
+        }
+        
+        return response()->json($this->content, $status);
+    }
 }

@@ -32,59 +32,6 @@ class FrontendController extends Controller
         if(\Auth::guest()){
             return view('frontend.auth.login');
         }else{
-
-            /*$user_feed_1 = \FeedManager::getUserFeed(\Auth::id());
-            $token = $user_feed_1-> getToken();
-            dd($token);*/
-
-            /*$notification_feed = \FeedManager::getNotificationFeed(\Auth::id());
-            $enricher = new Enrich;
-            $notifications = $notification_feed->getActivities(0,25)['results'];
-
-            if(!empty($notifications)){
-
-                $enricher = new Enrich;
-                $notifications = $enricher->enrichActivities($notifications['0']['activities']);
-                dd($notifications);
-
-                if(!empty($notifications)){
-                    echo '<ul>';
-                    foreach($notifications as $notification){
-                        if(is_array($notification) || $notification->enriched()){
-                            echo '<li>'.$notification['actor']->username.' '.$notification['verb'].'s your post'.'</li>';
-                        }
-                    }
-                }
-            }*/
-            
-
-
-            /*$client=\FeedManager::getClient();
-            //$now = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
-
-            $activity = [
-                "actor" => "\App\Models\Access\User\User:1",
-                "foreign_id" => "\App\Like:9",
-                "id" => "9d05d50a-2984-11e7-8080-8001577009ab",
-                "is_read" => true,
-                "is_seen" => true,
-                "object" => "\App\Post:76",
-                "origin" => null,
-                "target" => null,
-                "time" => "2017-04-25T06:58:40.491649",
-                "to" => [0 => "notification:17"],
-                "verb" => "like",
-            ];
-            dd($client->updateActivity($activity));*/
-            
-           
-
-            /*$notification_feed = \FeedManager::getUserFeed(\Auth::id());
-            $enricher = new Enrich;
-            $notification_feed = $notification_feed->getActivities(0,25)['results'];
-            $notification_feed = $enricher->enrichActivities($notification_feed);*/
-
-
             $previous_posts_on_certain_time= \Carbon\Carbon::now()->subHours(env('DEFAULT_RECENT_POST_MERGE_IN_HOURS'))->toDateTimeString();
             $excluded_recent_posts=[];
 
@@ -121,14 +68,19 @@ class FrontendController extends Controller
             $all_recent_posts_only_ids=array_column($login_user_categoreis_wise_posts,'id');
             $excluded_recent_posts=array_diff($all_recent_posts_only_ids,$last_posts_ids_by_particular_user);
 
+
             $posts = Post::with(
                     [
                         'user',
-                        'categories'
+                        'categories',
+                        'boosts',
                     ]
                 )
                 ->withCount('comments')
-
+                ->withCount('likes')
+                ->withCount('views')
+                ->withCount('slaps')
+                // posts add by joined group member
                 ->whereIn('id', function($category_post_query) use($sort_by){
                     $category_post_query
                         ->select('post_id')
@@ -147,8 +99,37 @@ class FrontendController extends Controller
                         })
                         ->get()
                         ->toArray();
-
                 })
+                
+                // Boosted posts from other group member
+                ->orWhereIn('id', function($boost_post_query) use($sort_by){
+                    $boost_post_query
+                        ->select('post_id')
+                        ->distinct('user_id')
+                        ->from(with(new \App\BoostPost)->getTable())
+                         ->whereIn('id',function($boost_post_category_query) use($sort_by){
+                            $boost_post_category_query
+                                ->select(['boost_post_id'])
+                                ->distinct('category_id')
+                                ->from(with(new \App\BoostPostCategories)->getTable())
+                                ->whereIn('category_id',function($select_user_category_query){
+                                    $select_user_category_query
+                                        ->select(['category_id'])
+                                        ->from(with(new \App\CategoryUser)->getTable())
+                                        ->whereUserId(\Auth::id());
+                                });
+
+                            if(!empty($sort_by)){
+                                $boost_post_category_query->where('category_id', '=', $sort_by['cat']);
+                            }
+                            $boost_post_category_query->get()
+                            ->toArray();
+                        })
+                    ->get()
+                    ->toArray();
+                })
+               
+
                 // merge recent post logic
                 ->whereNotIn('id',$excluded_recent_posts)
 

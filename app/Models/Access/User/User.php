@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function boostPosts()
+    {
+        return $this->hasMany(\App\BoostPost::class);
+    }
+
     /**
      * The user that belong to the category.
      */
@@ -92,11 +97,15 @@ class User extends Authenticatable
      * The user that belong to the likes post.
      */
     
-   /* public function likes()
+    public function likes()
     {
-        //return $this->belongsToMany(Post::class, 'likes', 'post_id', 'user_id')->withTimeStamps();
         return $this->belongsToMany(\App\Like::class, 'likes', 'user_id', 'post_id')->withTimeStamps();
-    }*/
+    }
+
+    public function slaps()
+    {
+        return $this->belongsToMany(\App\Slap::class, 'slaps', 'user_id', 'post_id')->withTimeStamps();
+    }
 
     public function likedPosts()
     {
@@ -113,8 +122,10 @@ class User extends Authenticatable
      */
     public function views()
     {
-        return $this->belongsToMany(Post::class, 'views', 'user_id', 'post_id')->withTimeStamps();
-        //return $this->belongsToMany(\App\View::class, 'views', 'user_id', 'post_id')->withTimeStamps();
+        //return $this->belongsToMany(Post::class, 'views', 'user_id', 'post_id')->withTimeStamps();
+        //return $this->belongsToMany(Post::class, 'views', 'user_id', 'post_id')->withTimeStamps();
+
+        return $this->belongsToMany(\App\View::class, 'views', 'user_id', 'post_id')->withTimeStamps();
     }
 
     public  function scopeLike($query, $field, $value){

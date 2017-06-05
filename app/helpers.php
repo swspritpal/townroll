@@ -482,17 +482,18 @@ if (!function_exists('show_time')) {
 
     function show_time($value=null,$timeZone=null)
     {
-        /*if(!empty($value) && (strpos($value,'T')  !== false)){
-            $split_value=explode('T', $value);
-            $value=$split_value['0'].' '.$split_value['1'];
-        }*/
-
-        $dt = new \DateTime($value);
-        $carbon = Carbon::instance($dt);
-        $carbon->setTimezone('Asia/Kolkata');
-        return $carbon->diffForHumans();    
+        if(Request::is('api/*') == false){
+            $dt = new \DateTime($value);
+            $carbon = Carbon::instance($dt);
+            $carbon->setTimezone('Asia/Kolkata');
+            return $carbon->diffForHumans();    
+        }else{
+            return $value;
+        }            
     }
 }
+
+
 
 /**
  * Return comment content
@@ -535,6 +536,71 @@ if (!function_exists('is_base64_encoded')) {
         } else {
            return FALSE;
         }
+    }
+}
+
+
+if (!function_exists('is_post_already_boost_for_category')) {
+
+    function is_post_already_boost_for_category($post_id=null,$category_id=null,$user_id=null)
+    {
+        return (bool) \App\BoostPostCategories::whereCategoryId($category_id)
+                    ->where('boost_post_id',function($query) use($post_id,$user_id) {
+                        $query->select('id')
+                            ->from(with(new \App\BoostPost)->getTable())
+                            ->where('post_id', $post_id)
+                            ->where('user_id', $user_id)
+                            ->first();
+                    })
+                    ->first();
+                    //->toSql();
+    }
+}
+
+if (!function_exists('boost_categories_of_post')) {
+
+    function boost_categories_of_post($post_id=null)
+    {
+        if(!empty($post_id)){
+            $boost_categories_of_post=\App\BoostPostCategories::whereIn('boost_post_id',function($boost_post_category_query) use($post_id) {
+                            $boost_post_category_query
+                                ->select(['id'])
+                                ->from(with(new \App\BoostPost)->getTable())
+                                ->wherePostId($post_id);
+                            $boost_post_category_query->get()
+                            ->toArray();
+                        })
+                        ->distinct('category_id')
+                        ->orderBy('created_at', 'desc')
+                        ->get(['category_id']);
+        
+            return $boost_categories_of_post;
+        }
+      
+    }
+}
+
+if (!function_exists('is_post_liked_by_user')) {
+
+    function is_post_liked_by_user($post_id=null,$user_id=null)
+    {
+        if(!empty($post_id)){
+            return (bool) \App\Like::where('user_id', $user_id)
+                            ->where('likeable_id', $post_id)
+                            ->first();
+        }      
+    }
+}
+
+if (!function_exists('is_post_slapped_by_user')) {
+
+    function is_post_slapped_by_user($post_id=null,$user_id=null)
+    {
+        if(!empty($post_id)){
+            return (bool) \App\Slap::where('user_id', $user_id)
+                            ->where('slapable_id', $post_id)
+                            ->first();
+        }      
     }
 }
 

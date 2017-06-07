@@ -27,6 +27,7 @@
         "laravelcollective/html": "5.4.*",
         "league/html-to-markdown": "^4.3",
         "mews/purifier": "^2.0",
+        "nicolaslopezj/searchable": "1.*",
         "predis/predis": "^1.1",
         "qiniu/php-sdk": "^7.0",
         "yajra/laravel-datatables-oracle": "^7.0"

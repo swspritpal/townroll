@@ -12,6 +12,7 @@ use App\Models\Access\User\Traits\Attribute\UserAttribute;
 use App\Models\Access\User\Traits\Relationship\UserRelationship;
 use App\Post;
 use Laravel\Passport\HasApiTokens;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 /**
  * Class User.
@@ -25,7 +26,8 @@ class User extends Authenticatable
         UserAttribute,
         UserRelationship,
         UserSendPasswordReset,
-        HasApiTokens;
+        HasApiTokens,
+        SearchableTrait;
 
 
     /**
@@ -63,6 +65,26 @@ class User extends Authenticatable
         $this->table = config('access.users_table');
     }
 
+    /**
+     * Searchable rules.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        'columns' => [
+            'users.id' => 10,
+            'users.name' => 3,
+            'users.username' => 10,
+            'users.email' => 10,
+            'cities.name' => 5,
+            'countries.name' => 5,            
+        ],
+        'joins' => [
+            'cities' => ['users.city_id','cities.id'],
+            'countries' => ['users.country_id','countries.id'],
+        ],
+    ];
+
 
     public function getMetaAttribute($meta)
     {
@@ -73,6 +95,11 @@ class User extends Authenticatable
     public function setMetaAttribute($meta)
     {
         $this->attributes['meta'] = json_encode($meta);
+    }
+
+    public function city()
+    {
+        return $this->hasOne(App\Models\Country\City::class);
     }
 
     public function posts()

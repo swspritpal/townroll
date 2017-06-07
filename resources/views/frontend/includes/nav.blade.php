@@ -34,6 +34,15 @@
 
               @include('frontend.includes.notifications.view')
             </ul>
+
+            <div class="home-search-box">
+              {{ Form::open(['route' => 'frontend.search', 'method'=>'GET','class'=>'typeahead','role'=>'search']) }}
+                <div class="form-group">
+                  <input type="search" name="q" class="form-control search-input" placeholder="Search" autocomplete="off" value="{{ (Request::has('q')) ? Request::get('q'):'' }}">
+                </div>
+                <input type="submit" class="hidden" />
+              {{ Form::close() }}        
+            </div>
             
             <div class="pull-right navLogout">
               {{ link_to_route('frontend.auth.logout', 'Logout',null,['class'=>'fa fa-sign-out fa-fw']) }}

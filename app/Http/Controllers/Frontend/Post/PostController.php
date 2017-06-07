@@ -68,12 +68,17 @@ class PostController extends Controller
             $post=Post::with(
                     [
                         'user',
-                        'categories'
+                        'categories',
+                        'boosts',
                     ]
                 )
+                ->withCount('comments')
+                ->withCount('likes')
+                ->withCount('views')
+                ->withCount('slaps')
+
                 ->where('status','=','1')
                 ->where('id','=',$post->id)
-                ->withCount('comments')
                 ->first();
 
             $view = \View::make('frontend.includes.posts.single',compact('post'));
@@ -169,11 +174,16 @@ class PostController extends Controller
             $post = Post::with(
                 [
                     'user',
-                    'categories'
+                    'categories',
+                    'boosts',
                 ]
             )
-            ->whereid($post_id)
             ->withCount('comments')
+            ->withCount('likes')
+            ->withCount('views')
+            ->withCount('slaps')
+            
+            ->whereid($post_id)
             ->first();
 
             if($post_view){

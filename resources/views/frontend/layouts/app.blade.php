@@ -35,6 +35,7 @@
          {{ Html::style(asset('css/slick-theme.css')) }}
          {{ Html::style(asset('css/style.css')) }}
          {{ Html::style(asset('css/ionicons.css')) }}
+         {{ Html::style(asset('css/developer.css')) }}
 
 
         <!-- Scripts -->
@@ -129,6 +130,8 @@
             {!! Html::script(asset('js/jquery.jscroll.min.js')) !!}
             {!! Html::script(asset('js/jq-ajax-progress.min.js')) !!}
 
+            {!! Html::script('//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js') !!}
+
             {!! Html::script(asset('js/jquery.validate.min.js')) !!}
             {!! Html::script(asset('js/geo/geo-min.js')) !!}
             {!! Html::script(asset('js/signup_form.js')) !!}
@@ -141,5 +144,6 @@
         {!! Html::script(asset('js/stream_activity.js')) !!}
         {!! Html::script(asset('js/custom.js')) !!} 
         {!! Html::script(asset('js/popups.js')) !!}
+        {!! Html::script(asset('js/search.js')) !!}
     </body>
 </html>

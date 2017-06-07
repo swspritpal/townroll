@@ -159,7 +159,7 @@ class CommonController extends Controller
     }
 
     /**
-     * @return \Illuminate\Response\Json
+     * @return \Illuminate\Response\Html
      */
     public function suggest_user_list(Request $request)
     {   
@@ -187,8 +187,7 @@ class CommonController extends Controller
                 $html_result.='</div>';
                 return $html_result;
             }
-        }
-        
+        }        
     }
 
 }

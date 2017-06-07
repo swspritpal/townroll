@@ -14,5 +14,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('mark-notification-read', 'CommonController@markNotificationRead')->name('unique_username');
 
     Route::get('suggest-user-list', 'CommonController@suggest_user_list');
+
+    // Search
+    Route::get('search', 'SearchController@search')->name('search');
+    Route::get('search/posts', 'SearchController@searchPosts')->name('search.posts');
+    Route::get('search/users', 'SearchController@searchUsers')->name('search.users');
+    Route::get('search/categories', 'SearchController@searchCategories')->name('search.categories');
+    // Search Suggestion Routes
+    Route::get('find-user', 'SearchController@findUser');
+    Route::get('find-group', 'SearchController@findGroup');
     
 });

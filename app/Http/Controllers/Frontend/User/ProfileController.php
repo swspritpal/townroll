@@ -115,12 +115,17 @@ class ProfileController extends Controller
             $posts = \App\Post::with(
                     [
                         'user',
-                        'categories'
+                        'categories',
+                        'boosts',
                     ]
                 )
+                ->withCount('comments')
+                ->withCount('likes')
+                ->withCount('views')
+                ->withCount('slaps')
+
                 ->whereUserId($user->id)
                 ->orderBy('created_at', 'desc')
-                ->withCount('comments')
                 //->toSql();
                 ->paginate(env('DEFAULT_HOME_PAGE_POST'));
 

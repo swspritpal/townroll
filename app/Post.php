@@ -5,7 +5,9 @@ namespace App;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
+
+//use Laravel\Scout\Searchable;
+
 use Lufficc\Comment\CommentHelper;
 use Lufficc\Config\ConfigureHelper;
 use Carbon\Carbon;
@@ -14,9 +16,11 @@ use App\View;
 use App\Models\Access\User\User;
 use Lufficc\Post\PostHelper;
 
+use Nicolaslopezj\Searchable\SearchableTrait;
+
 class Post extends Model
 {
-    use SoftDeletes, CommentHelper, ConfigureHelper,PostHelper;
+    use SoftDeletes, CommentHelper, ConfigureHelper,PostHelper,SearchableTrait;
 
     /**
      * The "booting" method of the model.
@@ -51,6 +55,20 @@ class Post extends Model
     ];
 
     protected $fillable = ['user_id', 'published_at', 'status', 'html_content', 'content', 'image_path'];
+
+
+    /**
+     * Searchable rules.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        'columns' => [
+            'posts.content' => 20,
+        ],
+        'joins' => [
+        ],
+    ];
 
     public function categories()
     {

@@ -19,7 +19,7 @@ class Category extends Model
     protected $searchable = [
         'columns' => [
             'categories.name' => 10,
-            //'categories.vicinity' => 10,
+            'categories.vicinity' => 10,
         ],
         'joins' => [
         ],

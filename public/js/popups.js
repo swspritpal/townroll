@@ -169,13 +169,14 @@ jQuery(document).ready(function($) {
         var current_obj=$(this);
         var form_data=$('#boost_post_category_form').serialize();
 
-        //console.log(form_data);
-
         $.ajax({
-            url: APP_URL + '/boost/store/',
-            type: 'POST',
-            data:form_data,
+            url: APP_URL + '/boost/store',
+            type: 'post',
             dataType: 'json',
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
             beforeSend: function() {
                 $(current_obj).html('Sending...');
             },

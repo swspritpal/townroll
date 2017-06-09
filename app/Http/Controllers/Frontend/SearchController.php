@@ -46,11 +46,13 @@ class SearchController extends Controller
     public function search(Request $request)
     {           
         $q=$request->get('q');
+        $categories=$users=$posts=[];
+
         if(!empty($q)){
 
             $state_id_of_login_user=\Auth::user()->state_id;
 
-            $categories=\App\Category::select(['categories.name','categories.place_image_path'])->withCount('users')->search($q,null,$fulltextSearch=true)->paginate(env('DEFAULT_SEARCH_PAGE_PAGINATION'));
+            $categories=\App\Category::select(['categories.id','categories.name','categories.place_image_path'])->withCount('users')->search($q,null,$fulltextSearch=true)->paginate(env('DEFAULT_SEARCH_PAGE_PAGINATION'));
 
             $users=User::search($q,null,$fulltextSearch=true)->paginate(env('DEFAULT_SEARCH_PAGE_PAGINATION'));
 
@@ -72,14 +74,14 @@ class SearchController extends Controller
                 ->withCount('likes')
                 ->withCount('views')
                 ->withCount('slaps')
-                ->search($q,null,$fulltextSearch=true)
+                ->where('posts.content','LIKE','%'.$q.'%')
                 
                 ->paginate(env('DEFAULT_SEARCH_PAGE_PAGINATION'));
                 //->toSql();
 
-            //dd($posts);
-
             return view('frontend.search.index',compact('categories','users','posts','q'));
+        }else{
+            return view('frontend.search.empty',compact('categories','users','posts','q'));
         }        
     }
 

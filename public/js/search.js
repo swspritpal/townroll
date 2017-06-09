@@ -66,9 +66,9 @@ jQuery(document).ready(function($) {
       display: 'suggest',
       source: suggested_users.ttAdapter(),
       templates: {
-        empty: [
+        /*empty: [
             '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-        ],
+        ],*/
         header:'<h3 class="suggest-content-name">Users</h3>',
         suggestion: function (data) {
             return '<a href="/search?q=' + data.username + '" class="list-group-item">' + data.name + '- @' + data.username + '</a>'
@@ -80,9 +80,9 @@ jQuery(document).ready(function($) {
       display: 'suggest',
       source: suggested_groups,
       templates: {
-        empty: [
+        /*empty: [
             '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-        ],
+        ],*/
         header: '<h3 class="suggest-content-name">Groups</h3>',
         suggestion: function (data) {
             return '<a href="/search?q=' + data.name + '" class="list-group-item">' + data.name + '</a>'

@@ -6,7 +6,7 @@ use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-//use Laravel\Scout\Searchable;
+use Laravel\Scout\Searchable;
 
 use Lufficc\Comment\CommentHelper;
 use Lufficc\Config\ConfigureHelper;
@@ -16,11 +16,11 @@ use App\View;
 use App\Models\Access\User\User;
 use Lufficc\Post\PostHelper;
 
-use Nicolaslopezj\Searchable\SearchableTrait;
+//use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Post extends Model
 {
-    use SoftDeletes, CommentHelper, ConfigureHelper,PostHelper,SearchableTrait;
+    use SoftDeletes, CommentHelper, ConfigureHelper,PostHelper;
 
     /**
      * The "booting" method of the model.
@@ -54,6 +54,8 @@ class Post extends Model
         'status'
     ];
 
+    protected $guarded = ['id'];
+
     protected $fillable = ['user_id', 'published_at', 'status', 'html_content', 'content', 'image_path'];
 
 
@@ -62,13 +64,13 @@ class Post extends Model
      *
      * @var array
      */
-    protected $searchable = [
+    /*protected $searchable = [
         'columns' => [
             'posts.content' => 20,
         ],
         'joins' => [
         ],
-    ];
+    ];*/
 
     public function categories()
     {

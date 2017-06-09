@@ -20,9 +20,22 @@ class CommonController extends Controller
         $this->content = array();
     }
 
+    private function make_key_value_pair($unformatted_array=null)
+    {
+        $newFormat=[];
+        foreach ($unformatted_array as $key => $item) {
+            $newArray['code']=$key;
+            $newArray['name']=$item;
+            $newFormat[]=$newArray;
+            
+        }
+        return $newFormat;
+    }
+
     public function get_countries(){
 
         $countries = getCountiesList();
+        $countries=$this->make_key_value_pair($countries);
 
         if(!empty($countries)){
             $this->content['error'] = false;
@@ -46,6 +59,7 @@ class CommonController extends Controller
         $country_id=getCountryId($country_sortname);
 
         $states = getStateList($country_id);
+        $states=$this->make_key_value_pair($states);
 
         if(!empty($states)){
             $this->content['error'] = false;
@@ -68,6 +82,7 @@ class CommonController extends Controller
     {   
 
         $cities = getCityList($state_id);
+        $cities=$this->make_key_value_pair($cities);
 
         if(!empty($cities)){
             $this->content['error'] = false;

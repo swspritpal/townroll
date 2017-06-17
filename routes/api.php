@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 
 
 Route::group(array('middleware' => 'auth:api'), function() {
-    //Route::resource('restful-apis','APIController');    
 
     Route::get('/user', function (Request $request) {
 	    return $request->user();
@@ -35,6 +34,7 @@ Route::group(array('middleware' => 'auth:api'), function() {
 	    Route::get('posts/{user_id}/{sort_by?}', 'PostController@index');
 	    Route::post('post/store', 'PostController@store');
 	    Route::get('categories/{user_id}', 'CategoriesController@index');
+	    Route::post('categories/store', 'CategoriesController@store');
 
 	    Route::post('login', 'UserController@login');
 	    Route::resource('user', 'UserController');
@@ -51,6 +51,7 @@ Route::group(array('middleware' => 'auth:api'), function() {
 
 	    Route::get('is-post-liked-by-user/{post_id}/{user_id}', 'PostController@is_post_liked_by_user');
 	    Route::get('is-post-slapped-by-user/{post_id}/{user_id}', 'PostController@is_post_slapped_by_user');
+	    Route::get('post-viewed-or-newly-view/{post_id}/{user_id}', 'PostController@post_viewed_or_newly_view');
 	});
 
 
@@ -58,7 +59,11 @@ Route::group(array('middleware' => 'auth:api'), function() {
 	Route::get('post-liked-users/{post_id}', 'Frontend\LikeController@likedUsersList');
 	Route::get('post/like/{id}/{user_id}', 'Frontend\LikeController@likePost');
 	Route::get('post-slapped-users/{post_id}', 'Frontend\SlapController@slappedUsersList');
+	Route::get('post/slap/{id}/{user_id}', 'Frontend\SlapController@slapPost');
 	Route::get('post-viewed-users/{post_id}', 'Frontend\Post\PostController@viewedUsersList');
+
+
+	Route::post('save-user-profile-image', 'Frontend\User\ProfileController@save_profile_image');
 
 });
 

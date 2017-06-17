@@ -244,6 +244,35 @@ class PostController extends Controller
         return response()->json($this->content, $status);        
     }
 
+    public function post_viewed_or_newly_view($post_id=null,$user_id=null)
+    {        
+        if(!empty($post_id) && !empty($user_id)){
+
+            $is_viewed_already=(bool) \App\View::where('user_id', $user_id)
+                            ->where('post_id', $post_id)
+                            ->first();
+
+            $user = User::whereId($user_id)->first();
+
+            if($is_viewed_already == false){
+                $user->views()->attach($post_id);
+
+                $this->content['error'] = false;
+                $this->content['massage'] = "user_view_this_post";
+                $status = 200;
+            }else{
+                $this->content['error'] = false;
+                $this->content['massage'] = "user_already_viewed_this_post";                
+                $status = 200;
+            }
+        }else{
+            $this->content['massage'] = "invalid_params";
+            $this->content['error'] = true;
+            $status = 500;
+        }
+        return response()->json($this->content, $status);        
+    }
+
 
     
 }

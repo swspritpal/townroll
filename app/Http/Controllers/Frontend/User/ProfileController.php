@@ -31,6 +31,7 @@ class ProfileController extends Controller
     {
         $this->user = $user;
         $this->category = $category;
+        $this->content=[];
     }
 
     /**
@@ -162,7 +163,12 @@ class ProfileController extends Controller
 
     public function save_profile_image(Request $request){
 
-        $user_id=\Auth::id();
+        if($request->has('user_id')){
+            $user_id=$request->get('user_id');
+        }else{
+            $user_id=\Auth::id();    
+        }
+        
         $save_path=env('USER_PROFILES_FOLDER');
 
         $user = User::whereId($user_id)->first();
@@ -189,11 +195,26 @@ class ProfileController extends Controller
                 $user->profile_image=$uploaded_image_name;
                 $is_saved=$user->save();
 
-                if(!empty($is_saved)){
-                    return response()->json(['status' => 'success', 'msg' => 'Profile has been uploaded successfully.']);
+                // For web response
+                if($request->is('api/*') == false){
+                    if(!empty($is_saved)){
+                       return response()->json(['status' => 'success', 'msg' => 'Profile has been uploaded successfully.']);
+                    }else{
+                        return response()->json(['status' => 'error', 'msg' => 'There was some error while saving your image.Please try again.']);
+                    }
                 }else{
-                    return response()->json(['status' => 'error', 'msg' => 'There was some error while saving your image.Please try again.']);
+                    if(!empty($is_saved)){
+                        $this->content['error'] = false;
+                        $this->content['massage'] = "success";
+                        $status = 200;
+                    }else{
+                        $this->content['error'] = true;
+                        $this->content['massage'] = "error_while_saving";
+                        $status = 500;
+                    }
+                    return response()->json($this->content, $status);
                 }
+                
             }else{
                 return response()->json(['status' => 'error', 'msg' => 'There was some error while uploading your image.Please try again.']);
             }

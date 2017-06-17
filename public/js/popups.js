@@ -175,8 +175,6 @@ jQuery(document).ready(function($) {
             dataType: 'json',
             data: form_data,
             cache: false,
-            contentType: false,
-            processData: false,
             beforeSend: function() {
                 $(current_obj).html('Sending...');
             },

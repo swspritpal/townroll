@@ -4,14 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repositories\Frontend\Access\Category\CategoryRepository;
 use Response;
 use App\Category;
 
 class CategoriesController extends Controller
 {
 
-    public function __construct()
+    protected $categoryRepository;
+
+    /**
+     * CategoryController constructor.
+     * @param CategoryRepository $categoryRepository
+     */
+    public function __construct(CategoryRepository $categoryRepository)
     {
+        $this->categoryRepository = $categoryRepository;
         $this->content = array();
     }
 
@@ -36,6 +44,35 @@ class CategoriesController extends Controller
             }
         }else{
             $this->content['massage'] = "Invalid params";
+            $this->content['error'] = true;
+            $status = 500;
+        }
+        
+        return response()->json($this->content, $status);
+    }
+
+
+    public function store(Request $request){
+
+        $user_id=$request->get('user_id');
+        
+        if(!empty($user_id)){
+            $category = $this->categoryRepository->add_new($request);
+
+            if(!empty($category)){
+                // Attach user id to category model
+                $category->users()->attach($user_id);
+
+                $this->content['error'] = false;
+                $this->content['massage'] = "category_added_successfully.";
+                $status = 200;
+            }else{
+                $this->content['error'] = true;
+                $this->content['massage'] = "category_not_saved.";
+                $status = 500;
+            }
+        }else{
+            $this->content['massage'] = "invalid_params";
             $this->content['error'] = true;
             $status = 500;
         }

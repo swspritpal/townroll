@@ -15,16 +15,24 @@ class SlapController extends Controller
         $this->content = array();
     }
 
-    public function slapPost(Request $request,$id)
+    public function slapPost(Request $request,$id,$user_id=null)
     {
-        if(!empty(Auth::id())){
-            $user_id=Auth::id(); 
+        // here you can check if post exists or is valid or whatever
+        if(!empty($user_id)){
+            $this->handleSlap('App\Post', $id,$user_id);
         }else{
-            $user_id=$request->get('user_id');
+            $this->handleSlap('App\Post', $id,Auth::id());
         }
-
-        $this->handleSlap('App\Post', $id,$user_id);
-        return redirect()->back();
+        
+        // For web response
+        if($request->is('api/*') == false){
+            return redirect()->back();
+        }else{
+            $this->content['error'] = false;
+            $this->content['massage'] = "success";
+            $status = 200;
+            return response()->json($this->content, $status);
+        }
     }
 
     public function handleSlap($type, $id,$user_id)

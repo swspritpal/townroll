@@ -10,6 +10,9 @@ use App\Category;
 class BoostController extends Controller
 {
 
+
+
+
     /**
      * @return \Illuminate\View\View
      */
